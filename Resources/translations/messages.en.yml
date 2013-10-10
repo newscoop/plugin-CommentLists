@@ -1,2 +1,6 @@
 plugin:
-  title: "Newscoop Comment Lists Plugin"
+  lists:
+    label:
+      menu: "Comment Lists"
+    title: "Newscoop Comment Lists Plugin"
+    header: "Manage Comment Lists"

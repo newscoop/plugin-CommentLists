@@ -31,8 +31,8 @@ class ConfigureMenuListener
         $menu = $event->getMenu();
 
         $menu[$this->translator->trans('Plugins')]->addChild(
-            $this->translator->trans('plugin.label.title'), 
-            array('uri' => $event->getRouter()->generate('newscoop_articlescalendar_admin_admin'))
+            $this->translator->trans('plugin.lists.label.menu'), 
+            array('uri' => $event->getRouter()->generate('newscoop_commentlists_admin_index'))
         );
     }
 }
