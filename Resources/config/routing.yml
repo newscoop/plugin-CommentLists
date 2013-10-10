@@ -1,0 +1,4 @@
+newscoop_commentlists:
+    resource: "@NewscoopCommentListsBundle/Controller/"
+    type: annotation
+    prefix: /

@@ -1,0 +1,23 @@
+{
+    "name": "newscoop/comment-lists-plugin",
+    "description": "Comment lists plugin.",
+    "keywords": ["newscoop", "comment", "list", "cms", "widget"],
+    "version": "0.2",
+    "type": "newscoop-plugin",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Rafał Muszyński",
+            "email": "rafal.muszynski@sourcefabric.org"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "newscoop/plugins-installer": ">=v0.2"
+    },
+    "autoload": {
+        "psr-0": { "Newscoop\\CommentListsBundle": "" }
+    },
+    "target-dir": "Newscoop/CommentListsBundle",
+    "minimum-stability": "dev"
+}

@@ -1,0 +1,14 @@
+services:
+    newscoop_commentlists.lifecyclesubscriber:
+        class: Newscoop\CommentListsBundle\EventListener\LifecycleSubscriber
+        arguments:
+            - @em
+        tags:
+            - { name: kernel.event_subscriber}
+
+    newscoop_commentlists.configure_menu_listener:
+        class: Newscoop\CommentListsBundle\EventListener\ConfigureMenuListener
+        tags:
+            - { name: kernel.event_listener, event: newscoop_newscoop.menu_configure, method: onMenuConfigure }
+        arguments: 
+            - @translator
