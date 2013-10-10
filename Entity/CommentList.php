@@ -1,0 +1,190 @@
+<?php
+/**
+ * @package Newscoop\CommentListsBundle
+ * @author Rafał Muszyński <rafal.muszynski@sourcefabric.org>
+ * @copyright 2013 Sourcefabric o.p.s.
+ * @license http://www.gnu.org/licenses/gpl-3.0.txt
+ */
+
+namespace Newscoop\CommentListsBundle\Entity;
+
+use Doctrine\ORM\Mapping AS ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+
+/**
+ * List entity
+ *
+ * @ORM\Entity()
+ * @ORM\Table(name="plugin_comment_lists_lists")
+ */
+class CommentList
+{
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer", name="id")
+     * @var int
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(type="string", name="name")
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="integer", name="color")
+     * @var integer
+     */
+    private $color;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Newscoop\CommentListsBundle\Entity\Comment", mappedBy="list")
+     * @var array
+     */
+    private $comment;
+
+    /**
+     * @ORM\Column(type="datetime", name="created_at")
+     * @var datetime
+     */
+    private $created_at;
+
+    /**
+     * @ORM\Column(type="boolean", name="is_active")
+     * @var boolean
+     */
+    private $is_active;
+
+    public function __construct() {
+        $this->comment = new ArrayCollection();
+        $this->setCreatedAt(new \DateTime());
+        $this->setIsActive(true);
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set name
+     *
+     * @param  string $name
+     * @return string
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        
+        return $name;
+    }
+
+    /**
+     * Get color
+     *
+     * @return int
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    /**
+     * Set color
+     *
+     * @param  int $color
+     * @return int
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+        
+        return $color;
+    }
+
+    /**
+     * Get comment
+     *
+     * @return int
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * Set comment
+     *
+     * @param  int $comment
+     * @return int
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+        
+        return $comment;
+    }
+
+    /**
+     * Get status
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->is_active;
+    }
+
+    /**
+     * Set status
+     *
+     * @param boolean $is_active
+     * @return boolean
+     */
+    public function setIsActive($is_active)
+    {
+        $this->is_active = $is_active;
+        
+        return $this;
+    }
+
+    /**
+     * Get create date
+     *
+     * @return datetime
+     */
+    public function getCreatedAt()
+    {
+        return $this->created_at;
+    }
+
+    /**
+     * Set create date
+     *
+     * @param datetime $created_at
+     * @return datetime
+     */
+    public function setCreatedAt(\DateTime $created_at)
+    {
+        $this->created_at = $created_at;
+        
+        return $this;
+    }
+}

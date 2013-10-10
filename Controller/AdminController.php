@@ -13,6 +13,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Newscoop\CommentListsBundle\Entity\CommentList;
+use Newscoop\CommentListsBundle\Entity\Comment;
 
 class AdminController extends Controller
 {
@@ -21,7 +23,7 @@ class AdminController extends Controller
     * @Template()
     */
     public function indexAction(Request $request)
-    {  
+    {   
         return array();
     }
 }
