@@ -1,0 +1,29 @@
+.toggle.filters legend {
+    cursor: pointer;
+}
+
+#playlist-name {
+    width: 250px;
+}
+
+#playlist-id {
+    font-size:12px; 
+    width:50px
+}
+
+.toolbar h2 {
+    width:700px;
+}
+
+#list_name {
+    float:right; 
+    display: none;
+}
+
+.select2-chosen {
+    font-size: 12px;
+}
+
+.selectBig {
+    width: 250px;
+}

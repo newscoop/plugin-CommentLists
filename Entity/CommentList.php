@@ -34,12 +34,6 @@ class CommentList
     private $name;
 
     /**
-     * @ORM\Column(type="integer", name="color")
-     * @var integer
-     */
-    private $color;
-
-    /**
      * @ORM\OneToMany(targetEntity="Newscoop\CommentListsBundle\Entity\Comment", mappedBy="list")
      * @var array
      */
@@ -94,29 +88,6 @@ class CommentList
         $this->name = $name;
         
         return $name;
-    }
-
-    /**
-     * Get color
-     *
-     * @return int
-     */
-    public function getColor()
-    {
-        return $this->color;
-    }
-
-    /**
-     * Set color
-     *
-     * @param  int $color
-     * @return int
-     */
-    public function setColor($color)
-    {
-        $this->color = $color;
-        
-        return $color;
     }
 
     /**
