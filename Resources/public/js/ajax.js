@@ -13,7 +13,7 @@ function callController(url, params, handle)
         dataType: "json",
         success: function(msg){
 
-            flashMessage('saved');
+            flashMessage('Processing...');
 
             if (handle) {
                 handle(msg);

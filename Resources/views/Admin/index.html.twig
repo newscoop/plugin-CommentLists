@@ -38,12 +38,54 @@ $(document).ready(function() {
         filter.find('dl:first').show();
         
     }, function() {
-     var filter = $(".toggle.filters");
-     filter.addClass('closed');
-     filter.find('dl:first').hide();
- });
+       var filter = $(".toggle.filters");
+       filter.addClass('closed');
+       filter.find('dl:first').hide();
+   });
 
 });
+</script>
+<script type="text/javascript">
+contextListFilters = {};
+
+filters = [];
+
+function handleArgs()
+{
+    if($('#filter_name').val() < 0) {
+        langId = 0;
+    } else {
+        langId = $('#filter_name').val();
+    }
+
+    if($('#publication_filter').val() < 0) {
+        publicationId = 0;
+    } else {
+        publicationId = $('#publication_filter').val();
+    }
+
+    if($('#issue_filter').val() < 0) {
+        issueId = 0;
+    } else {
+        issueId = $('#issue_filter').val();
+    }
+
+    args = new Array();
+    args.push({
+        'name': 'language',
+        'value': langId
+    });
+    args.push({
+        'name': 'publication',
+        'value': publicationId
+    });
+    args.push({
+        'name': 'issue',
+        'value': issueId
+    });
+
+    return args;
+}
 </script>
 {% endblock %}
 
@@ -118,67 +160,47 @@ $(document).ready(function() {
                                                 </select>
                                             </div>
                                         </div>
-                                    </tbody>
-                                </table>
-                                <a href="#" class="reset" title="Reset all filters">Reset all filters</a>
-                            </dl>
-                        </fieldset>
+                                        <div class="tr">
+                                            <div class="td">
+                                                <select name="type" id="type_filter">
+                                                    <option value="">Select type</option>
+                                                    {% for key, type in types %}
+                                                    {% if key == 'selected' %}
+                                                    <option selected="selected">{{ type }}</option>
+                                                    {% else %}
+                                                    <option>{{ type }}</option>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                    <script type="text/javascript">
+                                                    var typeVal = $('#type_filter').val();
+                                                    if (typeVal != '') contextListFilters.type = typeVal;
+                                                    </script>
+                                                </div>
 
-                    </dd>
-                    <dd>
-                        <input type="checkbox" name="show_filtered" id="show_filtered">
-                        <label for="show_filtered">Display Articles of Filtered Types</label>
-                    </dd>
-                </dl>
+                                            </div>
+                                        </tbody>
+                                    </table>
+                                    <a href="#" class="reset" title="Reset all filters">Reset all filters</a>
+                                </dl>
+                            </fieldset>
+
+                        </dd>
+                        <dd>
+                            <input type="checkbox" name="show_filtered" id="show_filtered">
+                            <label for="show_filtered">Display Articles of Filtered Types</label>
+                        </dd>
+                    </dl>
+                </div>
+
+                {% include "NewscoopCommentListsBundle::table.html.twig" with {sDom: sDom, id: id , items: items, colVis: colVis, order: order, doDataSource: path('newscoop_commentlists_admin_dodata') } %}
+
             </div>
-
         </div>
-    </div>
-</div> 
+    </div> 
 </div>
 
 
 <script type="text/javascript">
-
-/**
- *
- */
- function handleArgs()
- {
-    if($('#filter_name').val() < 0) {
-        langId = 0;
-    } else {
-        langId = $('#filter_name').val();
-    }
-
-    if($('#publication_filter').val() < 0) {
-        publicationId = 0;
-    } else {
-        publicationId = $('#publication_filter').val();
-    }
-
-    if($('#issue_filter').val() < 0) {
-        issueId = 0;
-    } else {
-        issueId = $('#issue_filter').val();
-    }
-
-    args = new Array();
-    args.push({
-        'name': 'language',
-        'value': langId
-    });
-    args.push({
-        'name': 'publication',
-        'value': publicationId
-    });
-    args.push({
-        'name': 'issue',
-        'value': issueId
-    });
-
-    return args;
-}
 
 function handleFilterIssues(args)
 {
@@ -218,7 +240,6 @@ function refreshFilterIssues()
 {   
     if($('#publication_filter').val() <= 0) {
         resetFilterIssues();
-        alert('sad');
     } else {
         var args = handleArgs();
         callController('{{ path('newscoop_commentlists_admin_getfilterissues') }}', args, handleFilterIssues);
@@ -236,7 +257,8 @@ function refreshFilterSections()
 }
 
 $(document).ready(function()
-{
+{   
+    filters['08fc8e'] = contextListFilters;
     //handle language change first
     $('#filter_name').change(function()
     {
@@ -252,9 +274,11 @@ $(document).ready(function()
 
     $('#issue_filter').change(function()
     {
+        alert('test');
         var smartlist = $(this).closest('.smartlist');
         var smartlistId = smartlist.attr('id').split('-')[1];
         filters[smartlistId]['section'] = 0;
+        //alert(filters);
         refreshFilterSections();
     })
 
