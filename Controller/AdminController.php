@@ -168,6 +168,55 @@ class AdminController extends Controller
     }
 
     /**
+    * @Route("/admin/comment-lists/getfilterarticles", options={"expose"=true})
+    */
+    public function getFilterArticles(Request $request) {
+
+        $translator = $this->container->get('translator');
+        $em = $this->container->get('em');
+        $publication = $request->get('publication', NULL);
+        $issue = $request->get('issue');
+        $section = $request->get('section');
+        
+        if($section > 0) {
+            $sectionArray = explode("_", $section);
+            $section = $sectionArray[3];
+            if (isset($issueArray[2])) {
+                $language = $issueArray[2];
+            }
+        }
+        
+        if($request->get('language') > 0) {
+            $language = $request->get('language');
+        }
+
+        $articles = $em->getRepository('Newscoop\Entity\Article')
+            ->createQueryBuilder('s')
+            ->innerJoin('s.issue', 'i', 'WITH', 'i.number = ?2')
+            ->where('s.publication = ?1 AND s.sectionId = ?3')
+            ->setParameter(1, $publication)
+            ->setParameter(2, $issue)
+            ->setParameter(3, $section)
+            ->getQuery()
+            ->getResult();
+
+
+        $newArticles = array();
+        foreach($articles as $article) {
+            $newArticles[] = array('val' => $article->getPublicationId().'_'.$article->getIssueId().'_'.$article->getLanguageId().'_'.$article->getSectionId().'_'.$article->getNumber(), 'name' => $article->getName());
+        }
+
+        $articlesNo = is_array($newArticles) ? sizeof($newArticles) : 0;
+        $menuArticleTitle = $articlesNo > 0 ? $translator->trans('All Articles') : $translator->trans('No articles found');
+        
+        return new Response(json_encode(array(
+            'items' => $newArticles,
+            'itemsNo' => $articlesNo,
+            'menuItemTitle' => $menuArticleTitle
+        )));
+    }
+
+    /**
      * Get Context Box sDom property.
      * @return string
      */
@@ -224,6 +273,7 @@ class AdminController extends Controller
         $publication = $request->get('publication');
         $language = $request->get('language');
         $section = $request->get('section');
+        $articleId = $request->get('article');
 
         //fix for the new issue filters
         if(isset($issue)) {
@@ -245,6 +295,20 @@ class AdminController extends Controller
                     $publication = $sectionFiltersArray[0];
                     $language = $sectionFiltersArray[2];
                     $section = $sectionFiltersArray[3];
+                }
+            }
+        }
+
+        //fix for the new articles filters
+        if(isset($articleId)) {
+            if($articleId != 0) {
+                $articleFiltersArray = explode('_', $articleId);
+                if(count($articleFiltersArray) > 1) {
+                    $publication = $articleFiltersArray[0];
+                    $issue = $articleFiltersArray[1];
+                    $language = $articleFiltersArray[2];
+                    $section = $articleFiltersArray[3];
+                    $articleId = $articleFiltersArray[4];
                 }
             }
         }
@@ -362,6 +426,16 @@ class AdminController extends Controller
 
             $filteredCommentsCount = count($return);
             $return = array_slice($return, $start, $limit+$start); 
+        }
+
+        if ($articleId != '0' && $articleId != NULL) {
+            $return = array();
+            foreach ($this->getArticleComments($articleId, $language, $sortDir, $em) as $comment) {
+                $return[] = $this->processItem($comment);
+            }
+
+            $filteredCommentsCount = count($return);
+            $return = array_slice($return, $start, $limit+$start);
         }
 
         return new Response(json_encode(array(
