@@ -38,10 +38,10 @@ $(document).ready(function() {
         filter.find('dl:first').show();
         
     }, function() {
-       var filter = $(".toggle.filters");
-       filter.addClass('closed');
-       filter.find('dl:first').hide();
-   });
+     var filter = $(".toggle.filters");
+     filter.addClass('closed');
+     filter.find('dl:first').hide();
+ });
 
 });
 </script>
@@ -169,32 +169,29 @@ function handleArgs()
                                                     <option>{{ type }}</option>
                                                     {% endif %}
                                                     {% endfor %}
-                                                    <script type="text/javascript">
-                                                    var typeVal = $('#type_filter').val();
-                                                    if (typeVal != '') contextListFilters.type = typeVal;
-                                                    </script>
-                                                </div>
-
+                                                </select>
+                                                <script type="text/javascript">
+                                                var typeVal = $('#type_filter').val();
+                                                if (typeVal != '') contextListFilters.type = typeVal;
+                                                </script>
                                             </div>
-                                        </tbody>
-                                    </table>
-                                    <a href="#" class="reset" title="Reset all filters">Reset all filters</a>
-                                </dl>
-                            </fieldset>
-                        </dd>
-                        <dd>
-                            <input type="checkbox" name="show_filtered" id="show_filtered">
-                            <label for="show_filtered">Display Comments of Filtered Types</label>
-                        </dd>
-                    </dl>
+                                        </div>
+                                    </dl>
+                                </fieldset>
+                            </dd>
+                            <dd>
+                                <input type="checkbox" name="show_filtered" id="show_filtered">
+                                <label for="show_filtered">Display Comments of Filtered Types</label>
+                            </dd>
+                        </dl>
+                    </div>
                 </div>
+
+                {% include "NewscoopCommentListsBundle::table.html.twig" with {sDom: sDom, id: id , items: items, colVis: colVis, order: order, doDataSource: path('newscoop_commentlists_admin_dodata') } %}
+
             </div>
-
-            {% include "NewscoopCommentListsBundle::table.html.twig" with {sDom: sDom, id: id , items: items, colVis: colVis, order: order, doDataSource: path('newscoop_commentlists_admin_dodata') } %}
-
         </div>
-    </div>
-</div> 
+    </div> 
 </div>
 
 
@@ -435,10 +432,4 @@ jQuery.fn.dataTableExt.oApi.fnSetFilteringDelay = function ( oSettings, iDelay )
  }
  
  </script>
-</div>
-</div>
-</div>
-</div>
-</div>
-
 {% endblock %}

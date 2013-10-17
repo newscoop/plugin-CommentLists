@@ -257,20 +257,6 @@ class AdminController extends Controller
             }
         }
 
-        /*if (!$request->get('show_filtered') || $request->get('show_filtered') == "false") {
-
-            foreach((array) \ArticleType::GetArticleTypes(true) as $one_art_type_name) {
-                $one_art_type = new \ArticleType($one_art_type_name);
-                if ($one_art_type->getFilterStatus()) {
-                    $articlesParams[] = new \ComparisonOperation('type', new \Operator('not', 'string'), $one_art_type->getTypeName());
-                }
-            }
-
-        }
-
-        // filter out PrintDesk articles
-        $articlesParams[] = new \ComparisonOperation('type', new \Operator('not', 'string'), 'printdesk');
-*/
         $search = $request->get('sSearch');
         // search
         if (isset($search) && strlen($search) > 0) {
@@ -344,7 +330,7 @@ class AdminController extends Controller
                 ->getResult();
 
             foreach ($articlesByIssue as $article) {
-                $comment = $this->getArticleComment($article['number'], $language, $sortDir, $limit, $start);
+                $comment = $this->getArticleComment($article['number'], $language, $sortDir, $limit, $start, $em);
                 if ($comment) {
                     $return[] = $this->processItem($comment);
                 }
