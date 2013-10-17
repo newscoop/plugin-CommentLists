@@ -338,6 +338,32 @@ class AdminController extends Controller
             $return = array_slice($return, $start, $limit+$start); 
         }
 
+        if ($section != '0' && $section != NULL) {
+            $return = array();
+            $articlesBySection = $em->getRepository('Newscoop\Entity\Article')
+                ->createQueryBuilder('a')
+                ->select('a.number')
+                ->where('a.publication = :publication')
+                ->andWhere('a.issueId = :issueId')
+                ->andWhere('a.sectionId = :sectionId')
+                ->setParameters(array(
+                    'publication' => $publication,
+                    'issueId' => $issue,
+                    'sectionId' => $section
+                ))
+                ->getQuery()
+                ->getResult();
+
+            foreach ($articlesBySection as $article) {
+                foreach ($this->getArticleComments($article['number'], $language, $sortDir, $em) as $comment) {
+                    $return[] = $this->processItem($comment);
+                }
+            }
+
+            $filteredCommentsCount = count($return);
+            $return = array_slice($return, $start, $limit+$start); 
+        }
+
         return new Response(json_encode(array(
             'iTotalRecords' => $allComments,
             'iTotalDisplayRecords' => $filteredCommentsCount,
