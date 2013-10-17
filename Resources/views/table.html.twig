@@ -170,7 +170,7 @@ $(document).ready(function()
                 }
             });
         },
-        {% if items != 'NULL' %}
+        {% if items %}
         'bPaging': false,
         'iDisplayLength': 5,
         {% else %} // no items - server side ?>
@@ -205,9 +205,7 @@ $(document).ready(function()
                         });
                 <?php endif ?>
                 <?php endforeach ?>*/
-$.each(aoData, function(index, val) {
-    console.log(val);
-});
+
                 callController('{{ doDataSource }}', aoData, fnCallback);
             },
             'fnStateLoadCallback': function(oSettings, oData) {

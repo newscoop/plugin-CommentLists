@@ -84,7 +84,7 @@ class AdminController extends Controller
             'types' => $types,
             'sDom' => $this->getContextSDom(),
             'id' => substr(sha1(1), -6),
-            'items' => 'NULL',
+            'items' => false, //no items on start, will auto load
             'colVis' => true,
             'order' => false
         );
@@ -131,7 +131,6 @@ class AdminController extends Controller
         
         $issue = $request->get('issue');
         
-      
         if($issue > 0) {
             $issueArray = explode("_", $issue);
             $issue = $issueArray[1];
@@ -330,12 +329,13 @@ class AdminController extends Controller
                 ->getResult();
 
             foreach ($articlesByIssue as $article) {
-                $comment = $this->getArticleComment($article['number'], $language, $sortDir, $limit, $start, $em);
-                if ($comment) {
+                foreach ($this->getArticleComments($article['number'], $language, $sortDir, $em) as $comment) {
                     $return[] = $this->processItem($comment);
                 }
             }
+
             $filteredCommentsCount = count($return);
+            $return = array_slice($return, $start, $limit+$start); 
         }
 
         return new Response(json_encode(array(
@@ -364,9 +364,9 @@ class AdminController extends Controller
                         <div class="context-item-date">%s (%s)</div>
                     </div>
                     <a href="javascript:void(0)" class="corner-button" style="display: none" onClick="removeFromContext($(this).parent(\'div\').parent(\'td\').parent(\'tr\').attr(\'id\'));removeFromContext($(this).parents(\'.item:eq(0)\').attr(\'id\'));toggleDragZonePlaceHolder();"><span class="ui-icon ui-icon-closethick"></span></a>
-                    <div class="context-item-summary">%s</div>
+                    <div class="context-item-summary">%s | %s</div>
                     </div>
-            ', $comment->getLanguage()->getId(), $comment->getTimeCreated()->format('Y-m-d H:i:s'), $comment->getCommenterName(), $comment->getMessage()),
+            ', $comment->getLanguage()->getId(), $comment->getTimeCreated()->format('Y-m-d H:i:s'), $comment->getCommenterName(), $comment->getMessage(), $comment->getArticleNumber()),
         );
     }
 
@@ -376,16 +376,16 @@ class AdminController extends Controller
      * @param  int                     $language Language id
      * @return Newscoop\Entity\Comment $comment Comment
      */
-    public function getArticleComment($article, $language, $sortDir, $limit, $start, $em)
+    public function getArticleComments($article, $language, $sortDir, $em)
     {
-        $comment = $em->getRepository('Newscoop\Entity\Comment')->findOneBy(
+        $comment = $em->getRepository('Newscoop\Entity\Comment')->findBy(
             array(
                 'thread' => $article, 
                 'language' => $language,
             ),
             array('id' => $sortDir),
-            $limit,
-            $start
+            null,
+            null
         );
 
         return $comment;
