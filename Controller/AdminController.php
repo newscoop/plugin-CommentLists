@@ -196,9 +196,8 @@ class AdminController extends Controller
         // results num >= 10 && <= 100
         $limit = min(100, min(10, !$request->get('iDisplayLength') ? 0 : (int) $request->get('iDisplayLength')));
 
-
+        $em = $this->container->get('em');
         // filters - common
-        $articlesParams = array();
         $filters = array(
             'publication' => array('is', 'integer'),
             'issue' => array('is', 'integer'),
@@ -258,7 +257,7 @@ class AdminController extends Controller
             }
         }
 
-        if (!$request->get('show_filtered') || $request->get('show_filtered') == "false") {
+        /*if (!$request->get('show_filtered') || $request->get('show_filtered') == "false") {
 
             foreach((array) \ArticleType::GetArticleTypes(true) as $one_art_type_name) {
                 $one_art_type = new \ArticleType($one_art_type_name);
@@ -271,7 +270,7 @@ class AdminController extends Controller
 
         // filter out PrintDesk articles
         $articlesParams[] = new \ComparisonOperation('type', new \Operator('not', 'string'), 'printdesk');
-
+*/
         $search = $request->get('sSearch');
         // search
         if (isset($search) && strlen($search) > 0) {
@@ -302,22 +301,60 @@ class AdminController extends Controller
             }
         }
 
-        //$articles = $this->getCommentsList($articlesParams, array(array('field' => $sortBy, 'dir' => $sortDir)), $start, $limit, $articlesCount, true);
-        $em = $this->container->get('em');
-        $comments =  $em->getRepository('Newscoop\Entity\Comment')
-            ->createQueryBuilder('a')
-            ->getQuery()
-            ->getResult();
-
+        $params = array();
         $return = array();
+        $filteredCommentsCount = 0;
+        $allComments = 0;
+
+        if ($publication) {
+            $params['forum'] = $publication;
+        }
+
+        $comments = $em->getRepository('Newscoop\Entity\Comment')->findBy(
+            $params,
+            array('id' => $sortDir),
+            $limit,
+            $start
+        );
+
         foreach($comments as $comment) {
             $return[] = $this->processItem($comment);
         }
 
+        $allComments = $em->getRepository('Newscoop\Entity\Comment')
+            ->createQueryBuilder('c')
+            ->select('count(c)')
+            ->getQuery()
+            ->getSingleScalarResult();
+        
+        $filteredCommentsCount = $allComments;
+
+        if ($issue != '0' && $issue != NULL) {
+            $return = array();
+            $articlesByIssue = $em->getRepository('Newscoop\Entity\Article')
+                ->createQueryBuilder('a')
+                ->select('a.number')
+                ->where('a.publication = :publication')
+                ->andWhere('a.issueId = :issueId')
+                ->setParameters(array(
+                    'publication' => $publication,
+                    'issueId' => $issue
+                ))
+                ->getQuery()
+                ->getResult();
+
+            foreach ($articlesByIssue as $article) {
+                $comment = $this->getArticleComment($article['number'], $language, $sortDir, $limit, $start);
+                if ($comment) {
+                    $return[] = $this->processItem($comment);
+                }
+            }
+            $filteredCommentsCount = count($return);
+        }
 
         return new Response(json_encode(array(
-            'iTotalRecords' => \Article::GetTotalCount(),
-            'iTotalDisplayRecords' => count($comments),
+            'iTotalRecords' => $allComments,
+            'iTotalDisplayRecords' => $filteredCommentsCount,
             'sEcho' => (int) $request->get('sEcho'),
             'aaData' => $return,
         )));
@@ -325,11 +362,11 @@ class AdminController extends Controller
 
     /**
      * Process item
-     * @param $comment
+     * @param Newscoop\Entity\Comment $comment
      * @return array
      */
     public function processItem($comment)
-    {
+    {   
         $translator = $this->container->get('translator');
         return array(
             $comment->getId(),
@@ -339,12 +376,32 @@ class AdminController extends Controller
                     <div class="context-drag-topics"><a href="#" title="drag to sort"></a></div>
                     <div class="context-item-header">
                         <div class="context-item-date">%s (%s)</div>
-                        <a href="#" class="view-article" onClick="viewArticle($(this).parent(\'div\').parent(\'div\').parent(\'td\').parent(\'tr\').attr(\'id\'), $(this).parents(\'.context-item:eq(0)\').attr(\'langid\'));">%s</a>
                     </div>
                     <a href="javascript:void(0)" class="corner-button" style="display: none" onClick="removeFromContext($(this).parent(\'div\').parent(\'td\').parent(\'tr\').attr(\'id\'));removeFromContext($(this).parents(\'.item:eq(0)\').attr(\'id\'));toggleDragZonePlaceHolder();"><span class="ui-icon ui-icon-closethick"></span></a>
                     <div class="context-item-summary">%s</div>
                     </div>
-            ', $comment->getLanguage()->getId(), $comment->getTimeCreated()->format('Y-m-d H:i:s'), $comment->getSubject(), $translator->trans('View comment'), $comment->getMessage()),
+            ', $comment->getLanguage()->getId(), $comment->getTimeCreated()->format('Y-m-d H:i:s'), $comment->getCommenterName(), $comment->getMessage()),
         );
+    }
+
+    /**
+     * Get comment for article
+     * @param  int                     $article  Article number
+     * @param  int                     $language Language id
+     * @return Newscoop\Entity\Comment $comment Comment
+     */
+    public function getArticleComment($article, $language, $sortDir, $limit, $start, $em)
+    {
+        $comment = $em->getRepository('Newscoop\Entity\Comment')->findOneBy(
+            array(
+                'thread' => $article, 
+                'language' => $language,
+            ),
+            array('id' => $sortDir),
+            $limit,
+            $start
+        );
+
+        return $comment;
     }
 }

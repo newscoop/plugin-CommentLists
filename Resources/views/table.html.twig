@@ -205,7 +205,9 @@ $(document).ready(function()
                         });
                 <?php endif ?>
                 <?php endforeach ?>*/
-
+$.each(aoData, function(index, val) {
+    console.log(val);
+});
                 callController('{{ doDataSource }}', aoData, fnCallback);
             },
             'fnStateLoadCallback': function(oSettings, oData) {

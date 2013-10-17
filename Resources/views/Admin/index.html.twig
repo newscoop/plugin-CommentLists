@@ -123,9 +123,7 @@ function handleArgs()
         <div class="context-content">
             <div class="context-block context-search">
                 <h3>Available Comments</h3>
-
-                <div id="smartlist-08fc8e" class="smartlist">
-
+                <div id="smartlist-{{ id }}" class="smartlist">
                     <div class="filters">
                         <dl>
                           <dd>
@@ -183,20 +181,20 @@ function handleArgs()
                                     <a href="#" class="reset" title="Reset all filters">Reset all filters</a>
                                 </dl>
                             </fieldset>
-
                         </dd>
                         <dd>
                             <input type="checkbox" name="show_filtered" id="show_filtered">
-                            <label for="show_filtered">Display Articles of Filtered Types</label>
+                            <label for="show_filtered">Display Comments of Filtered Types</label>
                         </dd>
                     </dl>
                 </div>
-
-                {% include "NewscoopCommentListsBundle::table.html.twig" with {sDom: sDom, id: id , items: items, colVis: colVis, order: order, doDataSource: path('newscoop_commentlists_admin_dodata') } %}
-
             </div>
+
+            {% include "NewscoopCommentListsBundle::table.html.twig" with {sDom: sDom, id: id , items: items, colVis: colVis, order: order, doDataSource: path('newscoop_commentlists_admin_dodata') } %}
+
         </div>
-    </div> 
+    </div>
+</div> 
 </div>
 
 
@@ -258,7 +256,7 @@ function refreshFilterSections()
 
 $(document).ready(function()
 {   
-    filters['08fc8e'] = contextListFilters;
+    filters['{{ id }}'] = contextListFilters;
     //handle language change first
     $('#filter_name').change(function()
     {
@@ -278,7 +276,6 @@ $(document).ready(function()
         var smartlist = $(this).closest('.smartlist');
         var smartlistId = smartlist.attr('id').split('-')[1];
         filters[smartlistId]['section'] = 0;
-        //alert(filters);
         refreshFilterSections();
     })
 
@@ -438,20 +435,8 @@ jQuery.fn.dataTableExt.oApi.fnSetFilteringDelay = function ( oSettings, iDelay )
  }
  
  </script>
- 
- 
- 
- 
- 
- 
 </div>
 </div>
-
-
-
-
-
-
 </div>
 </div>
 </div>
