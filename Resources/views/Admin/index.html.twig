@@ -186,7 +186,10 @@ function handleArgs()
                                                     <dt><label for="filter_author">Commenter</label></dt>
                                                     <dd>
                                                         <select name="author">
-                                                            <option value="">All</option>
+                                                            <option value="0">All</option>
+                                                            {% for commenter in commenters %}
+                                                                <option value="{{ commenter.id }}">{{ commenter.name }}</option>
+                                                            {% endfor %}
                                                         </select>
                                                     </dd>
                                                 </dl>

@@ -51,10 +51,16 @@ class AdminController extends Controller
             ->getQuery()
             ->getResult();
 
+        $commenters = $em->getRepository('Newscoop\Entity\Comment\Commenter')
+            ->createQueryBuilder('c')
+            ->getQuery()
+            ->getResult();
+
         return array(
             'lists' => $lists,
             'publications' => $publications,
             'languages' => $languages,
+            'commenters' => $commenters,
             'sDom' => $this->getContextSDom(),
             'id' => substr(sha1(1), -6),
             'items' => false, //no items on start, will auto load
@@ -247,6 +253,7 @@ class AdminController extends Controller
         $language = $request->get('language');
         $section = $request->get('section');
         $articleId = $request->get('article');
+        $commenter = $request->get('author');
 
         //fix for the new issue filters
         if(isset($issue)) {
@@ -428,6 +435,29 @@ class AdminController extends Controller
 
             $filteredCommentsCount = count($return);
             $return = array_slice($return, $start, $limit+$start); 
+        }
+
+        if ($commenter != '0' && $commenter != NULL) {
+            $return = array();
+
+            $comments = $em->getRepository('Newscoop\Entity\Comment')
+                ->createQueryBuilder('c')
+                ->where('c.commenter = :commenter')
+                ->setParameters(array(
+                    'commenter' => $commenter,
+                ))
+                ->setFirstResult($start)
+                ->setMaxResults($limit)
+                ->getQuery()
+                ->getResult();
+
+            foreach ($comments as $comment) {
+                if ($comment) {
+                    $return[] = $this->processItem($comment);
+                }
+            }
+
+            $filteredCommentsCount = count($return);
         }
 
         return new Response(json_encode(array(
