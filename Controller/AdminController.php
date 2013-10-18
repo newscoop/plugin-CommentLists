@@ -46,42 +46,15 @@ class AdminController extends Controller
             ->getQuery()
             ->getResult();
 
-
-        $filters = array('type' => 'news');
-
-        $em = $this->container->get('em');
-        $articleTypes = $em->getRepository('Newscoop\Entity\ArticleType')
-            ->createQueryBuilder('a')
-            ->where('a.fieldName = ?1')
-            ->setParameter(1, 'NULL')
+        $languages = $em->getRepository('Newscoop\Entity\Language')
+            ->createQueryBuilder('l')
             ->getQuery()
             ->getResult();
-
-        $types = array();
-        foreach ($filters as $filterName => $filterValue) {
-            switch ($filterName) {
-                case 'type':
-                    if (count($articleTypes)) {
-                        foreach ($articleTypes as $atype) {
-                            if (strtolower($atype->getName()) == $filterValue) {
-                               $types['selected'] = htmlspecialchars($atype->getName());
-                            } else {
-                                $types[] = $atype->getName();
-                            }    
-                        }
-                    }
-                break;
-                default:
-                break;
-            }
-        }
-        $items = array();
 
         return array(
             'lists' => $lists,
             'publications' => $publications,
-            'filters' => $filters,
-            'types' => $types,
+            'languages' => $languages,
             'sDom' => $this->getContextSDom(),
             'id' => substr(sha1(1), -6),
             'items' => false, //no items on start, will auto load
@@ -313,6 +286,16 @@ class AdminController extends Controller
             }
         }
 
+        //fix for the new language filters
+  /*      if(isset($language)) {
+            if($language != 0) {
+                $languageFiltersArray = explode('_', $language);
+                if(count($languageFiltersArray) > 1) {
+                    $language = $languageFiltersArray[2];
+                }
+            }
+        }*/
+
         foreach ($filters as $name => $opts) {
             if ($request->get($name)) {
                 $field = !empty($fields[$name]) ? $fields[$name] : $name;
@@ -436,6 +419,25 @@ class AdminController extends Controller
 
             $filteredCommentsCount = count($return);
             $return = array_slice($return, $start, $limit+$start);
+        }
+
+        if ($language != '0' && $language != NULL) {
+            $return = array();
+            $comments = $em->getRepository('Newscoop\Entity\Comment')
+                ->createQueryBuilder('c')
+                ->where('c.language = :language')
+                ->setParameters(array(
+                    'language' => $language,
+                ))
+                ->getQuery()
+                ->getResult();
+
+            foreach ($comments as $comment) {
+                $return[] = $this->processItem($comment);
+            }
+
+            $filteredCommentsCount = count($return);
+            $return = array_slice($return, $start, $limit+$start); 
         }
 
         return new Response(json_encode(array(

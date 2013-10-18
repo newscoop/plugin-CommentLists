@@ -175,129 +175,138 @@ function handleArgs()
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="tr">
-                                            <div class="td">
-                                                <select name="type" id="type_filter">
-                                                    <option value="">Select type</option>
-                                                    {% for key, type in types %}
-                                                    {% if key == 'selected' %}
-                                                    <option selected="selected">{{ type }}</option>
-                                                    {% else %}
-                                                    <option>{{ type }}</option>
-                                                    {% endif %}
-                                                    {% endfor %}
-                                                </select>
-                                                <script type="text/javascript">
-                                                var typeVal = $('#type_filter').val();
-                                                if (typeVal != '') contextListFilters.type = typeVal;
-                                                </script>
+                                        <div class="extra">
+                                            <dl>
+                                                <dt><label for="filter_date">Publish date</label></dt>
+                                                <dd>
+                                                    <input id="filter_date" type="text" name="publish_date"
+                                                    class="date" /></dd>
+                                                </dl>
+                                                <dl>
+                                                    <dt><label for="filter_author">Commenter</label></dt>
+                                                    <dd>
+                                                        <select name="author">
+                                                            <option value="">All</option>
+                                                        </select>
+                                                    </dd>
+                                                </dl>
+                                                <dl>
+                                                    <dt><label for="filter_language">Language</label></dt>
+                                                    <dd>
+                                                        <select id="filter_name" name="language">
+                                                            <option value="0">All</option>
+                                                            {% for language in languages %}
+                                                                <option value="{{ language.id }}">{{ language.name }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </dd>
+                                                </dl>
                                             </div>
-                                        </div>
-                                    </dl>
-                                </fieldset>
-                            </dd>
-                            <dd>
-                                <input type="checkbox" name="show_filtered" id="show_filtered">
-                                <label for="show_filtered">Display Comments of Filtered Types</label>
-                            </dd>
-                        </dl>
+                                        </dl>
+                                    </fieldset>
+                                </dd>
+                                <dd>
+                                    <input type="checkbox" name="show_filtered" id="show_filtered">
+                                    <label for="show_filtered">Display Comments of Filtered Types</label>
+                                </dd>
+                            </dl>
+                        </div>
                     </div>
+
+                    {% include "NewscoopCommentListsBundle::table.html.twig" with {sDom: sDom, id: id , items: items, colVis: colVis, order: order, doDataSource: path('newscoop_commentlists_admin_dodata') } %}
+
                 </div>
-
-                {% include "NewscoopCommentListsBundle::table.html.twig" with {sDom: sDom, id: id , items: items, colVis: colVis, order: order, doDataSource: path('newscoop_commentlists_admin_dodata') } %}
-
             </div>
-        </div>
-    </div> 
-</div>
+        </div> 
+    </div>
 
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-function handleFilterIssues(args)
-{
-    $('#issue_filter >option').remove();
-    $('#issue_filter').append($("<option></option>").val('0').html(args.menuItemTitle));
+    function handleFilterIssues(args)
+    {
+        $('#issue_filter >option').remove();
+        $('#issue_filter').append($("<option></option>").val('0').html(args.menuItemTitle));
 
-    var items = args.items;
-    for(var i=0; i < items.length; i++) {
-        var item = items[i];
-        $('#issue_filter').append($("<option></option>").val(item.val).html(item.name));
+        var items = args.items;
+        for(var i=0; i < items.length; i++) {
+            var item = items[i];
+            $('#issue_filter').append($("<option></option>").val(item.val).html(item.name));
+        }
     }
-}
 
-function handleFilterSections(args)
-{
-    $('#section_filter >option').remove();
-    $('#section_filter').append($("<option></option>").val('0').html(args.menuItemTitle));
+    function handleFilterSections(args)
+    {
+        $('#section_filter >option').remove();
+        $('#section_filter').append($("<option></option>").val('0').html(args.menuItemTitle));
 
-    var items = args.items;
-    for(var i=0; i < items.length; i++) {
-        var item = items[i];
-        $('#section_filter').append($("<option></option>").val(item.val).html(item.name));
+        var items = args.items;
+        for(var i=0; i < items.length; i++) {
+            var item = items[i];
+            $('#section_filter').append($("<option></option>").val(item.val).html(item.name));
+        }
     }
-}
 
-function handleFilterArticles(args)
-{
-    $('#article_filter >option').remove();
-    $('#article_filter').append($("<option></option>").val('0').html(args.menuItemTitle));
+    function handleFilterArticles(args)
+    {
+        $('#article_filter >option').remove();
+        $('#article_filter').append($("<option></option>").val('0').html(args.menuItemTitle));
 
-    var items = args.items;
-    for(var i=0; i < items.length; i++) {
-        var item = items[i];
-        $('#article_filter').append($("<option></option>").val(item.val).html(item.name));
+        var items = args.items;
+        for(var i=0; i < items.length; i++) {
+            var item = items[i];
+            $('#article_filter').append($("<option></option>").val(item.val).html(item.name));
+        }
     }
-}
 
-function resetFilterIssues() 
-{
-    $('#issue_filter >option').remove();
-}
-
-function resetFilterSections() 
-{
-    $('#section_filter >option').remove();
-}
-
-function resetFilterArticles() 
-{
-    $('#article_filter >option').remove();
-}
-
-function refreshFilterIssues()
-{   
-    if($('#publication_filter').val() <= 0) {
-        resetFilterIssues();
-    } else {
-        var args = handleArgs();
-        callController('{{ path('newscoop_commentlists_admin_getfilterissues') }}', args, handleFilterIssues);
+    function resetFilterIssues() 
+    {
+        $('#issue_filter >option').remove();
     }
-}
 
-function refreshFilterSections()
-{
-    if($('#publication_filter').val() <= 0) {
-        resetFilterSections();
-    } else {
-        var args = handleArgs();
-        callController('{{ path('newscoop_commentlists_admin_getfiltersections') }}', args, handleFilterSections);
+    function resetFilterSections() 
+    {
+        $('#section_filter >option').remove();
     }
-}
 
-function refreshFilterArticles()
-{
-    if($('#publication_filter').val() <= 0) {
-        resetFilterArticles();
-    } else {
-        var args = handleArgs();
-        callController('{{ path('newscoop_commentlists_admin_getfilterarticles') }}', args, handleFilterArticles);
+    function resetFilterArticles() 
+    {
+        $('#article_filter >option').remove();
     }
-}
 
-$(document).ready(function()
-{   
-    filters['{{ id }}'] = contextListFilters;
+    function refreshFilterIssues()
+    {   
+        if($('#publication_filter').val() <= 0) {
+            resetFilterIssues();
+        } else {
+            var args = handleArgs();
+            callController('{{ path('newscoop_commentlists_admin_getfilterissues') }}', args, handleFilterIssues);
+        }
+    }
+
+    function refreshFilterSections()
+    {
+        if($('#publication_filter').val() <= 0) {
+            resetFilterSections();
+        } else {
+            var args = handleArgs();
+            callController('{{ path('newscoop_commentlists_admin_getfiltersections') }}', args, handleFilterSections);
+        }
+    }
+
+    function refreshFilterArticles()
+    {
+        if($('#publication_filter').val() <= 0) {
+            resetFilterArticles();
+        } else {
+            var args = handleArgs();
+            callController('{{ path('newscoop_commentlists_admin_getfilterarticles') }}', args, handleFilterArticles);
+        }
+    }
+
+    $(document).ready(function()
+    {   
+        filters['{{ id }}'] = contextListFilters;
     //handle language change first
     $('#filter_name').change(function()
     {
@@ -486,4 +495,4 @@ jQuery.fn.dataTableExt.oApi.fnSetFilteringDelay = function ( oSettings, iDelay )
  }
  
  </script>
-{% endblock %}
+ {% endblock %}
