@@ -454,26 +454,21 @@ class AdminController extends Controller
     public function processItem($comment)
     {   
         $translator = $this->container->get('translator');
+
         return array(
             $comment->getId(),
             $comment->getLanguage()->getId(),
-            sprintf('
-                <div class="context-item" langid="%s">
-                    <div class="context-drag-topics"><a href="#" title="drag to sort"></a></div>
-                    <div class="context-item-header">
-                        <div class="context-item-date">%s (%s)</div>
-                    </div>
-                    <a href="javascript:void(0)" class="corner-button" style="display: none" onClick="removeFromContext($(this).parent(\'div\').parent(\'td\').parent(\'tr\').attr(\'id\'));removeFromContext($(this).parents(\'.item:eq(0)\').attr(\'id\'));toggleDragZonePlaceHolder();"><span class="ui-icon ui-icon-closethick"></span></a>
-                    <div class="context-item-summary">%s | %s</div>
-                    </div>
-            ', $comment->getLanguage()->getId(), $comment->getTimeCreated()->format('Y-m-d H:i:s'), $comment->getCommenterName(), $comment->getMessage(), $comment->getArticleNumber()),
+            'language' => $comment->getLanguage()->getId(),
+            'time_created' => $comment->getTimeCreated()->format('Y-m-d H:i:s'),
+            'commenter' => $comment->getCommenterName(),
+            'message' => $comment->getMessage()
         );
     }
 
     /**
-     * Get comment for article
+     * Get comments for article
      * @param  int                     $article  Article number
-     * @param  int                     $language Language id
+     * @param  string                     $language Language id
      * @return Newscoop\Entity\Comment $comment Comment
      */
     public function getArticleComments($article, $language, $sortDir, $em)
