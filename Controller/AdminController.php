@@ -286,16 +286,6 @@ class AdminController extends Controller
             }
         }
 
-        //fix for the new language filters
-  /*      if(isset($language)) {
-            if($language != 0) {
-                $languageFiltersArray = explode('_', $language);
-                if(count($languageFiltersArray) > 1) {
-                    $language = $languageFiltersArray[2];
-                }
-            }
-        }*/
-
         foreach ($filters as $name => $opts) {
             if ($request->get($name)) {
                 $field = !empty($fields[$name]) ? $fields[$name] : $name;
