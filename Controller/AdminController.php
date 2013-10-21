@@ -73,18 +73,44 @@ class AdminController extends Controller
     /**
     * @Route("/admin/comment-lists/savelist", options={"expose"=true})
     */
-    public function saveList(Request $request) {
+    public function saveList(Request $request) 
+    {
+        $em = $this->container->get('em');
         $comments = $request->get('comments');
         $listName = $request->get('name');
 
-        return array();
+        $date = new \DateTime('now');
+
+        if (!$listName) {
+            $listName = 'CommentList-'.$date->format('Y-m-d H:i:s');
+        }
+
+        if ($listName != null) {
+            $list = $em->getRepository('Newscoop\CommentListsBundle\Entity\CommentList')
+                ->createQueryBuilder('c')
+                ->where('c.name = :name')
+                ->setParameter('name', $listName)
+                ->getQuery()
+                ->getResult();
+
+            if (count($list) > 0) {
+                return new Response(json_encode(array('error' => true)));
+            }
+
+            $commentList = new CommentList();
+            $commentList->setName($listName);
+            $em->persist($commentList);
+            $em->flush();
+        }
+
+        return new Response(json_encode(array('error' => false)));
     }
 
     /**
     * @Route("/admin/comment-lists/getfilterissues", options={"expose"=true})
     */
-    public function getFilterIssues(Request $request) {
-
+    public function getFilterIssues(Request $request) 
+    {
         $translator = $this->container->get('translator');
         $em = $this->container->get('em');
         $publication = $request->get('publication', NULL);
@@ -113,8 +139,8 @@ class AdminController extends Controller
     /**
     * @Route("/admin/comment-lists/getfiltersections", options={"expose"=true})
     */
-    public function getFilterSections(Request $request) {
-
+    public function getFilterSections(Request $request) 
+    {
         $translator = $this->container->get('translator');
         $em = $this->container->get('em');
         $publication = $request->get('publication', NULL);
@@ -173,8 +199,8 @@ class AdminController extends Controller
     /**
     * @Route("/admin/comment-lists/getfilterarticles", options={"expose"=true})
     */
-    public function getFilterArticles(Request $request) {
-
+    public function getFilterArticles(Request $request) 
+    {
         $translator = $this->container->get('translator');
         $em = $this->container->get('em');
         $publication = $request->get('publication', NULL);

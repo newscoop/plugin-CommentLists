@@ -369,7 +369,7 @@ function popup_save()
     {
         var commentId = $(this).val();
         if( $.inArray(commentId, comments) != -1 ) {
-            flashMessage('Duplicate article entry found', 'error', false);
+            flashMessage('Duplicate comment entry found', 'error', false);
             cancelSave = true;
             return false;
         }
