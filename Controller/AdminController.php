@@ -23,7 +23,7 @@ class AdminController extends Controller
     /** @var bool */
     protected $colVis = FALSE;
     /** @var bool */
-    protected $search = FALSE;
+    protected $search = true;
     /** @var array */
     protected $items = NULL;
     /** @var bool */
@@ -317,24 +317,6 @@ class AdminController extends Controller
             }
         }
 
-        $search = $request->get('sSearch');
-        // search
-        if (isset($search) && strlen($search) > 0) {
-            $search_phrase = $search;
-            $articlesParams[] = new \ComparisonOperation('search_phrase', new \Operator('like', 'string'), "__match_all.".$search_phrase);
-        }
-
-        $sortDir = 'asc';
-        $sortingCols = min(1, (int) $request->get('iSortingCols'));
-        for ($i = 0; $i < $sortingCols; $i++) {
-            $sortOptionsKey = (int) $request->get('iSortCol_' . $i);
-            if (!empty($sortOptions[$sortOptionsKey])) {
-                $sortBy = $sortOptions[$sortOptionsKey];
-                $sortDir = $request->get('sSortDir_' . $i);
-                break;
-            }
-        }
-
         $return = array();
         $params = array();
         $filteredCommentsCount = 0;
@@ -347,6 +329,29 @@ class AdminController extends Controller
             ->getSingleScalarResult();
         
         $filteredCommentsCount = $allComments;
+
+        $searchPhrase = $request->get('sSearch');
+        if (isset($searchPhrase) && strlen($searchPhrase) > 0) {
+            $return = $this->searchComment($em, $searchPhrase, $return);
+
+            return new Response(json_encode(array(
+                'iTotalRecords' => $allComments,
+                'iTotalDisplayRecords' => count($return),
+                'sEcho' => (int) $request->get('sEcho'),
+                'aaData' => $return,
+            )));
+        }
+
+        $sortDir = 'asc';
+        $sortingCols = min(1, (int) $request->get('iSortingCols'));
+        for ($i = 0; $i < $sortingCols; $i++) {
+            $sortOptionsKey = (int) $request->get('iSortCol_' . $i);
+            if (!empty($sortOptions[$sortOptionsKey])) {
+                $sortBy = $sortOptions[$sortOptionsKey];
+                $sortDir = $request->get('sSortDir_' . $i);
+                break;
+            }
+        }
 
         if ($publication) {
             $params['forum'] = $publication;
@@ -528,5 +533,29 @@ class AdminController extends Controller
             $result,
             $count
         );
+    }
+
+    /**
+     * Gets comment list by given phrase
+     *
+     * @param Doctrine\ORM\EntityManager $em           Entity Manager
+     * @param string                     $searchPhrase Search phrase
+     * @param array                      $return       Array for results
+     *
+     * @return array
+     */
+    public function searchComment($em, $searchPhrase, $return) {
+        $search = $em->getRepository('Newscoop\Entity\Comment')
+            ->createQueryBuilder('c')
+            ->where('c.message LIKE :phrase')
+            ->setParameter('phrase', '%'.$searchPhrase.'%')
+            ->getQuery()
+            ->getResult();
+
+            foreach($search as $comment) {
+                $return[] = $this->processItem($comment);
+            }
+
+        return $return;
     }
 }

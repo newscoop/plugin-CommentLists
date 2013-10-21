@@ -177,7 +177,7 @@ function handleArgs()
                                         </div>
                                         <div class="extra">
                                             <dl>
-                                                <dt><label for="filter_date">Time created</label></dt>
+                                                <dt><label for="filter_date">Date created</label></dt>
                                                 <dd>
                                                     <input id="filter_date" type="text" name="publish_date"
                                                     class="date" /></dd>
@@ -215,7 +215,6 @@ function handleArgs()
                             </dl>
                         </div>
                     </div>
-
                     {% include "NewscoopCommentListsBundle::table.html.twig" with {sDom: sDom, id: id , items: items, colVis: colVis, order: order, doDataSource: path('newscoop_commentlists_admin_dodata') } %}
 
                 </div>
@@ -225,6 +224,14 @@ function handleArgs()
 
 
     <script type="text/javascript">
+
+    $(function(){
+                        $(".dataTables_filter input").attr("placeholder", "Search").addClass("context-search search");
+                        //$("#table-<?php echo $contextlist->getId();?>_filter").css("border","0px");
+                        $(".fg-toolbar .ui-toolbar .ui-widget-header .ui-corner-tl .ui-corner-tr .ui-helper-clearfix").css("border","none");
+                        $(".fg-toolbar .ui-toolbar .ui-widget-header .ui-corner-bl .ui-corner-br .ui-helper-clearfix").css("background-color","#CCCCCC");
+                        $(".datatable").css("position","static");
+                 });
 
     function handleFilterIssues(args)
     {
