@@ -66,8 +66,18 @@ class AdminController extends Controller
             'id' => substr(sha1(1), -6),
             'items' => false, //no items on start, will auto load
             'colVis' => true,
-            'order' => false
+            'order' => true
         );
+    }
+
+    /**
+    * @Route("/admin/comment-lists/savelist", options={"expose"=true})
+    */
+    public function saveList(Request $request) {
+        $comments = $request->get('comments');
+        $listName = $request->get('name');
+
+        return array();
     }
 
     /**
