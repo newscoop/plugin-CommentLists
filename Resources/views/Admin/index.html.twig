@@ -177,7 +177,7 @@ function handleArgs()
                                         </div>
                                         <div class="extra">
                                             <dl>
-                                                <dt><label for="filter_date">Publish date</label></dt>
+                                                <dt><label for="filter_date">Time created</label></dt>
                                                 <dd>
                                                     <input id="filter_date" type="text" name="publish_date"
                                                     class="date" /></dd>
@@ -330,6 +330,7 @@ function handleArgs()
         var smartlist = $(this).closest('.smartlist');
         var smartlistId = smartlist.attr('id').split('-')[1];
         filters[smartlistId]['section'] = 0;
+        filters[smartlistId]['article'] = 0;
         refreshFilterSections();
         refreshFilterArticles();
     })
@@ -338,7 +339,7 @@ function handleArgs()
     {
         var smartlist = $(this).closest('.smartlist');
         var smartlistId = smartlist.attr('id').split('-')[1];
-        filters[smartlistId]['section'] = 0;
+        filters[smartlistId]['article'] = 0;
         refreshFilterArticles();
     })
 
