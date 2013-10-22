@@ -35,6 +35,7 @@ class AdminController extends Controller
     */
     public function indexAction(Request $request)
     {   
+
         $em = $this->container->get('em');
         $lists = $em->getRepository('Newscoop\CommentListsBundle\Entity\CommentList')
             ->createQueryBuilder('c')
@@ -85,23 +86,23 @@ class AdminController extends Controller
             $listName = 'CommentList-'.$date->format('Y-m-d H:i:s');
         }
 
-        if ($listName != null) {
-            $list = $em->getRepository('Newscoop\CommentListsBundle\Entity\CommentList')
-                ->createQueryBuilder('c')
-                ->where('c.name = :name')
-                ->setParameter('name', $listName)
-                ->getQuery()
-                ->getResult();
-
-            if (count($list) > 0) {
-                return new Response(json_encode(array('error' => true)));
-            }
-
-            $commentList = new CommentList();
-            $commentList->setName($listName);
-            $em->persist($commentList);
-            $em->flush();
+        if (count($this->findListByName($em, $listName)) > 0 || !$comments) {
+            return new Response(json_encode(array('error' => true)));
         }
+
+        $commentList = new CommentList();
+        $commentList->setName($listName);
+        $em->persist($commentList);
+        $em->flush();
+
+        foreach ($comments as $comment) {
+            $newComment = new Comment();
+            $newComment->setList($this->findListByName($em, $listName));
+            $newComment->setComment((int)$comment);
+            $em->persist($newComment);
+        }
+        
+        $em->flush();
 
         return new Response(json_encode(array('error' => false)));
     }
@@ -593,5 +594,22 @@ class AdminController extends Controller
             }
 
         return $return;
+    }
+
+    /**
+     * Gets list by given name
+     *
+     * @param Doctrine\ORM\EntityManager $em       Entity Manager
+     * @param string                     $listName List name
+     *
+     * @return object
+     */
+    public function findListByName($em, $listName) {
+        $list = $em->getRepository('Newscoop\CommentListsBundle\Entity\CommentList')->findOneBy(array(
+                'name' => $listName,
+                'is_active' => true
+        ));
+
+        return $list;
     }
 }

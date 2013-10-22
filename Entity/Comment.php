@@ -28,9 +28,8 @@ class Comment
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Newscoop\Entity\Comment")
-     * @ORM\JoinColumn(name="fk_comment_id", referencedColumnName="id")
-     * @var Newscoop\Entity\Comment
+     * @ORM\Column(type="integer", name="fk_comment_id")
+     * @var int
      */
     private $comment;
 

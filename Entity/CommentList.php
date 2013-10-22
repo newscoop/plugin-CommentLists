@@ -101,19 +101,6 @@ class CommentList
     }
 
     /**
-     * Set comment
-     *
-     * @param  int $comment
-     * @return int
-     */
-    public function setComment($comment)
-    {
-        $this->comment = $comment;
-        
-        return $comment;
-    }
-
-    /**
      * Get status
      *
      * @return boolean
