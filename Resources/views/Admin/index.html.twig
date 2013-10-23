@@ -15,15 +15,22 @@
 <script type="text/javascript">
 $(document).ready(function() {
     //$('#list_name').hide();
-    $('.save-button-bar').show(); 
-    $('#list_name').show(); 
+    //$('.save-button-bar').show(); 
+    //$('#list_name').show(); 
     $("#selectLists").select2({
         placeholder: 'Select list',
 
     }).on("change", function (e) {
         $('#playlist-name').attr('value', $("#selectLists").select2('data').text);
-        //$('.save-button-bar').show(); 
-        //$('#list_name').show();      
+        $('#playlist-id').attr('value', $("#selectLists").select2('data').id);
+        $('.save-button-bar').show(); 
+        $('#list_name').show();      
+    });
+
+    $('.add').live('click', function() {
+        $('.save-button-bar').show(); 
+        $('#list_name').show();
+        $('#remove-ctrl').hide(); 
     });
 
    /* $("#issue_filter").select2({
@@ -239,6 +246,9 @@ function handleArgs()
             </div>
         </div> 
     </div>
+    <div id="dialog-confirm" style="display:none;" title="Remove list">
+        <p>Are you sure you want to delete this list?</p>
+    </div>
 
 
     <script type="text/javascript">
@@ -333,24 +343,24 @@ function appendItemToContextList(article_id, article_date, article_title, status
        var articleStatus = ' ('+status+')';
    } else {
     var articleStatus = '';
-    }
+}
 
-    $("#context_list").append
-    (
-        '<li class="item" id="'+article_id+'">'+
-        '<input type="hidden" name="article-id[]" value="'+article_id+'" />'+
-        '<div class="context-item">'+
-        '<div class="context-drag-topics"><a href="#" title="drag to sort"></a></div>'+
-        '<div class="context-item-header">'+
-        '<div class="context-item-date">'+ article_date + articleStatus +'</div>'+
-        '</div>'+
-        '<a href="#" class="corner-button" style="display: block" '+
-        'onClick="$(this).parent(\'div\').parent(\'li.item\').remove();toggleDragZonePlaceHolder();"><span class="ui-icon ui-icon-closethick"></span></a>'+
-        '<div class="context-item-summary"></div>'+
-        '</div>'+
-        '</li>'
-        ).find('#' + article_id + ' .context-item-summary').text(article_title);
-    closeArticle();
+$("#context_list").append
+(
+    '<li class="item" id="'+article_id+'">'+
+    '<input type="hidden" name="article-id[]" value="'+article_id+'" />'+
+    '<div class="context-item">'+
+    '<div class="context-drag-topics"><a href="#" title="drag to sort"></a></div>'+
+    '<div class="context-item-header">'+
+    '<div class="context-item-date">'+ article_date + articleStatus +'</div>'+
+    '</div>'+
+    '<a href="#" class="corner-button" style="display: block" '+
+    'onClick="$(this).parent(\'div\').parent(\'li.item\').remove();toggleDragZonePlaceHolder();"><span class="ui-icon ui-icon-closethick"></span></a>'+
+    '<div class="context-item-summary"></div>'+
+    '</div>'+
+    '</li>'
+    ).find('#' + article_id + ' .context-item-summary').text(article_title);
+closeArticle();
 }
 function deleteContextList()
 {
@@ -408,6 +418,31 @@ function fnSaveCallback(data)
     }
     var flash = flashMessage('List saved', null, false);
 }
+
+$(function()
+{
+    $( "#dialog-confirm" ).dialog
+    ({
+        resizable: false,
+        height:140,
+        modal: true,
+        autoOpen : false,
+        position : 'top',
+        buttons:
+        {
+            "Delete" : function() {
+                callController('{{ path('newscoop_commentlists_admin_removelist') }}', {id: $('#playlist-id').val()}, function() {
+                    location.reload();
+                }, true );
+                $(this).dialog( "close" );
+            },
+            "Cancel" : function() {
+                $(this).dialog( "close" );
+            }
+        }
+    });
+    $('#remove-ctrl').click(function(){ $( "#dialog-confirm" ).dialog('open') });
+});
 
 function handleFilterIssues(args)
 {

@@ -86,7 +86,7 @@ class AdminController extends Controller
         }
 
         $list = $this->findListByName($em, $listName);
-        if (count($list) > 0) {
+        if (count($list) > 0 && $list->getIsActive(true)) {
             $commentsToRemove = $em->getRepository('Newscoop\CommentListsBundle\Entity\Comment')
                 ->createQueryBuilder('c')
                 ->where('c.comment NOT IN (:ids)')
@@ -140,7 +140,6 @@ class AdminController extends Controller
         $em->flush();
 
         foreach ($comments as $comment) {
-            var_dump($comment);
             $newComment = new Comment();
             $newComment->setList($this->findListByName($em, $listName));
             $newComment->setComment((int)$comment);
@@ -150,6 +149,25 @@ class AdminController extends Controller
         $em->flush();
 
         return new Response(json_encode(array('error' => false)));
+    }
+
+    /**
+    * @Route("/admin/comment-lists/removelist", options={"expose"=true})
+    */
+    public function removeList(Request $request) 
+    {   
+        $em = $this->container->get('em');
+        $commentList = $em->getRepository('Newscoop\CommentListsBundle\Entity\CommentList')->findOneBy(array(
+            'id' => $request->get('id'),
+            'is_active' => true
+        ));
+
+        if ($commentList) {
+            $commentList->setIsActive(false);
+            $em->flush();
+        }
+
+        return array();
     }
 
     /**
