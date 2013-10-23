@@ -167,7 +167,7 @@ class AdminController extends Controller
             $em->flush();
         }
 
-        return array();
+        return new Response(json_encode(array('status' => false)));
     }
 
     /**

@@ -37,3 +37,8 @@
     color: #CCCCCC;
     font-size: 20px;
 }
+
+.content .actions {
+    margin: 0 auto;
+    width: 500px;
+}
