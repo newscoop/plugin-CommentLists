@@ -35,7 +35,6 @@ class AdminController extends Controller
     */
     public function indexAction(Request $request)
     {   
-
         $em = $this->container->get('em');
         $lists = $em->getRepository('Newscoop\CommentListsBundle\Entity\CommentList')
             ->createQueryBuilder('c')
@@ -86,8 +85,53 @@ class AdminController extends Controller
             $listName = 'CommentList-'.$date->format('Y-m-d H:i:s');
         }
 
-        if (count($this->findListByName($em, $listName)) > 0 || !$comments) {
-            return new Response(json_encode(array('error' => true)));
+        $list = $this->findListByName($em, $listName);
+        if (count($list) > 0) {
+            $commentsToRemove = $em->getRepository('Newscoop\CommentListsBundle\Entity\Comment')
+                ->createQueryBuilder('c')
+                ->where('c.comment NOT IN (:ids)')
+                ->andWhere('c.list = :list')
+                ->setParameter('ids', $comments)
+                ->setParameter('list', $list)
+                ->getQuery()
+                ->getResult();
+
+            if ($commentsToRemove) {
+                foreach ($commentsToRemove as $comment) {
+                    $comment->setIsActive(false);
+                }
+            }
+
+            if (!is_null($comments) && is_array($comments)) {
+                foreach ($comments as $commentId) {
+                    $comment = $em->getRepository('Newscoop\CommentListsBundle\Entity\Comment')->findOneBy(array(
+                        'comment' => (int)$commentId,
+                        'list' => $list
+                    ));
+
+                    if (!$comment) { 
+                        $newComment = new Comment();
+                        $newComment->setList($list);
+                        $newComment->setComment((int)$commentId);
+                        $em->persist($newComment);
+                    } else {
+                        $comment->setIsActive(true);
+                    }
+                }
+            } else {
+                $comments = $em->getRepository('Newscoop\CommentListsBundle\Entity\Comment')->findBy(array(
+                    'list' => $list,
+                    'is_active' => true,
+                ));
+
+                foreach ($comments as $comment) {
+                    $comment->setIsActive(false);
+                }
+            }
+
+            $em->flush();
+
+            return new Response(json_encode(array('error' => false)));
         }
 
         $commentList = new CommentList();
@@ -96,12 +140,13 @@ class AdminController extends Controller
         $em->flush();
 
         foreach ($comments as $comment) {
+            var_dump($comment);
             $newComment = new Comment();
             $newComment->setList($this->findListByName($em, $listName));
             $newComment->setComment((int)$comment);
             $em->persist($newComment);
         }
-        
+
         $em->flush();
 
         return new Response(json_encode(array('error' => false)));
