@@ -2,20 +2,24 @@ $(document).ready(function() {
     //$('#list_name').hide();
     //$('.save-button-bar').show(); 
     //$('#list_name').show(); 
-    $("#selectLists").select2({
+    $("#playlists").select2({
         placeholder: 'Select list',
 
     }).on("change", function (e) {
-        $('#playlist-name').attr('value', $("#selectLists").select2('data').text);
-        $('#playlist-id').attr('value', $("#selectLists").select2('data').id);
+        $('#playlist-name').attr('value', $("#playlists").select2('data').text);
+        $('#playlist-id').attr('value', $("#playlists").select2('data').id);
         $('.save-button-bar').show(); 
-        $('#list_name').show();      
+        $('#list_name').show();
+        loadContextList();   
     });
 
     $('.add').live('click', function() {
         $('.save-button-bar').show(); 
         $('#list_name').show();
-        $('#remove-ctrl').hide(); 
+        $('#remove-ctrl').hide();
+        if ($('#playlist-name').val() != '') {
+           
+        }
     });
 
    /* $("#issue_filter").select2({
@@ -259,6 +263,11 @@ function handleArgs()
     return args;
 }
 
+function triggerSelectClick()
+{
+    $('#playlists').change();
+}
+
 function toggleDragZonePlaceHolder()
 {
     if($('#context_list').find('.context-item').html() != null) {
@@ -269,50 +278,39 @@ function toggleDragZonePlaceHolder()
 }
 function fnLoadContextList(data)
 {
-    if(data.code == 200) {
+    if(data.status == true) {
         var items = data.items;
+        $("#context_list").html('');
         for(i = 0; i < items.length; i++) {
             var item = items[i];
-            console.log(item);
-            appendItemToContextList(item.articleId, item.date.date, item.title, item.workflowStatus);
+            appendItemToContextList(item.id, item.time_created.date, item.message, item.commenter.name);
         }
     }
     toggleDragZonePlaceHolder();
 }
 function loadContextList()
 {
-    var relatedArticles = $('#context_list').sortable( "serialize");
-    var aoData = new Array();
-    var items = new Array('1_1','0_0');
-    aoData.push("context_box_load_list");
-    aoData.push(items);
-    aoData.push({ 'playlistId': '1' });
-    //callServer('{$dataUrl}', aoData, fnLoadContextList, true);
+    var relatedComments = $('#context_list').sortable( "serialize");
+    callController(Routing.generate('newscoop_commentlists_admin_loadlist'), {playlistId: $('#playlist-id').val()}, fnLoadContextList);
 }
-function appendItemToContextList(article_id, article_date, article_title, status)
+function appendItemToContextList(comment_id, comment_date, comment_message, comment_commenter)
 {
-    if (typeof status != 'undefined') {
-       var articleStatus = ' ('+status+')';
-   } else {
-    var articleStatus = '';
-}
-
+  
 $("#context_list").append
 (
-    '<li class="item" id="'+article_id+'">'+
-    '<input type="hidden" name="article-id[]" value="'+article_id+'" />'+
+    '<li class="item" id="'+comment_id+'">'+
+    '<input type="hidden" name="article-id[]" value="'+comment_id+'" />'+
     '<div class="context-item">'+
     '<div class="context-drag-topics"><a href="#" title="drag to sort"></a></div>'+
     '<div class="context-item-header">'+
-    '<div class="context-item-date">'+ article_date + articleStatus +'</div>'+
+    '<div class="context-item-date">'+ comment_date+' ('+comment_commenter+')</div>'+
     '</div>'+
     '<a href="#" class="corner-button" style="display: block" '+
     'onClick="$(this).parent(\'div\').parent(\'li.item\').remove();toggleDragZonePlaceHolder();"><span class="ui-icon ui-icon-closethick"></span></a>'+
     '<div class="context-item-summary"></div>'+
     '</div>'+
     '</li>'
-    ).find('#' + article_id + ' .context-item-summary').text(article_title);
-closeArticle();
+    ).find('#' + comment_id + ' .context-item-summary').text(comment_message);
 }
 function deleteContextList()
 {
@@ -346,7 +344,7 @@ function popup_save()
         'id': '1', //playlist id here
         'name': $('#playlist-name').val()
     };
-    console.log(aoData);
+    //console.log(aoData);
     callController(Routing.generate('newscoop_commentlists_admin_savelist'), aoData, fnSaveCallback);
 }
 
@@ -357,16 +355,16 @@ function fnSaveCallback(data)
         var flash = flashMessage('Could not save the list', 'error', false);
         return false;
     }
-    var pl = $(parent.document.body).find('#playlists option[value='+data.playlistId+']');
+    var pl = $(parent.document.body).find('#playlists option[value='+data.listId+']');
     if (pl.length == 0) {
-        var opt = $('<option />').val(data.playlistId).text(data.playlistName);
+        var opt = $('<option />').val(data.listId).text(data.listName);
         var sel = $(parent.document.body).find('#playlists');
         sel.append( opt );
-        sel.val(data.playlistId)
-        parent.triggerSelectClick();
+        sel.val(data.listId)
+        triggerSelectClick();
     }
     else {
-        pl.val(data.playlistId).text(data.playlistName).trigger('click');
+        pl.val(data.listId).text(data.listName).trigger('click');
     }
     var flash = flashMessage('List saved', null, false);
 }

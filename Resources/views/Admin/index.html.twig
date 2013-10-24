@@ -25,7 +25,7 @@ $(document).ready(function() {
     <ul class="navigation" style="height: 50px; float: left">
         <li><a class="add" href="#">Add list</a></li>
     </ul>
-    <select id="selectLists" style="width:300px">
+    <select id="playlists" style="width:300px">
         <option></option>
         {% for list in lists %}
         <option value="{{ list.id }}">{{ list.name }}</option>
@@ -191,7 +191,7 @@ $(document).ready(function() {
          receive: function(event, ui)
          {
             $(ui.item).find(".corner-button").css("display","block");
-            $(ui.item).find(".view-article").css("display","none");
+            //$(ui.item).find(".view-article").css("display","none");
             var articleId = $(ui.item).attr('id').replace('article_', '');
             var newItem = $('<li />').addClass('item').attr('id', articleId);
             newItem.append( $('<input />')
@@ -206,7 +206,6 @@ $(document).ready(function() {
         items : '> li'
     })
      .disableSelection();
-     loadContextList();
  });
 </script>
 {% endblock %}

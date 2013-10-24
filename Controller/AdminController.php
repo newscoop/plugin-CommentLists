@@ -139,16 +139,22 @@ class AdminController extends Controller
         $em->persist($commentList);
         $em->flush();
 
-        foreach ($comments as $comment) {
-            $newComment = new Comment();
-            $newComment->setList($this->findListByName($em, $listName));
-            $newComment->setComment((int)$comment);
-            $em->persist($newComment);
+        if (!is_null($comments) && is_array($comments)) {
+            foreach ($comments as $comment) {
+                $newComment = new Comment();
+                $newComment->setList($this->findListByName($em, $listName));
+                $newComment->setComment((int)$comment);
+                $em->persist($newComment);
+            }
+
+            $em->flush();
         }
 
-        $em->flush();
-
-        return new Response(json_encode(array('error' => false)));
+        return new Response(json_encode(array(
+            'error' => false,
+            'listName' => $this->findListByName($em, $listName)->getName(),
+            'listId' => $this->findListByName($em, $listName)->getId()
+        )));
     }
 
     /**
@@ -168,6 +174,14 @@ class AdminController extends Controller
         }
 
         return new Response(json_encode(array('status' => false)));
+    }
+
+    /**
+    * @Route("/admin/comment-lists/loadlist", options={"expose"=true})
+    */
+    public function loadList(Request $request) 
+    {   
+        return new Response($this->load($request->get('playlistId')));
     }
 
     /**
@@ -674,5 +688,52 @@ class AdminController extends Controller
         ));
 
         return $list;
+    }
+
+    /**
+     * Returns comments for a given list
+     *
+     * @param Newscoop\CommentListsBundle\Entity\CommentList $list      Comment list
+     * @param int                                            $limit     Max results
+     * @param int                                            $offset    Offset
+     * @param bool                                           $is_active Status
+     *
+     * @return array
+     */
+    public function load($list)
+    {
+        $em = $this->container->get('em');
+        $comments = $em->getRepository('Newscoop\CommentListsBundle\Entity\Comment')
+            ->createQueryBuilder('c')
+            ->innerJoin('c.list', 'l', 'WITH', 'l.id = ?1')
+            ->where('c.is_active = true')
+            ->setParameter(1, $list)
+            ->getQuery()
+            ->getResult();
+
+        if (!$comments) {
+            return json_encode(array(
+                'status' => false
+            ));
+        }
+
+        $commentsArray = array();
+        foreach ($comments as $value) {
+            $commentsArray[] = $value->getComment(); 
+        }
+
+        $commentsData = $em->getRepository('Newscoop\Entity\Comment')
+            ->createQueryBuilder('c')
+            ->select('c, cc')
+            ->leftJoin('c.commenter', 'cc')
+            ->where('c.id IN (:ids)')
+            ->setParameter('ids', $commentsArray)
+            ->getQuery()
+            ->getArrayResult();
+
+        return json_encode(array(
+            'items' => $commentsData,
+            'status' => true
+        ));
     }
 }
