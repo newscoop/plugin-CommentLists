@@ -1,7 +1,4 @@
 $(document).ready(function() {
-    //$('#list_name').hide();
-    //$('.save-button-bar').show(); 
-    //$('#list_name').show(); 
     $("#playlists").select2({
         placeholder: 'Select list',
 
@@ -10,6 +7,8 @@ $(document).ready(function() {
         $('#playlist-id').attr('value', $("#playlists").select2('data').id);
         $('.save-button-bar').show(); 
         $('#list_name').show();
+        $('#remove-ctrl').show();
+        
         loadContextList();   
     });
 
@@ -18,18 +17,11 @@ $(document).ready(function() {
         $('#list_name').show();
         $('#remove-ctrl').hide();
         if ($('#playlist-name').val() != '') {
-           
+           deleteContextList()
+           $('#playlist-name').val('');
+           $("#playlists").select2('val', '');
         }
     });
-
-   /* $("#issue_filter").select2({
-        placeholder: 'Choose...'
-    });*/
-    /*$("#publication_filter").select2();
-    $("#issue_filter").select2();
-    $("#section_filter").select2();
-    $("#article_filter").select2();*/
-    
 
     $(".toggle.filters legend").toggle(function() {
         var filter = $(".toggle.filters");
@@ -63,9 +55,17 @@ $(document).ready(function() {
             {
                 "Delete" : function() {
                     callController(Routing.generate('newscoop_commentlists_admin_removelist'), {id: $('#playlist-id').val()}, function() {
-                        location.reload();
+                        $(document.body).find('#playlists option[value='+$('#playlist-id').val()+']').remove();
+                        deleteContextList()
+                        $('#playlist-name').val('');
+                        $('.save-button-bar').hide(); 
+                        $('#list_name').hide();
+                        $('#remove-ctrl').hide();
+                        $("#playlists").select2('val', '');
+                        
                     }, true );
                     $(this).dialog( "close" );
+                    flashMessage('List deleted', null, false);
                 },
                 "Cancel" : function() {
                     $(this).dialog( "close" );
@@ -341,10 +341,8 @@ function popup_save()
     var aoData =
     {
         'comments': comments,
-        'id': '1', //playlist id here
         'name': $('#playlist-name').val()
     };
-    //console.log(aoData);
     callController(Routing.generate('newscoop_commentlists_admin_savelist'), aoData, fnSaveCallback);
 }
 
