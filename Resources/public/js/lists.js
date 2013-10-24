@@ -8,7 +8,6 @@ $(document).ready(function() {
         $('.save-button-bar').show(); 
         $('#list_name').show();
         $('#remove-ctrl').show();
-        
         loadContextList();   
     });
 
@@ -74,13 +73,6 @@ $(document).ready(function() {
         });
         $('#remove-ctrl').click(function(){ $( "#dialog-confirm" ).dialog('open') });
     });
-
-    $('#filter_name').change(function()
-    {
-        refreshFilterIssues();
-        refreshFilterSections();
-        refreshFilterArticles();
-    })
 
     $('#publication_filter').change(function()
     {

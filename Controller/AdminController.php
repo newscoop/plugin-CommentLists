@@ -387,11 +387,11 @@ class AdminController extends Controller
         $em = $this->container->get('em');
         $issue = $request->get('issue');
         $publication = $request->get('publication');
-        $language = $request->get('language');
         $section = $request->get('section');
         $articleId = $request->get('article');
         $commenter = $request->get('author');
         $time_created = $request->get('publish_date');
+        $language = $request->get('language');
 
         //fix for the new issue filters
         if(isset($issue)) {
@@ -435,6 +435,10 @@ class AdminController extends Controller
         $params = array();
         $filteredCommentsCount = 0;
         $allComments = 0;
+
+        if ($request->get('language') != null) {
+            $language = $request->get('language');
+        }
 
         $allComments = $em->getRepository('Newscoop\Entity\Comment')
             ->createQueryBuilder('c')
@@ -495,9 +499,9 @@ class AdminController extends Controller
             foreach($comments as $comment) {
                 $return[] = $this->processItem($comment);
             }
-
+//var_dump($language);die;
             //find all comments by extra filter
-            if ($commenter  || $time_created || $language) {
+            if ($commenter  || $time_created || $language != null) {
                 
                 $return = array();
                 $result = $this->getArticleComments(null, $commenter, $language, $time_created, $sortDir, $em);

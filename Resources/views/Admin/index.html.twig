@@ -191,7 +191,6 @@ $(document).ready(function() {
          receive: function(event, ui)
          {
             $(ui.item).find(".corner-button").css("display","block");
-            //$(ui.item).find(".view-article").css("display","none");
             var articleId = $(ui.item).attr('id').replace('article_', '');
             var newItem = $('<li />').addClass('item').attr('id', articleId);
             newItem.append( $('<input />')
