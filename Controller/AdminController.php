@@ -499,7 +499,7 @@ class AdminController extends Controller
             foreach($comments as $comment) {
                 $return[] = $this->processItem($comment);
             }
-//var_dump($language);die;
+
             //find all comments by extra filter
             if ($commenter  || $time_created || $language != null) {
                 
