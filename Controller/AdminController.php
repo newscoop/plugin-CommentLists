@@ -24,6 +24,8 @@ class AdminController extends Controller
     protected $colVis = false;
     /** @var bool */
     protected $search = true;
+    /** @var array */
+    protected $items = null;
 
     /**
     * @Route("/admin/comment-lists")
