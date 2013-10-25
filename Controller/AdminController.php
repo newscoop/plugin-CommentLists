@@ -695,10 +695,7 @@ class AdminController extends Controller
     /**
      * Returns comments for a given list
      *
-     * @param Newscoop\CommentListsBundle\Entity\CommentList $list      Comment list
-     * @param int                                            $limit     Max results
-     * @param int                                            $offset    Offset
-     * @param bool                                           $is_active Status
+     * @param string $list Comment list
      *
      * @return array
      */

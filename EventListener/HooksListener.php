@@ -22,13 +22,23 @@ class HooksListener
 
     public function hook(PluginHooksEvent $event)
     {   
+        $em = $this->container->get('em');
         $translator = $this->container->get('translator');
+
+        $commentLists = $em->getRepository('Newscoop\CommentListsBundle\Entity\CommentList')
+            ->createQueryBuilder('c')
+            ->select('c.id', 'c.name')
+            ->getQuery()
+            ->getResult();
 
         $response = $this->container->get('templating')->renderResponse(
             'NewscoopCommentListsBundle:Hooks:sidebar.html.twig',
-            array()
+            array(
+                'lists' => $commentLists,
+                'commentId' => $event->getArgument('comment')->getId()
+            )
         );
-
+        
         $event->addHookResponse($response);
     }
 }
