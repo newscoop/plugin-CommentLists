@@ -53,30 +53,11 @@ jQuery.fn.dataTableExt.oApi.fnSetFilteringDelay = function ( oSettings, iDelay )
 
     </table>
 </div>
-
-<script type="text/javascript"><!--
-
-tables = [];
-filters = [];
-
-function sendOrder(form, hash)
-{
-    var order = $('#table-' + hash + ' tbody').sortable('toArray');
-    callServer(['ArticleList', 'doOrder'], [
-        order,
-        $('input[name=language]', $(form)).val(),
-        ], function(data) {
-            tables[hash].fnSort([[2, 'asc']]);
-            tables[hash].fnDraw(true);
-            flashMessage('Order updated.');
-        });
-    return false;
-}
---></script>
 <script type="text/javascript"><!--
 $(document).ready(function()
-{
-
+{   
+    tables = [];
+    filters = [];
     var table = $('#table-{{ id }}');
     if (typeof contextListFilters == 'undefined')
         filters['{{ id }}'] = [];
@@ -91,18 +72,18 @@ $(document).ready(function()
         'sDom': '{{ sDom }}',
         'oLanguage': {
             'oPaginate': {
-                'sFirst': 'First',
-                'sNext': 'Next',
-                'sPrevious': 'Previous',
-                'sLast': 'Last',
+                'sFirst': translations['plugin.lists.label.first'],
+                'sNext': translations['plugin.lists.label.next'],
+                'sPrevious': translations['plugin.lists.label.previous'],
+                'sLast': translations['plugin.lists.label.last'],
             },
 
-            'sZeroRecords': 'No records found.',
+            'sZeroRecords': translations['plugin.lists.label.norecords'],
             'sSearch': '',
-            'sInfo': 'Showing _START_ to _END_ of _TOTAL_ entries',
-            'sEmpty': 'No entries to show',
-            'sInfoFiltered': ' - filtering from _MAX_ records',
-            'sLengthMenu': 'Display _MENU_ records',
+            'sInfo': translations['plugin.lists.table.info'],
+            'sEmpty': translations['plugin.lists.table.noentries'],
+            'sInfoFiltered': translations['plugin.lists.table.filtering'],
+            'sLengthMenu': translations['plugin.lists.table.menu'],
             'sInfoEmpty': '',
         },
         'aoColumnDefs': [

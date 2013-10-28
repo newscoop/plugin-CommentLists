@@ -10,7 +10,7 @@ function callController(url, params, handle)
         data: params,
         dataType: "json",
         success: function(msg){
-            flashMessage('Processing...');
+            flashMessage(translations['plugin.lists.label.processing']);
             if (handle) {
                 $.each(msg, function( key, value ) {
                     if (key == 'aaData') {
@@ -24,7 +24,7 @@ function callController(url, params, handle)
             }
         }, 
         'error': function(xhr, textStatus, errorThrown) {
-            flashMessage('Connection interrupted!', 'error');
+            flashMessage(translations['plugin.lists.label.interrupted'], 'error');
         }
     });
 };

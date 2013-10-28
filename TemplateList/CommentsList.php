@@ -23,7 +23,7 @@ class CommentsList extends BaseList
         $lists = $service->findByCriteria($criteria);
         foreach ($lists as $key => $commentList) {
             foreach ($commentList->getComments() as $key => $comment) {
-                $lists->items[$key] = new \MetaComment($comment->getComment());
+                $lists->items[$key] = new \MetaComment($comment->getComment()->getId());
             }
         }
 

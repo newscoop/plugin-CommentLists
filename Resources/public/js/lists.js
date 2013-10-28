@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#playlists").select2({
-        placeholder: 'Select list',
+        placeholder: translations['plugin.lists.label.selectlist'],
 
     }).on("change", function (e) {
         $('#playlist-name').attr('value', $("#playlists").select2('data').text);
@@ -35,7 +35,7 @@ $(document).ready(function() {
 
     $(function()
     {
-        $(".dataTables_filter input").attr("placeholder", "Search").addClass("context-search search");
+        $(".dataTables_filter input").attr("placeholder", translations['plugin.lists.label.search']).addClass("context-search search");
         $(".fg-toolbar .ui-toolbar .ui-widget-header .ui-corner-tl .ui-corner-tr .ui-helper-clearfix").css("border","none");
         $(".fg-toolbar .ui-toolbar .ui-widget-header .ui-corner-bl .ui-corner-br .ui-helper-clearfix").css("background-color","#CCCCCC");
         $(".datatable").css("position","static");
@@ -49,27 +49,33 @@ $(document).ready(function() {
             height:140,
             modal: true,
             autoOpen : false,
-            position : 'top',
+            position : 'center',
             buttons:
-            {
-                "Delete" : function() {
-                    callController(Routing.generate('newscoop_commentlists_admin_removelist'), {id: $('#playlist-id').val()}, function() {
-                        $(document.body).find('#playlists option[value='+$('#playlist-id').val()+']').remove();
-                        deleteContextList()
-                        $('#playlist-name').val('');
-                        $('.save-button-bar').hide(); 
-                        $('#list_name').hide();
-                        $('#remove-ctrl').hide();
-                        $("#playlists").select2('val', '');
-                        
-                    }, true );
-                    $(this).dialog( "close" );
-                    flashMessage('List deleted', null, false);
+            [
+                {
+                    text: translations['plugin.lists.btn.delete'],
+                    click: function() { 
+                        callController(Routing.generate('newscoop_commentlists_admin_removelist'), {id: $('#playlist-id').val()}, function() {
+                            $(document.body).find('#playlists option[value='+$('#playlist-id').val()+']').remove();
+                            deleteContextList()
+                            $('#playlist-name').val('');
+                            $('.save-button-bar').hide(); 
+                            $('#list_name').hide();
+                            $('#remove-ctrl').hide();
+                            $("#playlists").select2('val', '');
+                            
+                        }, true );
+                        $(this).dialog( "close" );
+                        flashMessage(translations['plugin.lists.label.listdeleted'], null, false);
+                    }
                 },
-                "Cancel" : function() {
-                    $(this).dialog( "close" );
+                {
+                    text: translations['plugin.lists.btn.cancel'],
+                    click: function() { 
+                        $(this).dialog( "close" );
+                    }
                 }
-            }
+            ]
         });
         $('#remove-ctrl').click(function(){ $( "#dialog-confirm" ).dialog('open') });
     });
@@ -140,7 +146,7 @@ $(document).ready(function() {
         .appendTo(extra)
             .each(function() { // init options
                 var select = $(this);
-                $('<option value="">Filter by...</option>')
+                $('<option value="">'+translations['plugin.lists.label.filterby']+'</option>')
                 .appendTo(select);
                 $('dl dt label', extra).each(function() {
                     var label = $(this).text();
@@ -179,7 +185,7 @@ $('fieldset.toggle.filters dl:first').each(function()
     var smartlistId = smartlist.attr('id').split('-')[1];
 
         // reset all button
-        var resetMsg = 'Reset all filters';
+        var resetMsg = translations['plugin.lists.label.reset'];
 
         $('<a href="#" class="reset" title="'+resetMsg+'">'+resetMsg+'</a>')
         .appendTo(fieldset)
@@ -302,7 +308,7 @@ $("#context_list").append
 }
 function deleteContextList()
 {
-    $("#context_list").html('<div id="drag-here-to-add-to-list" style="">Drag here to add to list</div>');
+    $("#context_list").html('<div id="drag-here-to-add-to-list" style="">'+translations['plugin.lists.label.drag']+'</div>');
 }
 function removeFromContext(param)
 {
@@ -317,7 +323,7 @@ function popup_save()
     {
         var commentId = $(this).val();
         if( $.inArray(commentId, comments) != -1 ) {
-            flashMessage('Duplicate comment entry found', 'error', false);
+            flashMessage(translations['plugin.lists.label.duplicate'], 'error', false);
             cancelSave = true;
             return false;
         }
@@ -338,7 +344,7 @@ function fnSaveCallback(data)
 {
     if (typeof data['error'] != 'undefined' && data['error'])
     {
-        var flash = flashMessage('Could not save the list', 'error', false);
+        var flash = flashMessage(translations['plugin.lists.label.couldnotsave'], 'error', false);
         return false;
     }
     var pl = $(parent.document.body).find('#playlists option[value='+data.listId+']');

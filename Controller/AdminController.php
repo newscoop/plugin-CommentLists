@@ -511,7 +511,7 @@ class AdminController extends Controller
             }
 
             //find all comments by extra filter
-            if ($commenter  || $time_created || $language != null) {
+            if ($commenter  || $time_created || $language != null && $language != '0') {
                 
                 $return = array();
                 $result = $this->getArticleComments(null, $commenter, $language, $time_created, $sortDir, $em);

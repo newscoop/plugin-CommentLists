@@ -11,6 +11,28 @@
 
 {% block admin_scripts %}
 <script type="text/javascript">
+var translations = {'plugin.lists.label.reset': '{{ 'plugin.lists.label.reset'|trans }}',
+    'plugin.lists.label.processing': '{{ 'plugin.lists.label.processing'|trans }}',
+    'plugin.lists.label.interrupted': '{{ 'plugin.lists.label.interrupted'|trans }}',
+    'plugin.lists.label.selectlist': '{{ 'plugin.lists.label.selectlist'|trans }}',
+    'plugin.lists.label.filterby': '{{ 'plugin.lists.label.filterby'|trans }}',
+    'plugin.lists.label.drag': '{{ 'plugin.lists.label.drag'|trans }}',
+    'plugin.lists.label.duplicate': '{{ 'plugin.lists.label.duplicate'|trans }}',
+    'plugin.lists.label.couldnotsave': '{{ 'plugin.lists.label.couldnotsave'|trans }}',
+    'plugin.lists.label.first': '{{ 'plugin.lists.label.first'|trans }}',
+    'plugin.lists.label.last': '{{ 'plugin.lists.label.last'|trans }}',
+    'plugin.lists.label.next': '{{ 'plugin.lists.label.next'|trans }}',
+    'plugin.lists.label.previous': '{{ 'plugin.lists.label.previous'|trans }}',
+    'plugin.lists.label.norecords': '{{ 'plugin.lists.label.norecords'|trans }}',
+    'plugin.lists.label.listdeleted': '{{ 'plugin.lists.label.listdeleted'|trans }}',
+    'plugin.lists.btn.delete': '{{ 'plugin.lists.btn.delete'|trans }}',
+    'plugin.lists.btn.cancel': '{{ 'plugin.lists.btn.cancel'|trans }}',
+    'plugin.lists.table.info': '{{ 'plugin.lists.table.info'|trans }}',
+    'plugin.lists.table.noentries': '{{ 'plugin.lists.table.noentries'|trans }}',
+    'plugin.lists.table.filtering': '{{ 'plugin.lists.table.filtering'|trans }}',
+    'plugin.lists.table.menu': '{{ 'plugin.lists.table.menu'|trans }}',
+    'plugin.lists.label.search': '{{ 'plugin.lists.label.search'|trans }}',
+};
 contextListFilters = {};
 filters = [];
 $(document).ready(function() {   
@@ -38,8 +60,8 @@ $(document).ready(function() {
     <div id="context-box" class="block-shadow">
         <div class="toolbar">
             <div class="save-button-bar" style="display: none">
-                <input type="button" class="default-button" id="remove-ctrl" value="Remove">
-                <input type="submit" name="save" value="Save" class="save-button-small" onclick="popup_save();" id="context_button_save">
+                <input type="button" class="default-button" id="remove-ctrl" value="{{ 'plugin.lists.btn.remove'|trans }}">
+                <input type="submit" name="save" value="{{ 'plugin.lists.btn.save'|trans }}" class="save-button-small" onclick="popup_save();" id="context_button_save">
             </div>
 
             <h2>
@@ -142,7 +164,7 @@ $(document).ready(function() {
                     <h3>{{ 'plugin.lists.label.featured'|trans }}</h3>
                     <div class="context-list-results">
                         <div class="save-button-bar" style="display: block;"><input
-                            type="submit" name="delete-all" value="Delete all"
+                            type="submit" name="delete-all" value="{{ 'plugin.lists.btn.deleteall'|trans }}"
                             class="default-button" onclick="deleteContextList()" id="context_button_delete_all">
                         </div>
                         <div style="display: block; float: left">
@@ -159,38 +181,38 @@ $(document).ready(function() {
             </div>
         </div> 
     </div>
-    <div id="dialog-confirm" style="display:none;" title="Remove list">
+    <div id="dialog-confirm" style="display:none;" title="{{ 'plugin.lists.label.remove'|trans }}">
         <p>{{ 'plugin.lists.label.delete'|trans }}</p>
     </div>
 
     <script type="text/javascript">
     $(function() {
-     $('#table-{{id}} tbody').sortable
-     ({
-         connectWith: "#context_list",
-         receive: function(event, ui)
-         {
-             $(ui.item).find(".corner-button").css("display","none");
-             $(ui.item).find(".view-article").css("display","block");
+       $('#table-{{id}} tbody').sortable
+       ({
+           connectWith: "#context_list",
+           receive: function(event, ui)
+           {
+               $(ui.item).find(".corner-button").css("display","none");
+               $(ui.item).find(".view-article").css("display","block");
 
-             var articleId = $(ui.item).attr('id');
-             var newItem = $('<tr />');
-             newItem.attr('id', articleId);
-             newItem.append($('<td />').addClass('name'));
-             $(ui.item).find('input[type=hidden]').remove();
-             newItem.find('td').append($(ui.item).find('div:eq(0)'));
-             $(ui.item).replaceWith(newItem);
+               var articleId = $(ui.item).attr('id');
+               var newItem = $('<tr />');
+               newItem.attr('id', articleId);
+               newItem.append($('<td />').addClass('name'));
+               $(ui.item).find('input[type=hidden]').remove();
+               newItem.find('td').append($(ui.item).find('div:eq(0)'));
+               $(ui.item).replaceWith(newItem);
 
-             toggleDragZonePlaceHolder();
-         },
-         items : '> tr'
-     })
-     .disableSelection();
-     $('#context_list').sortable
-     ({
-         connectWith: "#table-{{id}} tbody",
-         receive: function(event, ui)
-         {
+               toggleDragZonePlaceHolder();
+           },
+           items : '> tr'
+       })
+       .disableSelection();
+       $('#context_list').sortable
+       ({
+           connectWith: "#table-{{id}} tbody",
+           receive: function(event, ui)
+           {
             $(ui.item).find(".corner-button").css("display","block");
             var articleId = $(ui.item).attr('id').replace('article_', '');
             var newItem = $('<li />').addClass('item').attr('id', articleId);
@@ -205,7 +227,7 @@ $(document).ready(function() {
         },
         items : '> li'
     })
-     .disableSelection();
- });
+       .disableSelection();
+   });
 </script>
 {% endblock %}
