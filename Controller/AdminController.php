@@ -103,17 +103,24 @@ class AdminController extends Controller
             }
 
             if (!is_null($comments) && is_array($comments)) {
-                foreach ($comments as $commentId) {
+                foreach ($comments as $key => $commentId) {
                     $comment = $em->getRepository('Newscoop\CommentListsBundle\Entity\Comment')->findOneBy(array(
                         'comment' => (int)$commentId,
                         'list' => $list
                     ));
 
                     if (!$comment) { 
+                        $mainComment = $em->getRepository('Newscoop\Entity\Comment')->findOneBy(array(
+                            'id' => (int)$commentId,
+                        ));
                         $newComment = new Comment();
                         $newComment->setList($list);
-                        $newComment->setComment((int)$commentId);
+                        $newComment->setComment($mainComment);
+                        $newComment->setOrder($key);
                         $em->persist($newComment);
+                    } else {
+                        $comment->setOrder($key);
+                        $em->merge($comment);
                     }
                 }
             } else {
@@ -138,10 +145,15 @@ class AdminController extends Controller
         $em->flush();
 
         if (!is_null($comments) && is_array($comments)) {
-            foreach ($comments as $comment) {
+            foreach ($comments as $key => $comment) {
+                $mainComment = $em->getRepository('Newscoop\Entity\Comment')->findOneBy(array(
+                    'id' => (int)$comment,
+                ));
+
                 $newComment = new Comment();
                 $newComment->setList($this->findListByName($em, $listName));
-                $newComment->setComment((int)$comment);
+                $newComment->setComment($mainComment);
+                $newComment->setOrder($key);
                 $em->persist($newComment);
             }
 
@@ -707,6 +719,7 @@ class AdminController extends Controller
             ->innerJoin('c.list', 'l', 'WITH', 'l.id = ?1')
             ->where('c.is_active = true')
             ->setParameter(1, $list)
+            ->orderBy('c.order', 'ASC')
             ->getQuery()
             ->getResult();
 
@@ -718,15 +731,17 @@ class AdminController extends Controller
 
         $commentsArray = array();
         foreach ($comments as $value) {
-            $commentsArray[] = $value->getComment(); 
+            $commentsArray[] = $value->getComment()->getId(); 
         }
 
-        $commentsData = $em->getRepository('Newscoop\Entity\Comment')
+        $commentsData = $em->getRepository('Newscoop\CommentListsBundle\Entity\Comment')
             ->createQueryBuilder('c')
-            ->select('c, cc')
-            ->leftJoin('c.commenter', 'cc')
-            ->where('c.id IN (:ids)')
+            ->select('c', 'cc', 'cm')
+            ->leftJoin('c.comment', 'cc')
+            ->leftJoin('cc.commenter', 'cm')
+            ->where('cc.id IN (:ids)')
             ->setParameter('ids', $commentsArray)
+            ->orderBy('c.order', 'ASC')
             ->getQuery()
             ->getArrayResult();
 

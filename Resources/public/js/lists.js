@@ -271,7 +271,7 @@ function fnLoadContextList(data)
         $("#context_list").html('');
         for(i = 0; i < items.length; i++) {
             var item = items[i];
-            appendItemToContextList(item.id, item.time_created.date, item.message, item.commenter.name);
+            appendItemToContextList(item.comment.id, item.comment.time_created.date, item.comment.message, item.comment.commenter.name);
         }
     }
     toggleDragZonePlaceHolder();

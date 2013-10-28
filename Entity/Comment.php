@@ -28,9 +28,10 @@ class Comment
      */
     private $id;
 
+   
     /**
-     * @ORM\Column(type="integer", name="fk_comment_id")
-     * @var int
+     * @ORM\OneToOne(targetEntity="Newscoop\Entity\Comment")
+     * @var Newscoop\Entity\Comment
      */
     private $comment;
 
@@ -40,6 +41,12 @@ class Comment
      * @var Newscoop\CommentListsBundle\Entity\CommentList
      */
     private $list;
+
+    /**
+     * @ORM\Column(type="integer", name="comment_order")
+     * @var int
+     */
+    private $order;
 
     /**
      * @ORM\Column(type="datetime", name="created_at")
@@ -55,6 +62,7 @@ class Comment
 
     public function __construct() {
         $this->list = new ArrayCollection();
+        $this->comment = new ArrayCollection();
         $this->setCreatedAt(new \DateTime());
         $this->setIsActive(true);
     }
@@ -136,6 +144,29 @@ class Comment
         $this->is_active = $is_active;
         
         return $this;
+    }
+
+    /**
+     * Get order
+     *
+     * @return int
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * Set order
+     *
+     * @param  int $order
+     * @return int
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+        
+        return $order;
     }
 
     /**

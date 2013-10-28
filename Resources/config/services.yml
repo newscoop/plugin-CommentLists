@@ -13,12 +13,6 @@ services:
         arguments: 
             - @translator
 
-    newscoop_commentlists.hooks.listener:
-        class: "Newscoop\CommentListsBundle\EventListener\HooksListener"
-        arguments: ["@service_container"]
-        tags:
-          - { name: kernel.event_listener, event: newscoop_admin.interface.comment.options, method: hook }
-
     commentlists.list:
         class:      Newscoop\CommentListsBundle\Services\ListCommentService
         arguments:  ["@em"]
