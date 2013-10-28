@@ -96,8 +96,10 @@ class AdminController extends Controller
 
             if ($commentsToRemove) {
                 foreach ($commentsToRemove as $comment) {
-                    $comment->setIsActive(false);
+                    $em->remove($comment);
                 }
+
+                $em->flush();
             }
 
             if (!is_null($comments) && is_array($comments)) {
@@ -112,8 +114,6 @@ class AdminController extends Controller
                         $newComment->setList($list);
                         $newComment->setComment((int)$commentId);
                         $em->persist($newComment);
-                    } else {
-                        $comment->setIsActive(true);
                     }
                 }
             } else {
@@ -123,7 +123,7 @@ class AdminController extends Controller
                 ));
 
                 foreach ($comments as $comment) {
-                    $comment->setIsActive(false);
+                    $em->remove($comment);
                 }
             }
 
