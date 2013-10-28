@@ -91,9 +91,9 @@ class CommentList
     }
 
     /**
-     * Get comment
+     * Get comments
      *
-     * @return int
+     * @return array
      */
     public function getComments()
     {

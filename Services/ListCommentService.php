@@ -38,15 +38,27 @@ class ListCommentService
         return $this->getRepository()->getListByCriteria($criteria);
     }
 
+   
     /**
      * Count by given criteria
      *
      * @param array $criteria
      * @return int
      */
-    public function getCount(array $criteria = array())
+    public function countBy(array $criteria = array())
     {
-        return $this->getRepository()->getCount($criteria);
+        return $this->getRepository()->findByCount($criteria);
+    }
+
+    /**
+     * Find comments by given list id
+     *
+     * @param int $listId
+     * @return Newscoop\CommentListsBundle\Entity\Comment
+     */
+    public function findCommentsByOrder($listId)
+    {
+        return $this->getRepository()->findByListId($listId);
     }
 
     /**

@@ -48,7 +48,6 @@ class CommentListRepository extends EntityRepository
             $qb->setMaxResults($criteria->maxResults);
         }
         
-
         $metadata = $this->getClassMetadata();
         foreach ($criteria->orderBy as $key => $order) {
             if (array_key_exists($key, $metadata->columnNames)) {
@@ -61,5 +60,51 @@ class CommentListRepository extends EntityRepository
         $list->items = $qb->getQuery()->getResult();
 
         return $list;
+    }
+
+    /**
+     * Get comment lists count for given criteria
+     *
+     * @param array $criteria
+     * @return int
+     */
+    public function findByCount(array $criteria)
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder()
+            ->select('COUNT(c)')
+            ->from($this->getEntityName(), 'c');
+
+        foreach ($criteria as $property => $value) {
+            if (!is_array($value)) {
+                $queryBuilder->andWhere("u.$property = :$property");
+            }
+        }
+
+        $query = $queryBuilder->getQuery();
+        foreach ($criteria as $property => $value) {
+            if (!is_array($value)) {
+                $query->setParameter($property, $value);
+            }
+        }
+
+        return (int) $query->getSingleScalarResult();
+    }
+
+    /**
+     * Get comments by given list id
+     *
+     * @param  int $listId
+     * @return Newscoop\CommentListsBundle\Entity\Comment
+     */
+    public function findByListId($listId)
+    {
+        $comments = $this->getEntityManager()->createQueryBuilder()
+            ->select('c')
+            ->where('c.list = ?1')
+            ->setParameter(1, $listId)
+            ->orderBy('c.order', 'asc')
+            ->from('Newscoop\CommentListsBundle\Entity\Comment', 'c');
+
+        return $comments->getQuery()->getResult();
     }
 }
