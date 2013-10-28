@@ -204,10 +204,6 @@ $('fieldset.toggle.filters dl:first').each(function()
 
 });
 
-contextListFilters = {};
-
-filters = [];
-
 function handleArgs()
 {
     if($('#filter_name').val() < 0) {

@@ -18,3 +18,16 @@ services:
         arguments: ["@service_container"]
         tags:
           - { name: kernel.event_listener, event: newscoop_admin.interface.comment.options, method: hook }
+
+    commentlists.list:
+        class:      Newscoop\CommentListsBundle\Services\ListCommentService
+        arguments:  ["@em"]
+
+    newscoop.criteria.commentlists:
+        class: Newscoop\CommentListsBundle\TemplateList\ListCriteria
+
+    newscoop.template_lists.commentlists:
+        class:      Newscoop\CommentListsBundle\TemplateList\CommentsList
+        arguments:  ["@newscoop.criteria.commentlists"]
+        tags:
+            -  { name: newscoop.template_lists }

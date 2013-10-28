@@ -11,6 +11,8 @@
 
 {% block admin_scripts %}
 <script type="text/javascript">
+contextListFilters = {};
+filters = [];
 $(document).ready(function() {   
     filters['{{ id }}'] = contextListFilters;
 });
@@ -23,7 +25,7 @@ $(document).ready(function() {
 {% block admin_content %}
 <div class="actions">
     <ul class="navigation" style="height: 50px; float: left">
-        <li><a class="add" href="#">Add list</a></li>
+        <li><a class="add" href="#">{{ 'plugin.lists.btn.add'|trans }}</a></li>
     </ul>
     <select id="playlists" style="width:300px">
         <option></option>
@@ -41,9 +43,8 @@ $(document).ready(function() {
             </div>
 
             <h2>
-                Comment Lists
                 <span id="list_name">
-                    <label for="playlist-name">List Name:</label>
+                    <label for="playlist-name">{{ 'plugin.lists.label.name'|trans }}:</label>
                     <input name="playlist-name" id="playlist-name">
                     <input id="playlist-id" type="hidden" readonly="readonly">
                 </span>
@@ -51,21 +52,21 @@ $(document).ready(function() {
         </div>
         <div class="context-content">
             <div class="context-block context-search">
-                <h3>Available Comments</h3>
+                <h3>{{ 'plugin.lists.label.available'|trans }}</h3>
                 <div id="smartlist-{{ id }}" class="smartlist">
                     <div class="filters">
                         <dl>
                           <dd>
 
                             <fieldset class="toggle filters closed" style="display:block">
-                                <legend><span class="ui-icon ui-icon-triangle-2-n-s"></span>Filter</legend>
+                                <legend><span class="ui-icon ui-icon-triangle-2-n-s"></span>{{ 'plugin.lists.label.filter'|trans }}</legend>
                                 <dl style="display: none;">
                                     <div class="table">
                                         <div class="tr">
                                             <div class="td">
                                                 <select name="publication" id="publication_filter" class="selectBig">
                                                     {% if publications %}
-                                                    <option value="0">All Publications</option>
+                                                    <option value="0">{{ 'plugin.lists.label.allpub'|trans }}</option>
                                                     {% endif %}
                                                     {% for publication in publications %}
                                                     <option value="{{ publication.id }}">{{ publication.name }}</option>
@@ -96,16 +97,16 @@ $(document).ready(function() {
                                         </div>
                                         <div class="extra">
                                             <dl>
-                                                <dt><label for="filter_date">Date created</label></dt>
+                                                <dt><label for="filter_date">{{ 'plugin.lists.label.date'|trans }}</label></dt>
                                                 <dd>
                                                     <input id="filter_date" type="text" name="publish_date"
                                                     class="date" /></dd>
                                                 </dl>
                                                 <dl>
-                                                    <dt><label for="filter_author">Commenter</label></dt>
+                                                    <dt><label for="filter_author">{{ 'plugin.lists.label.commenter'|trans }}</label></dt>
                                                     <dd>
                                                         <select name="author">
-                                                            <option value="0">All</option>
+                                                            <option value="0">{{ 'plugin.lists.label.all'|trans }}</option>
                                                             {% for commenter in commenters %}
                                                             <option value="{{ commenter.id }}">{{ commenter.name }}</option>
                                                             {% endfor %}
@@ -113,10 +114,10 @@ $(document).ready(function() {
                                                     </dd>
                                                 </dl>
                                                 <dl>
-                                                    <dt><label for="filter_language">Language</label></dt>
+                                                    <dt><label for="filter_language">{{ 'plugin.lists.label.language'|trans }}</label></dt>
                                                     <dd>
                                                         <select id="filter_name" name="language">
-                                                            <option value="0">All</option>
+                                                            <option value="0">{{ 'plugin.lists.label.all'|trans }}</option>
                                                             {% for language in languages %}
                                                             <option value="{{ language.id }}">{{ language.name }}</option>
                                                             {% endfor %}
@@ -129,7 +130,7 @@ $(document).ready(function() {
                                 </dd>
                                 <dd>
                                     <input type="checkbox" name="show_filtered" id="show_filtered">
-                                    <label for="show_filtered">Display Comments of Filtered Types</label>
+                                    <label for="show_filtered">{{ 'plugin.lists.label.showfiltered'|trans }}</label>
                                 </dd>
                             </dl>
                         </div>
@@ -138,7 +139,7 @@ $(document).ready(function() {
 
                 </div>
                 <div class="context-block context-list">
-                    <h3>Featured Comments</h3>
+                    <h3>{{ 'plugin.lists.label.featured'|trans }}</h3>
                     <div class="context-list-results">
                         <div class="save-button-bar" style="display: block;"><input
                             type="submit" name="delete-all" value="Delete all"
@@ -148,7 +149,7 @@ $(document).ready(function() {
                             <form id="context-list-form">
                                 <ul id="context_list" style="display:block; height: 433px; width: 506px; overflow-y:auto; overflow-x:hidden; padding: 36px 0px 0px 0px;">
                                     <div id="drag-here-to-add-to-list" style="display:block">
-                                        Drag here to add to list
+                                        {{ 'plugin.lists.label.drag'|trans }}
                                     </div>
                                 </ul>
                             </form>
@@ -159,7 +160,7 @@ $(document).ready(function() {
         </div> 
     </div>
     <div id="dialog-confirm" style="display:none;" title="Remove list">
-        <p>Are you sure you want to delete this list?</p>
+        <p>{{ 'plugin.lists.label.delete'|trans }}</p>
     </div>
 
     <script type="text/javascript">

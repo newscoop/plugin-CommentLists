@@ -10,6 +10,7 @@ namespace Newscoop\CommentListsBundle\Entity;
 
 use Doctrine\ORM\Mapping AS ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Newscoop\CommentListsBundle\TemplateList\CommentCriteria;
 
 /**
  * Comment entity
@@ -34,7 +35,7 @@ class Comment
     private $comment;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Newscoop\CommentListsBundle\Entity\CommentList", inversedBy="comment")
+     * @ORM\ManyToOne(targetEntity="Newscoop\CommentListsBundle\Entity\CommentList", inversedBy="comments")
      * @ORM\JoinColumn(name="list_id", referencedColumnName="id")
      * @var Newscoop\CommentListsBundle\Entity\CommentList
      */

@@ -24,9 +24,6 @@ function callController(url, params, handle)
             }
         }, 
         'error': function(xhr, textStatus, errorThrown) {
-            console.log(xhr);
-            console.log(textStatus);
-            console.log(errorThrown);
             flashMessage('Connection interrupted!', 'error');
         }
     });

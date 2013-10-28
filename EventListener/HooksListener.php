@@ -30,15 +30,16 @@ class HooksListener
             ->select('c.id', 'c.name')
             ->getQuery()
             ->getResult();
+        //var_dump($event->getArgument('comment')->getId());die;
 
         $response = $this->container->get('templating')->renderResponse(
-            'NewscoopCommentListsBundle:Hooks:sidebar.html.twig',
+            'NewscoopCommentListsBundle:Hooks:options.html.twig',
             array(
                 'lists' => $commentLists,
                 'commentId' => $event->getArgument('comment')->getId()
             )
         );
-        
+
         $event->addHookResponse($response);
     }
 }

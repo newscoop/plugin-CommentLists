@@ -14,7 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * List entity
  *
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Newscoop\CommentListsBundle\Entity\Repository\CommentListRepository")
  * @ORM\Table(name="plugin_comment_lists_lists")
  */
 class CommentList
@@ -37,7 +37,7 @@ class CommentList
      * @ORM\OneToMany(targetEntity="Newscoop\CommentListsBundle\Entity\Comment", mappedBy="list")
      * @var array
      */
-    private $comment;
+    private $comments;
 
     /**
      * @ORM\Column(type="datetime", name="created_at")
@@ -52,7 +52,7 @@ class CommentList
     private $is_active;
 
     public function __construct() {
-        $this->comment = new ArrayCollection();
+        $this->comments = new ArrayCollection();
         $this->setCreatedAt(new \DateTime());
         $this->setIsActive(true);
     }
@@ -95,9 +95,9 @@ class CommentList
      *
      * @return int
      */
-    public function getComment()
+    public function getComments()
     {
-        return $this->comment;
+        return $this->comments;
     }
 
     /**

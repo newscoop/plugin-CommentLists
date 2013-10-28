@@ -1,6 +1,21 @@
 plugin:
   lists:
+    btn:
+      add: "Add list"
     label:
-      menu: "Comment Lists"
+      menu: "Featured Comments"
+      name: "List Name"
+      available: "Available Comments"
+      filter: "Filter"
+      allpub: "All Publications"
+      date: "Date created"
+      commenter: "Commenter"
+      all: "All"
+      language: "Language"
+      showfiltered: "Display Comments of Filtered Types"
+      featured: "Featured Comments"
+      drag: "Drag here to add to list"
+      delete: "Are you sure you want to delete this list?"
+      reset: "Reset all filters"
     title: "Newscoop Comment Lists Plugin"
-    header: "Manage Comment Lists"
+    header: "Manage Featured Comments"
