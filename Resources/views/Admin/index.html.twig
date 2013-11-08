@@ -130,7 +130,7 @@ $(document).ready(function() {
                                                         <select name="author">
                                                             <option value="0">{{ 'plugin.lists.label.all'|trans }}</option>
                                                             {% for commenter in commenters %}
-                                                            <option value="{{ commenter.id }}">{{ commenter.name }}</option>
+                                                            <option value="{{ commenter.id }}">{{ commenter.name|raw }}</option>
                                                             {% endfor %}
                                                         </select>
                                                     </dd>
