@@ -8,16 +8,16 @@
 
 namespace Newscoop\CommentListsBundle\EventListener;
 
-use Newscoop\EventDispatcher\Events\ListObjectsEvent;
+use Newscoop\EventDispatcher\Events\CollectObjectsDataEvent;
 
 class ListObjectsListener
 {
     /**
      * Register plugin list objects in Newscoop
      * 
-     * @param  ListObjectsEvent $event
+     * @param  CollectObjectsDataEvent $event
      */
-    public function registerListObject(ListObjectsEvent $event)
+    public function registerListObject(CollectObjectsDataEvent $event)
     {
         $event->registerListObject('newscoop\commentlistsbundle\templatelist\comments', array(
             'class' => 'Newscoop\CommentListsBundle\TemplateList\Comments',
