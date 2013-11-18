@@ -10,12 +10,19 @@ namespace Newscoop\CommentListsBundle\TemplateList;
 
 use Newscoop\ListResult;
 use Newscoop\TemplateList\BaseList;
+
 /**
  * Comments List
  */
 class CommentsList extends BaseList 
 {
-
+    /**
+     * Gets ListResult object with list elements
+     * 
+     * @param  Criteria $criteria
+     * 
+     * @return ListResult
+     */
     protected function prepareList($criteria)
     {   
         $service = \Zend_Registry::get('container')->get('commentlists.list');
@@ -29,6 +36,14 @@ class CommentsList extends BaseList
         return $lists;
     }
 
+    /**
+     * Converts parameters array to Criteria
+     * 
+     * @param  integer  $firstResult
+     * @param  array    $parameters
+     * 
+     * @return void
+     */
     protected function convertParameters($firstResult, $parameters)
     {
         $this->criteria->orderBy = array();
