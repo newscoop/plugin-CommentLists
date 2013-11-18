@@ -25,3 +25,8 @@ services:
         arguments:  ["@newscoop.criteria.commentlists"]
         tags:
             -  { name: newscoop.template_lists }
+
+    newscoop_commentlists.list_objects.listener:
+        class: Newscoop\CommentListsBundle\EventListener\ListObjectsListener
+        tags:
+          - { name: kernel.event_listener, event: newscoop.listobjects.register, method: registerListObject }
