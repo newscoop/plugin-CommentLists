@@ -7,6 +7,7 @@ $(document).ready(function() {
         $('#playlist-id').attr('value', $("#playlists").select2('data').id);
         $('.save-button-bar').show(); 
         $('#list_name').show();
+        $('#playlist-name-label').show();
         $('#remove-ctrl').show();
         loadContextList();   
     });
@@ -14,6 +15,7 @@ $(document).ready(function() {
     $('.add').live('click', function() {
         $('.save-button-bar').show(); 
         $('#list_name').show();
+        $('#playlist-name-label').show();
         $('#remove-ctrl').hide();
         if ($('#playlist-name').val() != '') {
            deleteContextList()
@@ -35,7 +37,7 @@ $(document).ready(function() {
 
     $(function()
     {
-        $(".dataTables_filter input").attr("placeholder", translations['plugin.lists.label.search']).addClass("context-search search");
+        $(".dataTables_filter input").attr("placeholder", translations['plugin.lists.label.search']).addClass("context-search search form-control").attr('style', 'width:388px');
         $(".fg-toolbar .ui-toolbar .ui-widget-header .ui-corner-tl .ui-corner-tr .ui-helper-clearfix").css("border","none");
         $(".fg-toolbar .ui-toolbar .ui-widget-header .ui-corner-bl .ui-corner-br .ui-helper-clearfix").css("background-color","#CCCCCC");
         $(".datatable").css("position","static");
@@ -61,6 +63,7 @@ $(document).ready(function() {
                             $('#playlist-name').val('');
                             $('.save-button-bar').hide(); 
                             $('#list_name').hide();
+                            $('#playlist-name-label').hide();
                             $('#remove-ctrl').hide();
                             $("#playlists").select2('val', '');
                             
@@ -135,14 +138,14 @@ $(document).ready(function() {
     $('input.date').datepicker({
         dateFormat: 'yy-mm-dd',
         maxDate: '+0d',
-    });
+    }).addClass('form-control input-sm').attr('style', 'width: 255px; display: initial');
 
     // filters managment
     $('fieldset.filters .extra').each(function()
     {
         var extra = $(this);
         $('dl', extra).hide();
-        $('<select class="filters"></select>')
+        $('<select class="filters form-control input-sm"></select>')
         .appendTo(extra)
             .each(function() { // init options
                 var select = $(this);
@@ -297,10 +300,10 @@ $("#context_list").append
     '<div class="context-item">'+
     '<div class="context-drag-topics"><a href="#" title="drag to sort"></a></div>'+
     '<div class="context-item-header">'+
-    '<div class="context-item-date">'+ comment_date+' ('+comment_commenter+')</div>'+
+    '<div class="context-item-date" style="float: none;">'+ comment_date+' ('+comment_commenter+')</div>'+
     '</div>'+
-    '<a href="#" class="corner-button" style="display: block" '+
-    'onClick="$(this).parent(\'div\').parent(\'li.item\').remove();toggleDragZonePlaceHolder();"><span class="ui-icon ui-icon-closethick"></span></a>'+
+    '<a href="#" class="corner-button" style="display: block;" '+
+    'onClick="$(this).parent(\'div\').parent(\'li.item\').remove();toggleDragZonePlaceHolder();"><span class="ui-icon ui-icon-closethick" style="margin-left: -5px;"></span></a>'+
     '<div class="context-item-summary"></div>'+
     '</div>'+
     '</li>'

@@ -42,3 +42,34 @@
     margin: 0 auto;
     width: 500px;
 }
+
+.plugin-toolbar {
+    height: 50px;
+}
+
+#playlist-name-label {
+    float: left;
+    line-height: 35px;
+    display: none;
+}
+
+.plugin-context-block {
+    height: 565px;
+    width: 46.9%;
+}
+#context-box {
+    padding: 10px;
+    height: 680px;
+    width: 1100px;
+    background: #FFF;
+    margin: 0 auto;
+}
+#drag-here-to-add-to-list {
+    border: 2px #CCCCCC dashed;
+    height: 70px;
+    width: 463px;
+    margin: 4px 9px;
+    padding: 20px 5px 0px 26px;
+    color: #CCCCCC;
+    font-size: 20px;
+}

@@ -58,22 +58,22 @@ $(document).ready(function() {
 </div>
 <div class="content">
     <div id="context-box" class="block-shadow">
-        <div class="toolbar">
-            <div class="save-button-bar" style="display: none">
-                <input type="button" class="default-button" id="remove-ctrl" value="{{ 'plugin.lists.btn.remove'|trans }}">
-                <input type="submit" name="save" value="{{ 'plugin.lists.btn.save'|trans }}" class="save-button-small" onclick="popup_save();" id="context_button_save">
+        <div class="plugin-toolbar">
+            
+            <div style="float: left; display: inline;">
+                <div class="save-button-bar" style="display: none">
+                <button type="button" id="remove-ctrl" class="btn btn-default">{{ 'plugin.lists.btn.remove'|trans }}</button>
+                <button type="button" name="save" class="btn btn-success" onclick="popup_save();" id="context_button_save">{{ 'plugin.lists.btn.save'|trans }}</button>
             </div>
-
-            <h2>
+            <label id="playlist-name-label">{{ 'plugin.lists.label.name'|trans }}:</label>
                 <span id="list_name">
-                    <label for="playlist-name">{{ 'plugin.lists.label.name'|trans }}:</label>
-                    <input name="playlist-name" id="playlist-name">
+                    <input name="playlist-name" class="form-control" id="playlist-name">
                     <input id="playlist-id" type="hidden" readonly="readonly">
                 </span>
-            </h2>
+            </div>
         </div>
         <div class="context-content">
-            <div class="context-block context-search">
+            <div class="context-block context-search plugin-context-block">
                 <h3>{{ 'plugin.lists.label.available'|trans }}</h3>
                 <div id="smartlist-{{ id }}" class="smartlist">
                     <div class="filters">
@@ -86,7 +86,7 @@ $(document).ready(function() {
                                     <div class="table">
                                         <div class="tr">
                                             <div class="td">
-                                                <select name="publication" id="publication_filter" class="selectBig">
+                                                <select name="publication" id="publication_filter" class="selectBig form-control input-sm">
                                                     {% if publications %}
                                                     <option value="0">{{ 'plugin.lists.label.allpub'|trans }}</option>
                                                     {% endif %}
@@ -98,21 +98,21 @@ $(document).ready(function() {
                                         </div>
                                         <div class="tr">
                                             <div class="td">   
-                                                <select name="issue" id="issue_filter" class="selectBig">
+                                                <select name="issue" id="issue_filter" class="selectBig form-control input-sm">
                                                     <option></option>
                                                 </select> 
                                             </div>
                                         </div>
                                         <div class="tr">
                                             <div class="td">   
-                                                <select name="section" id="section_filter" class="selectBig">
+                                                <select name="section" id="section_filter" class="selectBig form-control input-sm">
                                                     <option></option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="tr">
                                             <div class="td">   
-                                                <select name="article" id="article_filter" class="selectBig">
+                                                <select name="article" id="article_filter" class="selectBig form-control input-sm">
                                                     <option></option>
                                                 </select>
                                             </div>
@@ -127,7 +127,7 @@ $(document).ready(function() {
                                                 <dl>
                                                     <dt><label for="filter_author">{{ 'plugin.lists.label.commenter'|trans }}</label></dt>
                                                     <dd>
-                                                        <select name="author">
+                                                        <select name="author" class="form-control input-sm" style="display: initial;">
                                                             <option value="0">{{ 'plugin.lists.label.all'|trans }}</option>
                                                             {% for commenter in commenters %}
                                                             <option value="{{ commenter.id }}">{{ commenter.name|raw }}</option>
@@ -138,7 +138,7 @@ $(document).ready(function() {
                                                 <dl>
                                                     <dt><label for="filter_language">{{ 'plugin.lists.label.language'|trans }}</label></dt>
                                                     <dd>
-                                                        <select id="filter_name" name="language">
+                                                        <select id="filter_name" name="language" class="form-control input-sm" style="display: initial;">
                                                             <option value="0">{{ 'plugin.lists.label.all'|trans }}</option>
                                                             {% for language in languages %}
                                                             <option value="{{ language.id }}">{{ language.name }}</option>
@@ -160,12 +160,12 @@ $(document).ready(function() {
                     {% include "NewscoopCommentListsBundle::table.html.twig" with {sDom: sDom, id: id , items: items, colVis: colVis, order: order, doDataSource: path('newscoop_commentlists_admin_dodata') } %}
 
                 </div>
-                <div class="context-block context-list">
+                <div class="context-block context-list plugin-context-block">
                     <h3>{{ 'plugin.lists.label.featured'|trans }}</h3>
                     <div class="context-list-results">
-                        <div class="save-button-bar" style="display: block;"><input
-                            type="submit" name="delete-all" value="{{ 'plugin.lists.btn.deleteall'|trans }}"
-                            class="default-button" onclick="deleteContextList()" id="context_button_delete_all">
+                        <div class="save-button-bar" style="display: block;">
+                            <button type="button" class="btn btn-danger" name="delete-all">{{ 'plugin.lists.btn.deleteall'|trans }}</button>
+                           
                         </div>
                         <div style="display: block; float: left">
                             <form id="context-list-form">
