@@ -353,7 +353,7 @@ class AdminController extends Controller
 
         $newArticles = array();
         foreach($articles as $article) {
-            $newArticles[] = array('val' => $article->getPublicationId().'_'.$article->getIssueId().'_'.$article->getLanguageId().'_'.$article->getSectionId().'_'.$article->getNumber(), 'name' => $article->getName());
+            $newArticles[] = array('val' => $article->getPublicationId().'_'.$article->getIssue()->getNumber().'_'.$article->getLanguageId().'_'.$article->getSection()->getNumber().'_'.$article->getNumber(), 'name' => $article->getName());
         }
 
         $articlesNo = is_array($newArticles) ? sizeof($newArticles) : 0;
@@ -740,7 +740,11 @@ class AdminController extends Controller
             ->leftJoin('c.comment', 'cc')
             ->leftJoin('cc.commenter', 'cm')
             ->where('cc.id IN (:ids)')
-            ->setParameter('ids', $commentsArray)
+            ->andWhere('c.list = :list')
+            ->setParameters(array(
+                'ids' => $commentsArray,
+                'list' => $list
+            ))
             ->orderBy('c.order', 'ASC')
             ->getQuery()
             ->getArrayResult();

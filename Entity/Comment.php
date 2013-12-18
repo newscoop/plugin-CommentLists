@@ -30,7 +30,7 @@ class Comment
 
    
     /**
-     * @ORM\OneToOne(targetEntity="Newscoop\Entity\Comment")
+     * @ORM\ManyToOne(targetEntity="Newscoop\Entity\Comment", cascade={"all"})
      * @var Newscoop\Entity\Comment
      */
     private $comment;
