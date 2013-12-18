@@ -9,6 +9,7 @@ $(document).ready(function() {
         $('#list_name').show();
         $('#playlist-name-label').show();
         $('#remove-ctrl').show();
+        $('#delete-all-btn').show();
         loadContextList();   
     });
 
@@ -17,6 +18,7 @@ $(document).ready(function() {
         $('#list_name').show();
         $('#playlist-name-label').show();
         $('#remove-ctrl').hide();
+        $('#delete-all-btn').show();
         if ($('#playlist-name').val() != '') {
            deleteContextList()
            $('#playlist-name').val('');
@@ -65,6 +67,7 @@ $(document).ready(function() {
                             $('#list_name').hide();
                             $('#playlist-name-label').hide();
                             $('#remove-ctrl').hide();
+                            $('#delete-all-btn').hide();
                             $("#playlists").select2('val', '');
                             
                         }, true );

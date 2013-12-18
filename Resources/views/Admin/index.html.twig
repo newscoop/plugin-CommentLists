@@ -37,6 +37,7 @@ contextListFilters = {};
 filters = [];
 $(document).ready(function() {   
     filters['{{ id }}'] = contextListFilters;
+    $('#delete-all-btn').hide();
 });
 </script>
 <script src="{{ asset('public/bundles/newscoopcommentlists/js/ajax.js') }}"></script>
@@ -164,7 +165,7 @@ $(document).ready(function() {
                     <h3>{{ 'plugin.lists.label.featured'|trans }}</h3>
                     <div class="context-list-results">
                         <div class="save-button-bar" style="display: block;">
-                            <button type="button" class="btn btn-danger" name="delete-all">{{ 'plugin.lists.btn.deleteall'|trans }}</button>
+                            <button type="button" class="btn btn-danger" id="delete-all-btn" onclick="deleteContextList()" name="delete-all">{{ 'plugin.lists.btn.deleteall'|trans }}</button>
                            
                         </div>
                         <div style="display: block; float: left">
