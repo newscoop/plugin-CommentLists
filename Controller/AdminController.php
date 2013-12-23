@@ -470,7 +470,7 @@ class AdminController extends Controller
             )));
         }
 
-        $sortDir = 'asc';
+        $sortDir = 'desc';
         $sortingCols = min(1, (int) $request->get('iSortingCols'));
         for ($i = 0; $i < $sortingCols; $i++) {
             $sortOptionsKey = (int) $request->get('iSortCol_' . $i);

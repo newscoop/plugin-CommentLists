@@ -153,11 +153,11 @@ $(document).ready(function()
         },
         {% if items %}
         'bPaging': false,
-        'iDisplayLength': 5,
+        'iDisplayLength': 20,
         {% else %} // no items - server side ?>
         'bPaging': true,
         'bServerSide': true,
-        'iDisplayLength' : 5,
+        'iDisplayLength' : 20,
         'sAjaxSource': '{{ doDataSource }}',
         'sPaginationType': 'full_numbers',
         'aaSorting' : [[0, 'desc']],
