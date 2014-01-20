@@ -73,3 +73,27 @@
     color: #CCCCCC;
     font-size: 20px;
 }
+.context-item-subject {
+    color: #343434;
+    padding-top: 5px;
+}
+#externalCommentForm_date_time {
+    width: 150px;
+    margin-left: 8px;
+}
+#externalCommentForm_date_date {
+    width: 380px;
+}
+#add-external-btn {
+    float: left;
+    margin-left: -345px;
+}
+.menu-options {
+    float: right;
+    display: inline;
+    margin-right: 44px;
+}
+
+.context-item-summary {
+    color: #007fb3;
+}

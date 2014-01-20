@@ -1,6 +1,9 @@
 Plugins: "Plugins"
 plugin:
   lists:
+    error:
+      update: "Fields can not be empty!"
+      reach: "Could not edit this comment."
     btn:
       add: "Add list"
       delete: "Delete"
@@ -8,12 +11,18 @@ plugin:
       deleteall: "Delete all"
       remove: "Remove"
       save: "Save"
+      addexternal: "Add external comment"
+      submit: "Submit"
     table:
       info: "Showing _START_ to _END_ of _TOTAL_ entries"
       noentries: "No entries to show"
       filtering: " - filtering from _MAX_ records"
       menu: "Display _MENU_ records"
     label:
+      quickedit: "Quick comment edit"
+      article: "Article"
+      selectarticle: "Select article..."
+      update: "Comment successfully edited."
       menu: "Featured Comments"
       name: "List Name"
       search: "Search"
@@ -42,5 +51,17 @@ plugin:
       norecords: "No records found."
       listdeleted: "List deleted."
       remove: "Remove List"
+      commentername: "Commenter name"
+      commenterurl: "Commenter profile link"
+      externaldate: "Comment creation date"
+      externalmessage: "Comment"
+      externalsubject: "Subject"
+      externalsource: "Source"
+      addexternal: "Add external comment"
+      selectlist: "Select list..."
+      add: "Add"
+      addto: "Add to"
+      successremoved: "Comment successfully removed from list."
+      successadded: "Comment successfully aded to list."
     title: "Newscoop Comment Lists Plugin"
     header: "Manage Featured Comments"

@@ -283,9 +283,12 @@ function fnLoadContextList(data)
         $("#context_list").html('');
         for(i = 0; i < items.length; i++) {
             var item = items[i];
-            appendItemToContextList(item.comment.id, item.comment.time_created.date, item.comment.message, item.comment.commenter.name);
+            appendItemToContextList(item.comment.id, item.comment.subject, item.comment.source, item.comment.time_created.date, item.comment.message, item.comment.commenter.name);
         }
+    } else {
+        deleteContextList();
     }
+
     toggleDragZonePlaceHolder();
 }
 function loadContextList()
@@ -293,9 +296,9 @@ function loadContextList()
     var relatedComments = $('#context_list').sortable( "serialize");
     callController(Routing.generate('newscoop_commentlists_admin_loadlist'), {playlistId: $('#playlist-id').val()}, fnLoadContextList);
 }
-function appendItemToContextList(comment_id, comment_date, comment_message, comment_commenter)
+function appendItemToContextList(comment_id, comment_subject, comment_source, comment_date, comment_message, comment_commenter)
 {
-  
+
 $("#context_list").append
 (
     '<li class="item" id="'+comment_id+'">'+
@@ -303,11 +306,16 @@ $("#context_list").append
     '<div class="context-item">'+
     '<div class="context-drag-topics"><a href="#" title="drag to sort"></a></div>'+
     '<div class="context-item-header">'+
-    '<div class="context-item-date" style="float: none;">'+ comment_date+' ('+comment_commenter+')</div>'+
-    '</div>'+
+    '<div class="context-item-date" style="float: none;">'+ comment_date+' ('+comment_commenter+') '+
+    (comment_source ? '<span class=\"label label-info\">'+comment_source+'</span>' : '')+
+    '</div></div>'+
     '<a href="#" class="corner-button" style="display: block;" '+
     'onClick="$(this).parent(\'div\').parent(\'li.item\').remove();toggleDragZonePlaceHolder();"><span class="ui-icon ui-icon-closethick" style="margin-left: -5px;"></span></a>'+
+    '<div class="context-item-subject">'+comment_subject+'</div>'+
     '<div class="context-item-summary"></div>'+
+    '<div class="commentBtns" id="comment_'+comment_id+'" style="visibility: visible; display: none; float: right;">'+
+    '<ul><li><button type="button" class="btn btn-default btn-xs action-edit"><span class="glyphicon glyphicon-edit"></span> Quick edit</button>'+
+    '</li></ul></div>'+
     '</div>'+
     '</li>'
     ).find('#' + comment_id + ' .context-item-summary').text(comment_message);

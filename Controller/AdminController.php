@@ -13,8 +13,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Newscoop\CommentListsBundle\Entity\CommentList;
 use Newscoop\CommentListsBundle\Entity\Comment;
+use Newscoop\CommentListsBundle\Form\Type\ExternalCommentType;
 use Newscoop\Entity\Comment as BaseComment;
 
 class AdminController extends Controller
@@ -32,7 +34,7 @@ class AdminController extends Controller
     * @Template()
     */
     public function indexAction(Request $request)
-    {   
+    {
         $em = $this->container->get('em');
         $lists = $em->getRepository('Newscoop\CommentListsBundle\Entity\CommentList')
             ->createQueryBuilder('c')
@@ -55,7 +57,10 @@ class AdminController extends Controller
             ->getQuery()
             ->getResult();
 
+        $externalForm = $this->container->get('form.factory')->create(new ExternalCommentType(), array(), array('em' => $em));
+
         return array(
+            'externalForm' => $externalForm->createView(),
             'lists' => $lists,
             'publications' => $publications,
             'languages' => $languages,
@@ -69,9 +74,52 @@ class AdminController extends Controller
     }
 
     /**
+    * @Route("/admin/comment-lists/save-external")
+    */
+    public function saveExternalAction(Request $request)
+    {
+        $em = $this->container->get('em');
+        $form = $this->container->get('form.factory')->create(new ExternalCommentType(), array(), array('em' => $em));
+        $form->handleRequest($request);
+        if ($request->isMethod('POST')) {
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $comment = new BaseComment();
+                $language = $em->getRepository('Newscoop\Entity\Article')
+                    ->findOneBy(array('number' => $data['articles']))
+                    ->getLanguage()
+                    ->getId();
+
+                $values = array(
+                    'name' => $data['commenterName'],
+                    'email' => null,
+                    'ip' => null,
+                    'time_created' => $data['date'],
+                    'url' => $data['commenterUrl'],
+                    'source' => $data['source'],
+                    'ip' => '',
+                    'time_created' => $data['date'],
+                    'subject' => $data['subject'],
+                    'message' => $data['message'],
+                    'status' => 'approved',
+                    'thread' => $data['articles'],
+                    'language' => $language,
+                );
+
+                $comment = $em->getRepository('Newscoop\Entity\Comment')->save($comment, $values);
+                $em->flush();
+
+               return new JsonResponse(array('status' => true));
+            }
+        }
+
+        return new JsonResponse(array('status' => false));
+    }
+
+    /**
     * @Route("/admin/comment-lists/savelist", options={"expose"=true})
     */
-    public function saveList(Request $request) 
+    public function saveList(Request $request)
     {
         $em = $this->container->get('em');
         $comments = $request->get('comments');
@@ -105,13 +153,13 @@ class AdminController extends Controller
             if (!is_null($comments) && is_array($comments)) {
                 foreach ($comments as $key => $commentId) {
                     $comment = $em->getRepository('Newscoop\CommentListsBundle\Entity\Comment')->findOneBy(array(
-                        'comment' => (int)$commentId,
+                        'comment' => (int) $commentId,
                         'list' => $list
                     ));
 
-                    if (!$comment) { 
+                    if (!$comment) {
                         $mainComment = $em->getRepository('Newscoop\Entity\Comment')->findOneBy(array(
-                            'id' => (int)$commentId,
+                            'id' => (int) $commentId,
                         ));
                         $newComment = new Comment();
                         $newComment->setList($list);
@@ -187,17 +235,94 @@ class AdminController extends Controller
     }
 
     /**
+    * @Route("/admin/comment-lists/add-comment", options={"expose"=true})
+    */
+    public function addCommentToList(Request $request)
+    {
+        $em = $this->container->get('em');
+        $comment = $request->request->get('comment');
+        $list = $request->request->get('list');
+        $mainComment = $em->getRepository('Newscoop\Entity\Comment')->findOneBy(array(
+            'id' => $comment,
+        ));
+
+        $commentList = $em->getRepository('Newscoop\CommentListsBundle\Entity\CommentList')->findOneBy(array(
+            'id' => $list,
+            'is_active' => true
+        ));
+
+        $commentCheck = $em->getRepository('Newscoop\CommentListsBundle\Entity\Comment')->findOneBy(array(
+            'comment' => $mainComment,
+            'list' => $commentList,
+        ));
+
+        if (!$commentCheck) {
+            $qb = $em->getRepository('Newscoop\CommentListsBundle\Entity\Comment')
+                ->createQueryBuilder('c');
+
+            $qb->select($qb->expr()->max('c.order'))
+                ->where('c.list = :list')
+                ->setParameter('list', $list);
+
+            $order = $qb->getQuery()->getResult();
+
+            $orderValue = $order[0][1];
+            if ($orderValue == null) {
+                $orderValue = 0;
+            } else {
+                $orderValue = (int) $order[0][1] + 1;
+            }
+
+            $newComment = new Comment();
+            $newComment->setList($commentList);
+            $newComment->setComment($mainComment);
+            $newComment->setOrder($orderValue);
+            $em->persist($newComment);
+            $em->flush();
+
+            return new JsonResponse(array('status' => true));
+        }
+    }
+
+    /**
+    * @Route("/admin/comment-lists/remove-comment", options={"expose"=true})
+    */
+    public function removeCommentFromList(Request $request)
+    {
+        $em = $this->container->get('em');
+        $comment = $request->request->get('comment');
+        $list = $request->request->get('list');
+        $mainComment = $em->getRepository('Newscoop\Entity\Comment')->findOneBy(array(
+            'id' => $comment,
+        ));
+
+        $commentList = $em->getRepository('Newscoop\CommentListsBundle\Entity\CommentList')->findOneBy(array(
+            'id' => $list,
+            'is_active' => true
+        ));
+
+        $toRemoveComment = $em->getRepository('Newscoop\CommentListsBundle\Entity\Comment')->findOneBy(array(
+            'list' => $commentList,
+            'comment' => $comment
+        ));
+        $em->remove($toRemoveComment);
+        $em->flush();
+
+        return new JsonResponse(array('status' => true));
+    }
+
+    /**
     * @Route("/admin/comment-lists/loadlist", options={"expose"=true})
     */
-    public function loadList(Request $request) 
-    {   
+    public function loadList(Request $request)
+    {
         return new Response($this->load($request->get('playlistId')));
     }
 
     /**
     * @Route("/admin/comment-lists/getfilterissues", options={"expose"=true})
     */
-    public function getFilterIssues(Request $request) 
+    public function getFilterIssues(Request $request)
     {
         $translator = $this->container->get('translator');
         $em = $this->container->get('em');
@@ -455,7 +580,7 @@ class AdminController extends Controller
             ->select('count(c)')
             ->getQuery()
             ->getSingleScalarResult();
-        
+
         $filteredCommentsCount = $allComments;
 
         $searchPhrase = $request->get('sSearch');
@@ -512,7 +637,6 @@ class AdminController extends Controller
 
             //find all comments by extra filter
             if ($commenter  || $time_created || $language != null && $language != '0') {
-                
                 $return = array();
                 $result = $this->getArticleComments(null, $commenter, $language, $time_created, $sortDir, $em);
                 foreach($result as $comment) {
@@ -530,12 +654,40 @@ class AdminController extends Controller
     }
 
     /**
+     * @Route("/admin/comment-lists/update", options={"expose"=true})
+     */
+    public function updateAction(Request $request)
+    {
+        if ($request->isMethod('POST')) {
+            $em = $this->container->get('em');
+            $values = $request->request->all();
+            if (!$values['subject'] || !$values['message']) {
+                return new JsonResponse(array('status' => false));
+            }
+
+            try {
+                $comment = $em->getRepository('Newscoop\Entity\Comment')->find($values['commentId']);
+                $em->getRepository('Newscoop\Entity\Comment')->update($comment, $values);
+                $em->flush();
+            } catch (\Exception $e) {
+                return new JsonResponse(array('status' => $e->getMessage()));
+            }
+
+            return new JsonResponse(array(
+                'status' => true,
+            ));
+        }
+    }
+
+    /**
      * Process item
+     *
      * @param Newscoop\Entity\Comment $comment
+     *
      * @return array
      */
     public function processItem($comment)
-    {   
+    {
         $translator = $this->container->get('translator');
 
         return array(
@@ -544,7 +696,9 @@ class AdminController extends Controller
             'language' => $comment->getLanguage()->getId(),
             'time_created' => $comment->getTimeCreated()->format('Y-m-d H:i:s'),
             'commenter' => $comment->getCommenterName(),
-            'message' => $comment->getMessage()
+            'message' => $comment->getMessage(),
+            'subject' => $comment->getSubject(),
+            'source' => $comment->getSource(),
         );
     }
 
@@ -561,7 +715,7 @@ class AdminController extends Controller
      * @return Newscoop\Entity\Comment    $comments  Comments
      */
     public function getArticleComments($article = null, $commenter, $language, $createdAt, $sortDir, $em)
-    {   
+    {
         $parameters = array();
 
         if ($article != null) {

@@ -1,4 +1,10 @@
 services:
+    newscoop_commentlists.hooks.listener:
+        class: "Newscoop\CommentListsBundle\EventListener\HooksListener"
+        arguments: ["@service_container"]
+        tags:
+          - { name: kernel.event_listener, event: newscoop_admin.interface.comments.listsbutton, method: listsButton }
+
     newscoop_commentlists.lifecyclesubscriber:
         class: Newscoop\CommentListsBundle\EventListener\LifecycleSubscriber
         arguments:
@@ -10,7 +16,7 @@ services:
         class: Newscoop\CommentListsBundle\EventListener\ConfigureMenuListener
         tags:
             - { name: kernel.event_listener, event: newscoop_newscoop.menu_configure, method: onMenuConfigure }
-        arguments: 
+        arguments:
             - @translator
 
     commentlists.list:

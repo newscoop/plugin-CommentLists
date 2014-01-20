@@ -18,7 +18,7 @@ use Newscoop\CommentListsBundle\TemplateList\CommentCriteria;
  * @ORM\Entity()
  * @ORM\Table(name="plugin_comment_lists_comments")
  */
-class Comment 
+class Comment
 {
     /**
      * @ORM\Id()
@@ -28,9 +28,8 @@ class Comment
      */
     private $id;
 
-   
     /**
-     * @ORM\ManyToOne(targetEntity="Newscoop\Entity\Comment", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Newscoop\Entity\Comment", cascade={"persist"})
      * @var Newscoop\Entity\Comment
      */
     private $comment;
@@ -96,7 +95,7 @@ class Comment
     public function setComment($comment)
     {
         $this->comment = $comment;
-        
+
         return $comment;
     }
 

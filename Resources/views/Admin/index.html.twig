@@ -59,9 +59,9 @@ $(document).ready(function() {
 </div>
 <div class="content">
     <div id="context-box" class="block-shadow">
+        <button type="button" class="btn btn-default" id="add-external-btn" onclick="openExternalModal()" name="add-external"><span class="glyphicon glyphicon-plus-sign"></span> {{ 'plugin.lists.btn.addexternal'|trans }}</button>
         <div class="plugin-toolbar">
-            
-            <div style="float: left; display: inline;">
+            <div class="menu-options">
                 <div class="save-button-bar" style="display: none">
                 <button type="button" id="remove-ctrl" class="btn btn-default">{{ 'plugin.lists.btn.remove'|trans }}</button>
                 <button type="button" name="save" class="btn btn-success" onclick="popup_save();" id="context_button_save">{{ 'plugin.lists.btn.save'|trans }}</button>
@@ -166,7 +166,6 @@ $(document).ready(function() {
                     <div class="context-list-results">
                         <div class="save-button-bar" style="display: block;">
                             <button type="button" class="btn btn-danger" id="delete-all-btn" onclick="deleteContextList()" name="delete-all">{{ 'plugin.lists.btn.deleteall'|trans }}</button>
-                           
                         </div>
                         <div style="display: block; float: left">
                             <form id="context-list-form">
@@ -180,13 +179,155 @@ $(document).ready(function() {
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
     </div>
     <div id="dialog-confirm" style="display:none;" title="{{ 'plugin.lists.label.remove'|trans }}">
         <p>{{ 'plugin.lists.label.delete'|trans }}</p>
     </div>
-
+    <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="modalEditLabel">{{ 'plugin.lists.label.quickedit'|trans }}</h4>
+          </div>
+          <form id="editForm" action="{{ path('newscoop_commentlists_admin_update') }}">
+          <div class="modal-body">
+                <input type="hidden" name="commentId"/>
+                <label>{{ 'plugin.lists.label.externalsubject'|trans }}</label>
+                <input name="subject" type="text" class="form-control input-sm"><br>
+                <label>{{ 'plugin.lists.label.externalmessage'|trans }}</label>
+                <textarea style="min-height:200px;" name="message" class="form-control input-sm"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">{{ 'plugin.lists.btn.cancel'|trans }}</button>
+            <input type="submit" value="{{ 'plugin.lists.btn.submit'|trans }}" class="btn btn-success btn-sm">
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="externalModal" tabindex="-1" role="dialog" aria-labelledby="externalModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="externalModalLabel">{{ 'plugin.lists.label.addexternal'|trans }}</h4>
+          </div>
+          <form id="externalForm" action="{{ path('newscoop_commentlists_admin_saveexternal') }}" class="form-inline">
+          <div class="modal-body">
+                {{ form_label(externalForm.commenterName) }}
+                {{ form_widget(externalForm.commenterName, {'attr' : {'class' : 'form-control input-sm', 'placeholder': 'Jhon Doe' }}) }}<br><br>
+                {{ form_label(externalForm.commenterUrl) }}
+                {{ form_widget(externalForm.commenterUrl, {'attr' : {'class' : 'form-control input-sm', 'placeholder': 'https://www.facebook.com/zuck' }}) }}<br><br>
+                {{ form_label(externalForm.date) }}
+                {{ form_widget(externalForm.date) }}<br>
+                {{ form_label(externalForm.source) }}
+                {{ form_widget(externalForm.source, {'attr' : {'class' : 'form-control input-sm', 'placeholder': 'Facebook, Twitter...' }}) }}<br><br>
+                {{ form_label(externalForm.articles) }}
+                {{ form_widget(externalForm.articles, {'attr' : {'style' : 'width: 100%;'}}) }}<br><br>
+                {{ form_label(externalForm.subject) }}
+                {{ form_widget(externalForm.subject, {'attr' : {'class' : 'form-control input-sm' }}) }}<br><br>
+                {{ form_label(externalForm.message) }}
+                {{ form_widget(externalForm.message, {'attr' : {'class' : 'form-control input-sm', 'style' : 'min-height:200px;' }}) }}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+            <input type="submit" value="Submit" class="btn btn-success btn-sm">
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
     <script type="text/javascript">
+    $('#externalCommentForm_date_date').addClass('form-control input-sm');
+    $('#externalCommentForm_date_time').addClass('form-control input-sm');
+    $('#externalCommentForm_articles').select2({
+        minimumInputLength: 3,
+    });
+    $('span.select2-chosen').empty();
+    $('span.select2-chosen').text('{{ 'plugin.lists.label.selectarticle'|trans }}');
+    $("ul#context_list li").live({
+        mouseenter: function(){
+            var id = $(this).attr('id');
+            $(this).find('.commentBtns#comment_'+id).show();
+        },
+        mouseleave: function(){
+            var id = $(this).attr('id');
+            $(this).find('.commentBtns#comment_'+id).hide();
+        }
+    });
+
+    $(".commentBtns ul li button").live('click', function() {
+        $('#modalEdit').modal();
+        var subject = $(this).parents('li').find('.context-item-subject');
+        var message = $(this).parents('li').find('.context-item-summary');
+        var id = $(this).parents('li.item').attr('id');
+        $('#modalEdit').find('input[name=commentId]').val(id);
+        $('#modalEdit').find('input[name=subject]').val(subject.text());
+        $('#modalEdit').find('textarea[name=message]').val(message.text());
+    });
+
+    $('form#editForm').live('submit', function () {
+        var that = $(this);
+        callServer('ping', [], function(json) {
+            $.ajax({
+                type: 'POST',
+                url: that.attr('action'),
+                data: that.serialize(),
+                success: function (data) {
+                    if (data.status) {
+                        loadContextList();
+                        flashMessage('{{ 'plugin.lists.label.update'|trans }}');
+                        $('#modalEdit').modal('hide');
+                    } else if (!data.status) {
+                        flashMessage('{{ 'plugin.lists.error.update'|trans }}', "error");
+                    } else {
+                        flashMessage(data.status, "error");
+                    }
+                },
+                error: function (rq, status, error) {
+                    if (status == 0 || status == -1) {
+                        flashMessage('{{ 'plugin.lists.error.reach|trans '}}', "error");
+                    }
+                }
+            });
+        });
+
+        return false;
+    });
+
+    $('form#externalForm').live('submit', function () {
+        var that = $(this);
+        callServer('ping', [], function(json) {
+            $.ajax({
+                type: 'POST',
+                url: that.attr('action'),
+                data: that.serialize(),
+                success: function (data) {
+                    if (data.status) {
+                        table.fnDraw();
+                        flashMessage('{{ 'plugin.lists.label.update'|trans }}');
+                        $('#externalModal').modal('hide');
+                    } else {
+                        flashMessage('{{ 'plugin.lists.error.update'|trans }}', "error");
+                    }
+                },
+                error: function (rq, status, error) {
+                    if (status == 0 || status == -1) {
+                        flashMessage('{{ 'plugin.lists.error.reach|trans '}}', "error");
+                    }
+                }
+            });
+        });
+
+        return false;
+    });
+
+    function openExternalModal() {
+        $('#externalModal').modal();
+    }
+
     $(function() {
        $('#table-{{id}} tbody').sortable
        ({
