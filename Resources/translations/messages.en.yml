@@ -62,6 +62,6 @@ plugin:
       add: "Add"
       addto: "Add to"
       successremoved: "Comment successfully removed from list."
-      successadded: "Comment successfully aded to list."
+      successadded: "Comment successfully added to list."
     title: "Newscoop Comment Lists Plugin"
     header: "Manage Featured Comments"

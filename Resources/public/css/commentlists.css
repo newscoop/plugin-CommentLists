@@ -93,7 +93,14 @@
     display: inline;
     margin-right: 44px;
 }
-
 .context-item-summary {
     color: #007fb3;
+}
+ul#context_list {
+    display:block;
+    height: 433px;
+    width: 495px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding: 36px 0px 0px 0px;
 }

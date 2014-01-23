@@ -6,7 +6,7 @@
 {% block admin_stylesheets %}
 <link rel="stylesheet" type="text/css" href="{{ asset('admin-style/action_buttons.css') }} "/>
 <link rel="stylesheet" type="text/css" href="{{ asset('public/bundles/newscoopcommentlists/css/commentlists.css') }}" />
-<link rel="stylesheet" type="text/css" href="{{ asset('public/bundles/newscoopcommentlists/scripts/select2-3.4.1/select2.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ asset('public/bundles/newscoopcommentlists/scripts/select2/select2.css') }}" />
 {% endblock %}
 
 {% block admin_scripts %}
@@ -42,7 +42,7 @@ $(document).ready(function() {
 </script>
 <script src="{{ asset('public/bundles/newscoopcommentlists/js/ajax.js') }}"></script>
 <script src="{{ asset('public/bundles/newscoopcommentlists/js/lists.js') }}"></script>
-<script src="{{ asset('public/bundles/newscoopcommentlists/scripts/select2-3.4.1/select2.js') }}"></script>
+<script src="{{ asset('public/bundles/newscoopcommentlists/scripts/select2/select2.js') }}"></script>
 {% endblock %}
 
 {% block admin_content %}
@@ -169,7 +169,7 @@ $(document).ready(function() {
                         </div>
                         <div style="display: block; float: left">
                             <form id="context-list-form">
-                                <ul id="context_list" style="display:block; height: 433px; width: 506px; overflow-y:auto; overflow-x:hidden; padding: 36px 0px 0px 0px;">
+                                <ul id="context_list">
                                     <div id="drag-here-to-add-to-list" style="display:block">
                                         {{ 'plugin.lists.label.drag'|trans }}
                                     </div>
