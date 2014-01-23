@@ -164,8 +164,22 @@ $(document).ready(function() {
                 var value = $(this).val();
                 $(this).val('');
                 $('dl', $(this).parent()).each(function() {
+                    console.log($('label', $(this)).attr('for'));
                     var label = $('label', $(this)).text();
                     var option = $('option[value="' + label + '"]', select);
+                    if ($('label', $(this)).attr('for') == 'filter_author') {
+                        $("select[name='author']").css('width', '255px');
+                        $("select[name='author']").parent().find('a.detach').remove();
+                        $("select[name='author']").parent().append('<a class="detach">X</a>').click(function() {
+                            $(this).parent('dl').hide();
+                            option = $('option[value="' + label + '"]', select);
+                            option.show();
+                        });
+                        $("select[name='author']").removeClass('form-control input-sm');
+                        $("select[name='author']").select2({
+                            minimumInputLength: 3,
+                        });
+                    }
                     if (label == value) {
                         $(this).show();
                         $(this).insertBefore($('select.filters', $(this).parent()));
