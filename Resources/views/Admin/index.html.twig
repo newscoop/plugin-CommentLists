@@ -232,8 +232,8 @@ $(document).ready(function() {
                 {{ form_widget(externalForm.message, {'attr' : {'class' : 'form-control input-sm', 'style' : 'min-height:200px;' }}) }}
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
-            <input type="submit" value="Submit" class="btn btn-success btn-sm">
+            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">{{ 'plugin.lists.btn.cancel'|trans }}</button>
+            <input type="submit" value="{{ 'plugin.lists.btn.submit'|trans }}" class="btn btn-success btn-sm">
           </div>
           </form>
         </div>
@@ -242,9 +242,36 @@ $(document).ready(function() {
     <script type="text/javascript">
     $('#externalCommentForm_date_date').addClass('form-control input-sm');
     $('#externalCommentForm_date_time').addClass('form-control input-sm');
-    $('#externalCommentForm_articles').select2({
+
+    function commentFormat(comment) {
+        return comment.title;
+    }
+    $("#externalCommentForm_articles").select2({
         minimumInputLength: 3,
+        id: function(comment) { return comment.number; },
+        ajax: {
+            url: "/api/articles.json",
+            dataType: 'json',
+            quietMillis: 100,
+            data: function (term, page) { // page is the one-based page number tracked by Select2
+                return {
+                    items_per_page: 10, // page size
+                    page: page, // page number
+                };
+            },
+            results: function (data, page) {
+                var more = (page * 10) < data.pagination.itemsCount; // whether or not there are more results available
+
+                return {results: data.items, more: more};
+            }
+        },
+        formatResult: commentFormat,
+        formatSelection: commentFormat,
+        formatSearching:function() { return '{{ 'plugin.lists.label.searching'|trans }}'},
+        formatNoMatches:function() { return '{{ 'plugin.lists.label.nomatches'|trans }}'},
+        formatInputTooShort: function (input, min) { return "{{ 'plugin.lists.label.please'|trans }} " + (min - input.length) + " {{ 'plugin.lists.label.more'|trans }}"; }
     });
+
     $('span.select2-chosen').empty();
     $('span.select2-chosen').text('{{ 'plugin.lists.label.selectarticle'|trans }}');
     $("ul#context_list li").live({
@@ -325,6 +352,8 @@ $(document).ready(function() {
     });
 
     function openExternalModal() {
+        $('#externalModal').find('input:text').val('');
+        $('#externalModal').find('textarea').val('');
         $('#externalModal').modal();
     }
 

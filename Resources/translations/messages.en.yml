@@ -19,6 +19,10 @@ plugin:
       filtering: " - filtering from _MAX_ records"
       menu: "Display _MENU_ records"
     label:
+      please: "Please enter "
+      more: " more characters."
+      searching: "Searching ..."
+      nomatches: "No matches found."
       quickedit: "Quick comment edit"
       article: "Article"
       selectarticle: "Select article..."

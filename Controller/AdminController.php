@@ -412,7 +412,7 @@ class AdminController extends Controller
     /**
     * @Route("/admin/comment-lists/getfilterarticles", options={"expose"=true})
     */
-    public function getFilterArticles(Request $request) 
+    public function getFilterArticles(Request $request)
     {
         $translator = $this->container->get('translator');
         $em = $this->container->get('em');
@@ -420,20 +420,22 @@ class AdminController extends Controller
         $issue = $request->get('issue');
         $section = $request->get('section');
         $articleId = $request->get('article');
-        
+
         if($request->get('language') > 0) {
             $language = $request->get('language');
         }
 
         $articles = $em->getRepository('Newscoop\Entity\Article')
-            ->createQueryBuilder('s')
-            ->where('s.publication = :publication')
+            ->createQueryBuilder('a')
+            ->select('a.issueId', 'l.id', 'a.sectionId', 'a.number', 'a.name')
+            ->leftJoin('a.language', 'l')
+            ->where('a.publication = :publication')
             ->setParameters(array(
                 'publication' => $publication,
             ))
-            ->orderBy('s.name', 'ASC')
+            ->orderBy('a.name', 'ASC')
             ->getQuery()
-            ->getResult();
+            ->getArrayResult();
 
         if($issue > 0) {
             $issueArray = explode("_", $issue);
@@ -443,16 +445,18 @@ class AdminController extends Controller
             }
 
            $articles = $em->getRepository('Newscoop\Entity\Article')
-                ->createQueryBuilder('s')
-                ->innerJoin('s.issue', 'i', 'WITH', 'i.number = :issue')
-                ->where('s.publication = :publication')
+                ->createQueryBuilder('a')
+                ->select('a.issueId', 'l.id', 'a.sectionId', 'a.number', 'a.name')
+                ->leftJoin('a.language', 'l')
+                ->innerJoin('a.issue', 'i', 'WITH', 'i.number = :issue')
+                ->where('a.publication = :publication')
                 ->setParameters(array(
                     'publication' => $publication,
                     'issue' => $issue,
                 ))
-                ->orderBy('s.name', 'ASC')
+                ->orderBy('a.name', 'ASC')
                 ->getQuery()
-                ->getResult();
+                ->getArrayResult();
         }
 
         if($section > 0) {
@@ -463,9 +467,11 @@ class AdminController extends Controller
             }
 
             $articles = $em->getRepository('Newscoop\Entity\Article')
-                ->createQueryBuilder('s')
-                ->innerJoin('s.issue', 'i', 'WITH', 'i.number = :issue')
-                ->where('s.publication = :publication AND s.sectionId = :section')
+                ->createQueryBuilder('a')
+                ->select('a.issueId', 'l.id', 'a.sectionId', 'a.number', 'a.name')
+                ->leftJoin('a.language', 'l')
+                ->innerJoin('a.issue', 'i', 'WITH', 'i.number = :issue')
+                ->where('a.publication = :publication AND a.sectionId = :section')
                 ->setParameters(array(
                     'publication' => $publication,
                     'issue' => $issue,
@@ -473,17 +479,20 @@ class AdminController extends Controller
                 ))
                 ->orderBy('s.name', 'ASC')
                 ->getQuery()
-                ->getResult();
+                ->getArrayResult();
         }
 
         $newArticles = array();
         foreach($articles as $article) {
-            $newArticles[] = array('val' => $article->getPublicationId().'_'.$article->getIssue()->getNumber().'_'.$article->getLanguageId().'_'.$article->getSection()->getNumber().'_'.$article->getNumber(), 'name' => $article->getName());
+            $newArticles[] = array(
+                'val' => $publication.'_'.$article['issueId'].'_'.$article['id'].'_'.$article['sectionId'].'_'.$article['number'], 
+                'name' => $article['name']
+            );
         }
 
         $articlesNo = is_array($newArticles) ? sizeof($newArticles) : 0;
         $menuArticleTitle = $articlesNo > 0 ? $translator->trans('All Articles') : $translator->trans('No articles found');
-        
+
         return new Response(json_encode(array(
             'items' => $newArticles,
             'itemsNo' => $articlesNo,

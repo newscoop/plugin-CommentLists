@@ -47,10 +47,10 @@ class ExternalCommentType extends AbstractType
             'date_format' => 'yyyy-MM-dd',
             'required' => true,
         ))
-        ->add('articles', 'choice', array(
+        ->add('articles', 'hidden', array(
             'label' => 'plugin.lists.label.article',
-            'choices' => $articlesArray,
-            'empty_value' => 'plugin.lists.label.selectarticle',
+            'error_bubbling' => true,
+            'required' => true,
         ))
         ->add('source', null, array(
             'label' => 'plugin.lists.label.externalsource',
