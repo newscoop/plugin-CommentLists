@@ -38,7 +38,6 @@ class ListCommentService
         return $this->getRepository()->getListByCriteria($criteria);
     }
 
-   
     /**
      * Count by given criteria
      *

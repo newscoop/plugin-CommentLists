@@ -32,6 +32,7 @@ var translations = {'plugin.lists.label.reset': '{{ 'plugin.lists.label.reset'|t
     'plugin.lists.table.filtering': '{{ 'plugin.lists.table.filtering'|trans }}',
     'plugin.lists.table.menu': '{{ 'plugin.lists.table.menu'|trans }}',
     'plugin.lists.label.search': '{{ 'plugin.lists.label.search'|trans }}',
+    'plugin.lists.label.selectarticle': '{{ 'plugin.lists.label.allart'|trans }}',
 };
 contextListFilters = {};
 filters = [];
@@ -68,8 +69,8 @@ $(document).ready(function() {
             </div>
             <label id="playlist-name-label">{{ 'plugin.lists.label.name'|trans }}:</label>
                 <span id="list_name">
-                    <input name="playlist-name" class="form-control" id="playlist-name">
-                    <input id="playlist-id" type="hidden" readonly="readonly">
+                    <input name="playlist-name" class="form-control" style="float: left;" id="playlist-name">
+                    <input id="playlist-id" class="form-control" type="text" readonly="readonly">
                 </span>
             </div>
         </div>
@@ -112,10 +113,8 @@ $(document).ready(function() {
                                             </div>
                                         </div>
                                         <div class="tr">
-                                            <div class="td">   
-                                                <select name="article" id="article_filter" class="selectBig form-control input-sm">
-                                                    <option></option>
-                                                </select>
+                                            <div class="td">
+                                                <input style="width: 257px" type="hidden" id="article_filter" name="article"/>
                                             </div>
                                         </div>
                                         <div class="extra">
@@ -242,7 +241,6 @@ $(document).ready(function() {
     <script type="text/javascript">
     $('#externalCommentForm_date_date').addClass('form-control input-sm');
     $('#externalCommentForm_date_time').addClass('form-control input-sm');
-
     function commentFormat(comment) {
         return comment.title;
     }

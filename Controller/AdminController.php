@@ -356,11 +356,11 @@ class AdminController extends Controller
     {
         $translator = $this->container->get('translator');
         $em = $this->container->get('em');
-        $publication = $request->get('publication', NULL);
-        
+        $publication = $request->get('publication', null);
+
         $issue = $request->get('issue');
 
-        if($request->get('language') > 0) {
+        if ($request->get('language') > 0) {
             $language = $request->get('language');
         }
 
@@ -372,8 +372,8 @@ class AdminController extends Controller
             ->orderBy('s.name', 'ASC')
             ->getQuery()
             ->getResult();
-        
-        if($issue > 0) {
+
+        if ($issue > 0) {
             $issueArray = explode("_", $issue);
             $issue = $issueArray[1];
             if (isset($issueArray[2])) {
@@ -401,7 +401,7 @@ class AdminController extends Controller
 
         $sectionsNo = is_array($newSections) ? sizeof($newSections) : 0;
         $menuSectionTitle = $sectionsNo > 0 ? $translator->trans('All Sections') : $translator->trans('No sections found');
-        
+
         return new Response(json_encode(array(
             'items' => $newSections,
             'itemsNo' => $sectionsNo,
@@ -416,12 +416,15 @@ class AdminController extends Controller
     {
         $translator = $this->container->get('translator');
         $em = $this->container->get('em');
-        $publication = $request->get('publication', NULL);
+        $publication = $request->get('publication', null);
         $issue = $request->get('issue');
         $section = $request->get('section');
         $articleId = $request->get('article');
+        $searchTerm = $request->get('term');
+        $constraints = array();
+        $operator = new \Operator('is', 'integer');
 
-        if($request->get('language') > 0) {
+        if ($request->get('language') > 0) {
             $language = $request->get('language');
         }
 
@@ -434,17 +437,19 @@ class AdminController extends Controller
                 'publication' => $publication,
             ))
             ->orderBy('a.name', 'ASC')
+            ->setMaxResults(30)
             ->getQuery()
             ->getArrayResult();
 
-        if($issue > 0) {
+        if ($issue > 0) {
             $issueArray = explode("_", $issue);
             $issue = $issueArray[1];
             if (isset($issueArray[2])) {
                 $language = $issueArray[2];
             }
 
-           $articles = $em->getRepository('Newscoop\Entity\Article')
+            $constraints[] = new \ComparisonOperation('Articles.NrIssue', $operator, $issue);
+            $articles = $em->getRepository('Newscoop\Entity\Article')
                 ->createQueryBuilder('a')
                 ->select('a.issueId', 'l.id', 'a.sectionId', 'a.number', 'a.name')
                 ->leftJoin('a.language', 'l')
@@ -455,17 +460,19 @@ class AdminController extends Controller
                     'issue' => $issue,
                 ))
                 ->orderBy('a.name', 'ASC')
+                ->setMaxResults(30)
                 ->getQuery()
                 ->getArrayResult();
         }
 
-        if($section > 0) {
+        if ($section > 0) {
             $sectionArray = explode("_", $section);
             $section = $sectionArray[3];
             if (isset($issueArray[2])) {
                 $language = $issueArray[2];
             }
 
+            $constraints[] = new \ComparisonOperation('Articles.NrSection', $operator, $section);
             $articles = $em->getRepository('Newscoop\Entity\Article')
                 ->createQueryBuilder('a')
                 ->select('a.issueId', 'l.id', 'a.sectionId', 'a.number', 'a.name')
@@ -477,13 +484,34 @@ class AdminController extends Controller
                     'issue' => $issue,
                     'section' => $section
                 ))
-                ->orderBy('s.name', 'ASC')
+                ->orderBy('a.name', 'ASC')
+                ->setMaxResults(30)
                 ->getQuery()
                 ->getArrayResult();
         }
 
+        if ($searchTerm) {
+            $constraints[] = new \ComparisonOperation('Articles.IdPublication', $operator, $publication);
+            $countTotal = 30;
+            $articleNumbers = \Article::SearchByKeyword($searchTerm, true, $constraints, array(), 0, 0, $countTotal, false);
+            $qb = $em->getRepository('Newscoop\Entity\Article')
+                ->createQueryBuilder('a');
+            $qb
+                ->select('a.issueId', 'l.id', 'a.sectionId', 'a.number', 'a.name')
+                ->leftJoin('a.language', 'l');
+
+            foreach ($articleNumbers as $key => $value) {
+                $qb->where($qb->expr()->orX($qb->expr()->eq('a.number', $value['number'])));
+            }
+
+            $qb->orderBy('a.name', 'ASC')
+                ->setMaxResults(30);
+
+            $articles = $qb->getQuery()->getArrayResult();
+        }
+
         $newArticles = array();
-        foreach($articles as $article) {
+        foreach ($articles as $article) {
             $newArticles[] = array(
                 'val' => $publication.'_'.$article['issueId'].'_'.$article['id'].'_'.$article['sectionId'].'_'.$article['number'], 
                 'name' => $article['name']
@@ -491,7 +519,7 @@ class AdminController extends Controller
         }
 
         $articlesNo = is_array($newArticles) ? sizeof($newArticles) : 0;
-        $menuArticleTitle = $articlesNo > 0 ? $translator->trans('All Articles') : $translator->trans('No articles found');
+        $menuArticleTitle = $articlesNo > 0 ? $translator->trans('plugin.lists.label.allart') : $translator->trans('No articles found');
 
         return new Response(json_encode(array(
             'items' => $newArticles,
@@ -632,7 +660,6 @@ class AdminController extends Controller
         $filteredCommentsCount = $result[1];
 
         } else {
-
             $comments = $em->getRepository('Newscoop\Entity\Comment')->findBy(
                 $params,
                 array('id' => $sortDir),

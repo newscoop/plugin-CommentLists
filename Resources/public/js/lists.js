@@ -69,7 +69,6 @@ $(document).ready(function() {
                             $('#remove-ctrl').hide();
                             $('#delete-all-btn').hide();
                             $("#playlists").select2('val', '');
-                            
                         }, true );
                         $(this).dialog( "close" );
                         flashMessage(translations['plugin.lists.label.listdeleted'], null, false);
@@ -207,7 +206,7 @@ $('fieldset.toggle.filters dl:first').each(function()
         // reset all button
         var resetMsg = translations['plugin.lists.label.reset'];
 
-        $('<a href="#" class="reset" title="'+resetMsg+'">'+resetMsg+'</a>')
+    $('<a href="#" class="reset" title="'+resetMsg+'">'+resetMsg+'</a>')
         .appendTo(fieldset)
         .click(function() {
                 // reset extra filters
@@ -218,6 +217,10 @@ $('fieldset.toggle.filters dl:first').each(function()
                 $('select.filters', fieldset).val('');
                 $('select.filters option', fieldset).show();
 
+                resetFilterArticles();
+                resetFilterSections();
+                resetFilterIssues();
+                $('#publication_filter').val('0').change();
                 // reset main filters
                 $('> select', fieldset).val('0').change();
 
@@ -256,23 +259,11 @@ function handleArgs()
         sectionId = $('#section_filter').val();
     }
 
-    args = new Array();
-    args.push({
-        'name': 'language',
-        'value': langId
-    });
-    args.push({
-        'name': 'publication',
-        'value': publicationId
-    });
-    args.push({
-        'name': 'issue',
-        'value': issueId
-    });
-    args.push({
-        'name': 'section',
-        'value': sectionId
-    });
+    args = {};
+    args['language'] = langId;
+    args['publication'] = publicationId;
+    args['issue'] = issueId;
+    args['section'] = sectionId;
 
     return args;
 }
@@ -413,35 +404,23 @@ function handleFilterSections(args)
     }
 }
 
-function handleFilterArticles(args)
-{
-    $('#article_filter >option').remove();
-    $('#article_filter').append($("<option></option>").val('0').html(args.menuItemTitle));
-
-    var items = args.items;
-    for(var i=0; i < items.length; i++) {
-        var item = items[i];
-        $('#article_filter').append($("<option></option>").val(item.val).html(item.name));
-    }
-}
-
 function resetFilterIssues() 
 {
-    $('#issue_filter >option').remove();
+    $('#issue_filter').val('0').change();
 }
 
 function resetFilterSections() 
 {
-    $('#section_filter >option').remove();
+    $('#section_filter').val('0').change();
 }
 
 function resetFilterArticles() 
 {
-    $('#article_filter >option').remove();
+    $('#article_filter').select2("val", "");
 }
 
 function refreshFilterIssues()
-{   
+{
     if($('#publication_filter').val() <= 0) {
         resetFilterIssues();
     } else {
@@ -465,8 +444,29 @@ function refreshFilterArticles()
     if($('#publication_filter').val() <= 0) {
         resetFilterArticles();
     } else {
-        var args = handleArgs();
-        callController(Routing.generate('newscoop_commentlists_admin_getfilterarticles'), args, handleFilterArticles);
+        callServer('ping', [], function(json) {
+            $('#article_filter').select2({
+                placeholder: translations['plugin.lists.label.selectarticle'],
+                id: function(article) { return article.val; },
+                ajax: {
+                    url: Routing.generate('newscoop_commentlists_admin_getfilterarticles'),
+                    dataType: 'json',
+                    quietMillis: 100,
+                    data:function (term, page) {
+                        var args = handleArgs();
+                        args['term'] = term;
+                        args['page'] = page;
+
+                        return args;
+                    },
+                    results: function (data, page) {
+                        return { results: data.items };
+                    }
+                },
+                formatResult: function(article) { return article.name; },
+                formatSelection: function(article) { return article.name; },
+            });
+        });
     }
 }
 
@@ -482,7 +482,7 @@ jQuery.fn.dataTableExt.oApi.fnSetFilteringDelay = function ( oSettings, iDelay )
      var
      _that = this,
      iDelay = (typeof iDelay == 'undefined') ? 250 : iDelay;
-     
+
      this.each( function ( i ) {
         $.fn.dataTableExt.iApiIndex = i;
         var

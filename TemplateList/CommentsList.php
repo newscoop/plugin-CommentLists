@@ -13,16 +13,16 @@ use Newscoop\TemplateList\BaseList;
 /**
  * Comments List
  */
-class CommentsList extends BaseList 
+class CommentsList extends BaseList
 {
 
     protected function prepareList($criteria)
-    {   
+    {
         $service = \Zend_Registry::get('container')->get('commentlists.list');
         $lists = $service->findByCriteria($criteria);
         foreach ($lists as $key => $commentList) {
             foreach ($service->findCommentsByOrder($commentList->getId()) as $key => $comment) {
-                $lists->items[$key] = new \MetaComment($comment->getComment()->getId());
+                $lists->items[$key] = new \MetaComment($comment['id']);
             }
         }
 

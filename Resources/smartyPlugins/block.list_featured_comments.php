@@ -22,18 +22,18 @@
 function smarty_block_list_featured_comments($params, $content, &$smarty, &$repeat)
 {
     $context = $smarty->getTemplateVars('gimme');
-    
+
     if (!isset($content)) { // init
         $start = $context->next_list_start('Newscoop\CommentListsBundle\TemplateList\CommentsList');
-        $list = \Zend_Registry::get('container')->get('newscoop.template_lists.commentlists');
+        $list = new \Newscoop\CommentListsBundle\TemplateList\CommentsList(new \Newscoop\CommentListsBundle\TemplateList\ListCriteria());
         $list->getList($start, $params);
         if ($list->isEmpty()) {
             $context->setCurrentList($list, array());
             $context->resetCurrentList();
             $repeat = false;
-            return;
+            return null;
         }
-
+//ladybug_dump($context->current_comments_list->current);die;
         $context->setCurrentList($list, array('comment'));
         $context->comment = $context->current_comments_list->current;
         $repeat = true;

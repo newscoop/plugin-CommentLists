@@ -29,13 +29,20 @@ class Comment
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Newscoop\Entity\Comment", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="\Newscoop\Entity\Comment")
+     * @ORM\JoinColumn(name="comment_id", referencedColumnName="id")
      * @var Newscoop\Entity\Comment
      */
     private $comment;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Newscoop\CommentListsBundle\Entity\CommentList", inversedBy="comments")
+     * @ORM\Column(type="integer", name="comment_id")
+     * @var int
+     */
+    private $commentId;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="\Newscoop\CommentListsBundle\Entity\CommentList", inversedBy="comments")
      * @ORM\JoinColumn(name="list_id", referencedColumnName="id")
      * @var Newscoop\CommentListsBundle\Entity\CommentList
      */
@@ -61,7 +68,6 @@ class Comment
 
     public function __construct() {
         $this->list = new ArrayCollection();
-        $this->comment = new ArrayCollection();
         $this->setCreatedAt(new \DateTime());
         $this->setIsActive(true);
     }
@@ -74,6 +80,29 @@ class Comment
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get comment
+     *
+     * @return int
+     */
+    public function getCommentId()
+    {
+        return $this->commentId;
+    }
+
+    /**
+     * Set comment
+     *
+     * @param  int $comment
+     * @return int
+     */
+    public function setCommentId($commentId)
+    {
+        $this->commentId = $commentId;
+
+        return $this;
     }
 
     /**
@@ -96,7 +125,7 @@ class Comment
     {
         $this->comment = $comment;
 
-        return $comment;
+        return $this;
     }
 
     /**

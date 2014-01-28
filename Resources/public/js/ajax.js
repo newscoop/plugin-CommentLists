@@ -1,8 +1,5 @@
 function callController(url, params, handle)
 {
-    if (!params) {
-        params = [];
-    }
     callServer('ping', [], function(json) {
         $.ajax({
             type: "POST",

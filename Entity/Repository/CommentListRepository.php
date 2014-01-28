@@ -40,14 +40,14 @@ class CommentListRepository extends EntityRepository
         $countBuilder = clone $qb;
         $list->count = (int) $countBuilder->select('COUNT(cl)')->getQuery()->getSingleScalarResult();
 
-        if($criteria->firstResult != 0) {
+        if ($criteria->firstResult != 0) {
             $qb->setFirstResult($criteria->firstResult);
         }
 
-        if($criteria->maxResults != 0) {
+        if ($criteria->maxResults != 0) {
             $qb->setMaxResults($criteria->maxResults);
         }
-        
+
         $metadata = $this->getClassMetadata();
         foreach ($criteria->orderBy as $key => $order) {
             if (array_key_exists($key, $metadata->columnNames)) {
@@ -105,6 +105,17 @@ class CommentListRepository extends EntityRepository
             ->orderBy('c.order', 'asc')
             ->from('Newscoop\CommentListsBundle\Entity\Comment', 'c');
 
-        return $comments->getQuery()->getResult();
+        $commentsIds = array();
+        foreach ($comments->getQuery()->getArrayResult() as  $value) {
+            $commentsIds[] = $value['commentId'];
+        }
+
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $comments = $qb->select('c.id')
+            ->where($qb->expr()->in('c.id', $commentsIds))
+            ->from('Newscoop\Entity\Comment', 'c');
+
+        return $comments->getQuery()->getArrayResult();
     }
 }

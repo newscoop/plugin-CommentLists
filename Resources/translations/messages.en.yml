@@ -21,6 +21,7 @@ plugin:
     label:
       please: "Please enter "
       more: " more characters."
+      listid: "List ID"
       searching: "Searching ..."
       nomatches: "No matches found."
       quickedit: "Quick comment edit"
@@ -33,6 +34,7 @@ plugin:
       available: "Available Comments"
       filter: "Filter"
       allpub: "All Publications"
+      allart: "All articles"
       date: "Date created"
       commenter: "Commenter"
       all: "All"

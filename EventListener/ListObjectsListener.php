@@ -14,15 +14,15 @@ class ListObjectsListener
 {
     /**
      * Register plugin list objects in Newscoop
-     * 
-     * @param  CollectObjectsDataEvent $event
+     *
+     * @param CollectObjectsDataEvent $event
      */
-    public function registerListObject(CollectObjectsDataEvent $event)
+    public function registerObjects(CollectObjectsDataEvent $event)
     {
         $event->registerListObject('newscoop\commentlistsbundle\templatelist\comments', array(
             'class' => 'Newscoop\CommentListsBundle\TemplateList\Comments',
             'list' => 'comments',
-            'url_id' => 'clid',
+            'url_id' => 'pclid',
         ));
     }
 }
