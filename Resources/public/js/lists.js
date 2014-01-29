@@ -7,7 +7,9 @@ $(document).ready(function() {
         $('#playlist-id').attr('value', $("#playlists").select2('data').id);
         $('.save-button-bar').show(); 
         $('#list_name').show();
+        $('#playlist-id').show();
         $('#playlist-name-label').show();
+        $('#playlist-id-label').show();
         $('#remove-ctrl').show();
         $('#delete-all-btn').show();
         loadContextList();   
@@ -17,6 +19,7 @@ $(document).ready(function() {
         $('.save-button-bar').show(); 
         $('#list_name').show();
         $('#playlist-name-label').show();
+        $('#playlist-id').show();
         $('#remove-ctrl').hide();
         $('#delete-all-btn').show();
         if ($('#playlist-name').val() != '') {
@@ -65,7 +68,9 @@ $(document).ready(function() {
                             $('#playlist-name').val('');
                             $('.save-button-bar').hide(); 
                             $('#list_name').hide();
+                            $('#playlist-id').hide();
                             $('#playlist-name-label').hide();
+                            $('#playlist-id-label').hide()
                             $('#remove-ctrl').hide();
                             $('#delete-all-btn').hide();
                             $("#playlists").select2('val', '');

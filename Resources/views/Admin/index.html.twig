@@ -36,7 +36,7 @@ var translations = {'plugin.lists.label.reset': '{{ 'plugin.lists.label.reset'|t
 };
 contextListFilters = {};
 filters = [];
-$(document).ready(function() {   
+$(document).ready(function() {
     filters['{{ id }}'] = contextListFilters;
     $('#delete-all-btn').hide();
 });
@@ -70,6 +70,9 @@ $(document).ready(function() {
             <label id="playlist-name-label">{{ 'plugin.lists.label.name'|trans }}:</label>
                 <span id="list_name">
                     <input name="playlist-name" class="form-control" style="float: left;" id="playlist-name">
+                </span>
+                <label id="playlist-id-label">{{ 'plugin.lists.label.listid'|trans }}:</label>
+                <span id="list_id" style="float: left;">
                     <input id="playlist-id" class="form-control" type="text" readonly="readonly">
                 </span>
             </div>

@@ -33,7 +33,7 @@ function smarty_block_list_featured_comments($params, $content, &$smarty, &$repe
             $repeat = false;
             return null;
         }
-//ladybug_dump($context->current_comments_list->current);die;
+
         $context->setCurrentList($list, array('comment'));
         $context->comment = $context->current_comments_list->current;
         $repeat = true;

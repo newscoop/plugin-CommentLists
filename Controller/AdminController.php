@@ -702,6 +702,10 @@ class AdminController extends Controller
             }
 
             try {
+                $comment = $em->getRepository('Newscoop\CommentListsBundle\Entity\Comment')
+                    ->findOneBy(array('commentId' => $values['commentId']));
+
+               // $comment->setComment();
                 $comment = $em->getRepository('Newscoop\Entity\Comment')->find($values['commentId']);
                 $em->getRepository('Newscoop\Entity\Comment')->update($comment, $values);
                 $em->flush();
@@ -741,12 +745,12 @@ class AdminController extends Controller
     /**
      * Get comments for article
      *
-     * @param  int|null                   $article   Article number
-     * @param  string                     $commenter Commenter id
-     * @param  string                     $language  Language id
-     * @param  string                     $createdAt Time when comment was created id
-     * @param  string                     $sortDir   Sorting type
-     * @param  Doctrine\ORM\EntityManager $em   Entity Manager
+     * @param int|null                   $article   Article number
+     * @param string                     $commenter Commenter id
+     * @param string                     $language  Language id
+     * @param string                     $createdAt Time when comment was created id
+     * @param string                     $sortDir   Sorting type
+     * @param Doctrine\ORM\EntityManager $em        Entity Manager
      *
      * @return Newscoop\Entity\Comment    $comments  Comments
      */

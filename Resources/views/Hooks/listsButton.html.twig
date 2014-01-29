@@ -52,4 +52,8 @@ $('select#commentButtonForm_lists[select-id="{{ commentId }}"]').on("select2-hig
     $(this).parents('.commentBtns#{{ commentId }}').show();
 });
 
+$('select#commentButtonForm_lists[select-id="{{ commentId }}"]').on("select2-blur", function(e) {
+    $(this).parents('.commentBtns#{{ commentId }}').show();
+});
+
 </script>

@@ -37,6 +37,7 @@ plugin:
       allart: "All articles"
       date: "Date created"
       commenter: "Commenter"
+      listid: "List ID"
       all: "All"
       language: "Language"
       showfiltered: "Display Comments of Filtered Types"

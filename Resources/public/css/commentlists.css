@@ -7,7 +7,8 @@
 }
 
 #playlist-id {
-    font-size:12px; 
+    font-size:12px;
+    display:none;
     width:50px
 }
 
@@ -16,7 +17,6 @@
 }
 
 #list_name {
-    float:right; 
     display: none;
 }
 
@@ -47,7 +47,7 @@
     height: 50px;
 }
 
-#playlist-name-label {
+#playlist-name-label, #playlist-id-label {
     float: left;
     line-height: 35px;
     display: none;
