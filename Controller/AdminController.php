@@ -326,7 +326,7 @@ class AdminController extends Controller
     {
         $translator = $this->container->get('translator');
         $em = $this->container->get('em');
-        $publication = $request->get('publication', NULL);
+        $publication = $request->get('publication', null);
 
         $issues = $em->getRepository('Newscoop\Entity\Issue')
             ->createQueryBuilder('i')
@@ -336,9 +336,9 @@ class AdminController extends Controller
             ->getResult();
 
         $newIssues = array();
-        $issuesNo = is_array($issues) ? sizeof($issues) : 0;
+        $issuesNo = is_array($issues) ? count($issues) : 0;
         $menuIssueTitle = $issuesNo > 0 ? $translator->trans('All Issues') : $translator->trans('No issues found');
-        foreach($issues as $issue) {
+        foreach ($issues as $issue) {
             $newIssues[] = array('val' => $issue->getPublicationId().'_'.$issue->getNumber().'_'.$issue->getLanguageId() , 'name' => $issue->getName());
         }
 
@@ -352,54 +352,54 @@ class AdminController extends Controller
     /**
     * @Route("/admin/comment-lists/getfiltersections", options={"expose"=true})
     */
-    public function getFilterSections(Request $request) 
+    public function getFilterSections(Request $request)
     {
         $translator = $this->container->get('translator');
         $em = $this->container->get('em');
         $publication = $request->get('publication', null);
-
         $issue = $request->get('issue');
+
+        $qb = $em->getRepository('Newscoop\Entity\Section')
+            ->createQueryBuilder('s')
+            ->select('s', 'l.id', 'i.number');
 
         if ($request->get('language') > 0) {
             $language = $request->get('language');
         }
 
-        $sections = $em->getRepository('Newscoop\Entity\Section')
-            ->createQueryBuilder('s')
-            ->where('s.publication = ?1')
-            ->setParameter(1, $publication)
-            ->groupBy('s.name')
-            ->orderBy('s.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+        $qb
+            ->leftJoin('s.language', 'l')
+            ->leftJoin('s.issue', 'i')
+            ->where('s.publication = :publication');
 
         if ($issue > 0) {
             $issueArray = explode("_", $issue);
             $issue = $issueArray[1];
             if (isset($issueArray[2])) {
                 $language = $issueArray[2];
+                $qb->andWhere('l.id = :language');
             }
 
-            $sections = $em->getRepository('Newscoop\Entity\Section')
-                ->createQueryBuilder('s')
-                ->innerJoin('s.issue', 'i', 'WITH', 'i.number = :issue')
-                ->where('s.publication = :publication')
+            $qb
+                ->andWhere('i.number = :issue')
                 ->setParameters(array(
-                    'publication' => $publication,
-                    'issue' => $issue
-                ))
-                ->groupBy('s.name')
-                ->orderBy('s.name', 'ASC')
-                ->getQuery()
-                ->getResult();
+                    'issue' => $issue,
+                    'language' => $language,
+                ));
         }
+
+        $sections = $qb->setParameter('publication', $publication)
+            ->groupBy('s.name')
+            ->orderBy('s.id', 'desc')
+            ->getQuery()
+            ->getArrayResult();
 
         $newSections = array();
-        foreach($sections as $section) {
-            $newSections[] = array('val' => $section->getIssue()->getPublicationId().'_'.$section->getIssue()->getNumber().'_'.$section->getLanguageId().'_'.$section->getNumber(), 'name' => $section->getName());
+        foreach ($sections as $section) {
+            $newSections[] = array('val' => $publication.'_'.$section['number'].'_'.$section['id'].'_'.$section[0]['number'], 'name' => $section[0]['name']);
         }
 
-        $sectionsNo = is_array($newSections) ? sizeof($newSections) : 0;
+        $sectionsNo = is_array($newSections) ? count($newSections) : 0;
         $menuSectionTitle = $sectionsNo > 0 ? $translator->trans('All Sections') : $translator->trans('No sections found');
 
         return new Response(json_encode(array(
@@ -424,22 +424,17 @@ class AdminController extends Controller
         $constraints = array();
         $operator = new \Operator('is', 'integer');
 
+        $qb = $em->getRepository('Newscoop\Entity\Article')
+            ->createQueryBuilder('a')
+            ->select('a.issueId', 'l.id', 'a.sectionId', 'a.number', 'a.name');
+
         if ($request->get('language') > 0) {
             $language = $request->get('language');
         }
 
-        $articles = $em->getRepository('Newscoop\Entity\Article')
-            ->createQueryBuilder('a')
-            ->select('a.issueId', 'l.id', 'a.sectionId', 'a.number', 'a.name')
+        $qb
             ->leftJoin('a.language', 'l')
-            ->where('a.publication = :publication')
-            ->setParameters(array(
-                'publication' => $publication,
-            ))
-            ->orderBy('a.name', 'ASC')
-            ->setMaxResults(30)
-            ->getQuery()
-            ->getArrayResult();
+            ->where('a.publication = :publication');
 
         if ($issue > 0) {
             $issueArray = explode("_", $issue);
@@ -449,20 +444,9 @@ class AdminController extends Controller
             }
 
             $constraints[] = new \ComparisonOperation('Articles.NrIssue', $operator, $issue);
-            $articles = $em->getRepository('Newscoop\Entity\Article')
-                ->createQueryBuilder('a')
-                ->select('a.issueId', 'l.id', 'a.sectionId', 'a.number', 'a.name')
-                ->leftJoin('a.language', 'l')
-                ->innerJoin('a.issue', 'i', 'WITH', 'i.number = :issue')
-                ->where('a.publication = :publication')
-                ->setParameters(array(
-                    'publication' => $publication,
-                    'issue' => $issue,
-                ))
-                ->orderBy('a.name', 'ASC')
-                ->setMaxResults(30)
-                ->getQuery()
-                ->getArrayResult();
+            $qb
+                ->andWhere('a.issueId = :issue')
+                ->setParameter('issue', $issue);
         }
 
         if ($section > 0) {
@@ -473,52 +457,36 @@ class AdminController extends Controller
             }
 
             $constraints[] = new \ComparisonOperation('Articles.NrSection', $operator, $section);
-            $articles = $em->getRepository('Newscoop\Entity\Article')
-                ->createQueryBuilder('a')
-                ->select('a.issueId', 'l.id', 'a.sectionId', 'a.number', 'a.name')
-                ->leftJoin('a.language', 'l')
-                ->innerJoin('a.issue', 'i', 'WITH', 'i.number = :issue')
-                ->where('a.publication = :publication AND a.sectionId = :section')
-                ->setParameters(array(
-                    'publication' => $publication,
-                    'issue' => $issue,
-                    'section' => $section
-                ))
-                ->orderBy('a.name', 'ASC')
-                ->setMaxResults(30)
-                ->getQuery()
-                ->getArrayResult();
+            $qb
+                ->andWhere('a.sectionId = :section')
+                ->setParameter('section', $section);
         }
 
         if ($searchTerm) {
             $constraints[] = new \ComparisonOperation('Articles.IdPublication', $operator, $publication);
-            $countTotal = 30;
+            $countTotal = 20;
             $articleNumbers = \Article::SearchByKeyword($searchTerm, true, $constraints, array(), 0, 0, $countTotal, false);
-            $qb = $em->getRepository('Newscoop\Entity\Article')
-                ->createQueryBuilder('a');
-            $qb
-                ->select('a.issueId', 'l.id', 'a.sectionId', 'a.number', 'a.name')
-                ->leftJoin('a.language', 'l');
 
             foreach ($articleNumbers as $key => $value) {
-                $qb->where($qb->expr()->orX($qb->expr()->eq('a.number', $value['number'])));
+                $qb->andWhere($qb->expr()->orX($qb->expr()->eq('a.number', $value['number'])));
             }
-
-            $qb->orderBy('a.name', 'ASC')
-                ->setMaxResults(30);
-
-            $articles = $qb->getQuery()->getArrayResult();
         }
+
+        $articles = $qb->setParameter('publication', $publication)
+            ->setMaxResults(20)
+            ->orderBy('a.name', 'asc')
+            ->getQuery()
+            ->getArrayResult();
 
         $newArticles = array();
         foreach ($articles as $article) {
             $newArticles[] = array(
-                'val' => $publication.'_'.$article['issueId'].'_'.$article['id'].'_'.$article['sectionId'].'_'.$article['number'], 
+                'val' => $publication.'_'.$article['issueId'].'_'.$article['id'].'_'.$article['sectionId'].'_'.$article['number'],
                 'name' => $article['name']
             );
         }
 
-        $articlesNo = is_array($newArticles) ? sizeof($newArticles) : 0;
+        $articlesNo = is_array($newArticles) ? count($newArticles) : 0;
         $menuArticleTitle = $articlesNo > 0 ? $translator->trans('plugin.lists.label.allart') : $translator->trans('No articles found');
 
         return new Response(json_encode(array(
@@ -536,12 +504,13 @@ class AdminController extends Controller
     {
         $colvis = $this->colVis ? 'C' : '';
         $search = $this->search ? 'f' : '';
-        $paging = $this->items === NULL ? 'ip' : 'i';
+        $paging = $this->items === null ? 'ip' : 'i';
+
         return sprintf('<"H"%s%s>t<"F"%s%s>',
             $colvis,
             $search,
             $paging,
-            $this->items === NULL ? 'l' : ''
+            $this->items === null ? 'l' : ''
         );
     }
 
@@ -549,7 +518,7 @@ class AdminController extends Controller
     * @Route("/admin/comment-lists/dodata", options={"expose"=true})
     */
     public function doData(Request $request)
-    {   
+    {
         // start >= 0
         $start = max(0, !$request->get('iDisplayStart') ? 0 : (int) $request->get('iDisplayStart'));
 
@@ -576,7 +545,7 @@ class AdminController extends Controller
                 }
             }
         }
-        
+
         //fix for the new section filters
         if(isset($section)) {
             if($section != 0) {
@@ -667,7 +636,7 @@ class AdminController extends Controller
                 $start
             );
 
-            foreach($comments as $comment) {
+            foreach ($comments as $comment) {
                 $return[] = $this->processItem($comment);
             }
 
@@ -675,7 +644,8 @@ class AdminController extends Controller
             if ($commenter  || $time_created || $language != null && $language != '0') {
                 $return = array();
                 $result = $this->getArticleComments(null, $commenter, $language, $time_created, $sortDir, $em);
-                foreach($result as $comment) {
+
+                foreach ($result as $comment) {
                     $return[] = $this->processItem($comment);
                 }
             }
