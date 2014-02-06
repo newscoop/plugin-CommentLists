@@ -845,9 +845,16 @@ class AdminController extends Controller
                 ->createQueryBuilder('a')
                 ->select('a.number')
                 ->where(substr($query, 0, -5))
-                ->setMaxResults(20)
+                ->setMaxResults($limit)
+                ->setFirstResult($start)
                 ->getQuery()
                 ->getArrayResult();
+
+            $articlesCount = $em->getRepository('Newscoop\Entity\Article')
+                ->createQueryBuilder('a')
+                ->select('count(a)')
+                ->getQuery()
+                ->getSingleScalarResult();
 
             foreach ($articles as $article) {
                 foreach ($this->getArticleComments($article['number'], $commenter, $language, $createdAt, $sortDir, $em) as $comment) {
@@ -856,12 +863,9 @@ class AdminController extends Controller
             }
         }
 
-        $count = count($return);
-        $result = array_slice($return, $start, $limit);
-
         return array(
             $result,
-            $count
+            $articlesCount
         );
     }
 
