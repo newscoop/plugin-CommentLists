@@ -35,6 +35,8 @@ plugin:
       filter: "Filter"
       allpub: "All Publications"
       allart: "All articles"
+      allsections: "All sections"
+      allissues: "All issues"
       date: "Date created"
       commenter: "Commenter"
       listid: "List ID"
