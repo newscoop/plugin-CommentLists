@@ -706,7 +706,6 @@ class AdminController extends Controller
 
         $qb = $em->getRepository('Newscoop\Entity\Comment')
                 ->createQueryBuilder('c');
-        $and = $qb->expr()->andX();
         $qb
             ->select('c', 'l.id as language', 'cc.name')
             ->leftJoin('c.commenter', 'cc')
