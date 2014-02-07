@@ -225,9 +225,9 @@ $('fieldset.toggle.filters dl:first').each(function()
                 resetFilterArticles();
                 resetFilterSections();
                 resetFilterIssues();
-                $('#publication_filter').val('0').change();
+                $('#publication_filter').val('0');
                 // reset main filters
-                $('> select', fieldset).val('0').change();
+                $('> select', fieldset).val('0');
 
                 // redraw table
                 filters[smartlistId] = {};
@@ -409,17 +409,17 @@ function handleFilterSections(args)
     }
 }
 
-function resetFilterIssues() 
+function resetFilterIssues()
 {
-    $('#issue_filter').val('0').change();
+    $('#issue_filter').val('0');
 }
 
-function resetFilterSections() 
+function resetFilterSections()
 {
-    $('#section_filter').val('0').change();
+    $('#section_filter').val('0');
 }
 
-function resetFilterArticles() 
+function resetFilterArticles()
 {
     $('#article_filter').select2("val", "");
 }

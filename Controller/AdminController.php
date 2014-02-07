@@ -19,6 +19,9 @@ use Newscoop\CommentListsBundle\Entity\Comment;
 use Newscoop\CommentListsBundle\Form\Type\ExternalCommentType;
 use Newscoop\Entity\Comment as BaseComment;
 
+/**
+ * Featured comments controller
+ */
 class AdminController extends Controller
 {
 
@@ -195,7 +198,7 @@ class AdminController extends Controller
         if (!is_null($comments) && is_array($comments)) {
             foreach ($comments as $key => $comment) {
                 $mainComment = $em->getRepository('Newscoop\Entity\Comment')->findOneBy(array(
-                    'id' => (int)$comment,
+                    'id' => (int) $comment,
                 ));
 
                 $newComment = new Comment();
@@ -218,8 +221,8 @@ class AdminController extends Controller
     /**
     * @Route("/admin/comment-lists/removelist", options={"expose"=true})
     */
-    public function removeList(Request $request) 
-    {   
+    public function removeList(Request $request)
+    {
         $em = $this->container->get('em');
         $commentList = $em->getRepository('Newscoop\CommentListsBundle\Entity\CommentList')->findOneBy(array(
             'id' => $request->get('id'),
@@ -534,14 +537,6 @@ class AdminController extends Controller
         $time_created = $request->get('publish_date');
         $language = $request->get('language');
 
-        $qb = $em->getRepository('Newscoop\Entity\Comment')
-            ->createQueryBuilder('c');
-        $qb
-            ->select('c', 'l.id as language', 'cc.name')
-            ->leftJoin('c.commenter', 'cc')
-            ->leftJoin('c.language', 'l')
-            ->where($qb->expr()->isNotNull('c.forum'));
-
         //fix for the new issue filters
         if (isset($issue)) {
             if ($issue != 0) {
@@ -550,13 +545,6 @@ class AdminController extends Controller
                     $publication = $issueFiltersArray[0];
                     $issue = $issueFiltersArray[1];
                     $language = $issueFiltersArray[2];
-                    $qb->andWhere('c.forum = :publication')
-                        ->andWhere('c.issue = :issue')
-                        ->setParameters(array(
-                            'publication' => $publication,
-                            'issue' => $issue,
-                            'language' => $language
-                        ));
                 }
             }
         }
@@ -570,15 +558,6 @@ class AdminController extends Controller
                     $issue = $sectionFiltersArray[1];
                     $language = $sectionFiltersArray[2];
                     $section = $sectionFiltersArray[3];
-                    $qb->andWhere('c.forum = :publication')
-                        ->andWhere('c.section = :section')
-                        ->andWhere('c.issue = :issue')
-                        ->setParameters(array(
-                            'publication' => $publication,
-                            'section' => $section,
-                            'issue' => $issue,
-                            'language' => $language
-                        ));
                 }
             }
         }
@@ -593,17 +572,6 @@ class AdminController extends Controller
                     $language = $articleFiltersArray[2];
                     $section = $articleFiltersArray[3];
                     $articleId = $articleFiltersArray[4];
-                    $qb->andWhere('c.forum = :publication')
-                        ->andWhere('c.section = :section')
-                        ->andWhere('c.issue = :issue')
-                        ->andWhere('c.article_num = :article')
-                        ->setParameters(array(
-                            'publication' => $publication,
-                            'section' => $section,
-                            'issue' => $issue,
-                            'language' => $language,
-                            'article' => $articleId
-                        ));
                 }
             }
         }
@@ -648,42 +616,19 @@ class AdminController extends Controller
             }
         }
 
-        if ($publication) {
-            $params = array(
-                'publication' => $publication,
-                'issueId' => $issue,
-                'sectionId' => $section,
-                'thread' => $articleId,
-                'commenter' => $commenter,
-                'language' => $language,
-                'time_created' => $time_created
-            );
+        $params = array(
+            'publication' => $publication,
+            'issueId' => $issue,
+            'sectionId' => $section,
+            'thread' => $articleId,
+            'commenter' => $commenter,
+            'language' => $language,
+            'time_created' => $time_created,
+        );
 
         $result = $this->getList($params, $start, $limit, $sortDir);
         $return = $result[0];
         $filteredCommentsCount = $result[1];
-
-        } else {
-            $comments = $qb->setMaxResults($limit)
-                ->setFirstResult($start)
-                ->orderBy('c.id', 'asc')
-                ->getQuery()
-                ->getArrayResult();
-
-            foreach ($comments as $comment) {
-                $return[] = $this->processItem($comment);
-            }
-
-            //find all comments by extra filter
-            if ($commenter  || $time_created || $language != null && $language != '0') {
-                $return = array();
-                $result = $this->getArticleComments(null, $commenter, $language, $time_created, $sortDir, $em);
-
-                foreach ($result as $comment) {
-                    $return[] = $this->processItem($comment);
-                }
-            }
-        }
 
         return new Response(json_encode(array(
             'iTotalRecords' => $allComments,
@@ -745,59 +690,6 @@ class AdminController extends Controller
     }
 
     /**
-     * Get comments for article
-     *
-     * @param int|null                   $article   Article number
-     * @param string                     $commenter Commenter id
-     * @param string                     $language  Language id
-     * @param string                     $createdAt Time when comment was created id
-     * @param string                     $sortDir   Sorting type
-     * @param Doctrine\ORM\EntityManager $em        Entity Manager
-     *
-     * @return array
-     */
-    public function getArticleComments($article = null, $commenter, $language, $createdAt, $sortDir, $em)
-    {
-        $qb = $em->getRepository('Newscoop\Entity\Comment')
-            ->createQueryBuilder('c');
-
-        $and = $qb->expr()->andX();
-
-        if ($article != null) {
-            $and->add($qb->expr()->eq('c.thread', $article));
-        }
-
-        if ($commenter != null && $commenter != '0') {
-            $and->add($qb->expr()->eq('c.commenter', $commenter));
-        }
-
-        if ($language != null && $language != '0') {
-            $and->add($qb->expr()->eq('c.language', $language));
-        }
-
-        $comments = $qb
-            ->select('c', 'cc.name', 'l.id as language')
-            ->leftJoin('c.commenter', 'cc')
-            ->leftJoin('c.language', 'l')
-            ->where($and)
-            ->orderBy('c.id', $sortDir)
-            ->getQuery()
-            ->getArrayResult();
-
-        if ($createdAt != null && $createdAt != '0') {
-            foreach ($comments as $comment) {
-                if ($createdAt == $comment[0]['time_created']->format('Y-m-d')) {
-                    return array($comment);
-                }
-            }
-
-            return array();
-        }
-
-        return $comments;
-    }
-
-    /**
      * Gets comment list by given parameters
      *
      * @param array  $params  Parameters
@@ -807,65 +699,76 @@ class AdminController extends Controller
      *
      * @return array
      */
-    private function getList($params, $start, $limit, $sortDir) {
-
+    private function getList($params, $start, $limit, $sortDir)
+    {
         $em = $this->container->get('em');
         $return = array();
-        $result = array();
-        $commenter = null;
-        $language = null;
-        $createdAt = null;
-        $query = "";
+
+        $qb = $em->getRepository('Newscoop\Entity\Comment')
+                ->createQueryBuilder('c');
+        $and = $qb->expr()->andX();
+        $qb
+            ->select('c', 'l.id as language', 'cc.name')
+            ->leftJoin('c.commenter', 'cc')
+            ->leftJoin('c.language', 'l')
+            ->leftJoin('c.thread', 't')
+            ->where($qb->expr()->isNotNull('c.forum'));
+
+        if ($params['publication'] != null && $params['publication'] != '0') {
+            $qb->andWhere('c.forum = :publication')
+                ->setParameter('publication', $params['publication']);
+        }
 
         if ($params['commenter'] != null && $params['commenter'] != '0') {
-            $commenter = $params['commenter'];
+            $qb->andWhere('c.commenter = :commenter')
+                ->setParameter('commenter', $params['commenter']);
         }
 
         if ($params['language'] != null && $params['language'] != '0') {
-            $language = $params['language'];
+            $qb->andWhere('c.language = :language')
+                ->setParameter('language', $params['language']);
         }
 
         if ($params['time_created'] != null && $params['time_created'] != '0') {
-            $createdAt = $params['time_created'];
+            $date = strtotime($params['time_created']);
+            $date = strtotime("+1 day", $date);
+            $qb->andWhere($qb->expr()->between('c.time_created',
+                $qb->expr()->literal($params['time_created']),
+                $qb->expr()->literal(date('Y-m-d', $date))
+            ));
         }
 
         if ($params['thread'] != null && $params['thread'] != '0') {
-            foreach ($this->getArticleComments($params['thread'], $commenter, $language, $createdAt, $sortDir, $em) as $comment) {
-                $return[] = $this->processItem($comment);
-            }
-        } else {
+            $qb->andWhere('c.article_num = :articleNumber')
+                ->setParameter('articleNumber', $params['thread']);
+        }
 
-            foreach ($params as $key => $param) {
-                if ($param != null && $param != '0' && $key != 'commenter' && $key != 'time_created') {
-                    $query .= 'a.'.$key.' = '. $param .' AND ';
-                }
-            }
+        if ($params['issueId'] != null && $params['issueId'] != '0') {
+            $qb->andWhere('t.issueId = :issueId')
+                ->setParameter('issueId', $params['issueId']);
+        }
 
-            $articles = $em->getRepository('Newscoop\Entity\Article')
-                ->createQueryBuilder('a')
-                ->select('a.number')
-                ->where(substr($query, 0, -5))
-                ->setMaxResults($limit)
-                ->setFirstResult($start)
-                ->getQuery()
-                ->getArrayResult();
+        if ($params['sectionId'] != null && $params['sectionId'] != '0') {
+            $qb->andWhere('t.sectionId = :sectionId')
+                ->setParameter('sectionId', $params['sectionId']);
+        }
 
-            $articlesCount = $em->getRepository('Newscoop\Entity\Article')
-                ->createQueryBuilder('a')
-                ->select('count(a)')
-                ->getQuery()
-                ->getSingleScalarResult();
+        $countBuilder = clone $qb;
+        $commentsCount = (int) $countBuilder->select('COUNT(c)')->getQuery()->getSingleScalarResult();
 
-            foreach ($articles as $article) {
-                foreach ($this->getArticleComments($article['number'], $commenter, $language, $createdAt, $sortDir, $em) as $comment) {
-                    $return[] = $this->processItem($comment);
-                }
-            }
+        $comments = $qb->setMaxResults($limit)
+            ->setFirstResult($start)
+            ->orderBy('c.time_created', $sortDir)
+            ->getQuery()
+            ->getArrayResult();
+
+        foreach ($comments as $comment) {
+            $return[] = $this->processItem($comment);
         }
 
         return array(
-            $result,
-            $articlesCount
+            $return,
+            $commentsCount
         );
     }
 
@@ -880,7 +783,7 @@ class AdminController extends Controller
      *
      * @return array
      */
-    public function searchComment($em, $searchPhrase, $return, $limit, $start) 
+    public function searchComment($em, $searchPhrase, $return, $limit, $start)
     {
         $qb = $em->getRepository('Newscoop\Entity\Comment')
             ->createQueryBuilder('c');
