@@ -88,8 +88,9 @@ class AdminController extends Controller
             if ($form->isValid()) {
                 $data = $form->getData();
                 $comment = new BaseComment();
+                $articleInfo = explode("_", $data['articles']);
                 $language = $em->getRepository('Newscoop\Entity\Article')
-                    ->findOneBy(array('number' => $data['articles']))
+                    ->findOneBy(array('number' => $articleInfo[4]))
                     ->getLanguage()
                     ->getId();
 
@@ -105,7 +106,7 @@ class AdminController extends Controller
                     'subject' => $data['subject'],
                     'message' => $data['message'],
                     'status' => 'approved',
-                    'thread' => $data['articles'],
+                    'thread' => $articleInfo[4],
                     'language' => $language,
                 );
 
@@ -393,7 +394,7 @@ class AdminController extends Controller
 
         $sections = $qb->setParameter('publication', $publication)
             ->groupBy('s.name')
-            ->orderBy('s.id', 'desc')
+            ->orderBy('s.name', 'asc')
             ->getQuery()
             ->getArrayResult();
 
@@ -429,53 +430,63 @@ class AdminController extends Controller
 
         $qb = $em->getRepository('Newscoop\Entity\Article')
             ->createQueryBuilder('a')
-            ->select('a.issueId', 'l.id', 'a.sectionId', 'a.number', 'a.name');
+            ->select('a.issueId', 'l.id', 'a.sectionId', 'a.number', 'a.name')
+            ->leftJoin('a.language', 'l');
 
-        if ($request->get('language') > 0) {
-            $language = $request->get('language');
-        }
+        if ($searchTerm && $publication == 0) {
+            $qb->where($qb->expr()->like('a.name', $qb->expr()->literal('%'.$searchTerm.'%')));
+        } else {
 
-        $qb
-            ->leftJoin('a.language', 'l')
-            ->where('a.publication = :publication');
-
-        if ($issue > 0) {
-            $issueArray = explode("_", $issue);
-            $issue = $issueArray[1];
-            if (isset($issueArray[2])) {
-                $language = $issueArray[2];
+            if ($request->get('language') > 0) {
+                $language = $request->get('language');
             }
 
-            $constraints[] = new \ComparisonOperation('Articles.NrIssue', $operator, $issue);
-            $qb
-                ->andWhere('a.issueId = :issue')
-                ->setParameter('issue', $issue);
-        }
+            $qb->where('a.publication = :publication');
 
-        if ($section > 0) {
-            $sectionArray = explode("_", $section);
-            $section = $sectionArray[3];
-            if (isset($issueArray[2])) {
-                $language = $issueArray[2];
+            if ($issue > 0) {
+                $issueArray = explode("_", $issue);
+                $publication = $issueArray[0];
+                $issue = $issueArray[1];
+                if (isset($issueArray[2])) {
+                    $language = $issueArray[2];
+                }
+
+                $constraints[] = new \ComparisonOperation('Articles.NrIssue', $operator, $issue);
+                $qb
+                    ->andWhere('a.issueId = :issue')
+                    ->setParameter('issue', $issue);
+            } else if ($section > 0) {
+                $sectionArray = explode("_", $section);
+                $publication = $sectionArray[0];
+                $section = $sectionArray[3];
+                $issue = $sectionArray[1];
+                if (isset($issueArray[2])) {
+                    $language = $issueArray[2];
+                }
+
+                $constraints[] = new \ComparisonOperation('Articles.NrIssue', $operator, $issue);
+                $constraints[] = new \ComparisonOperation('Articles.NrSection', $operator, $section);
+                $qb
+                    ->andWhere('a.sectionId = :section')
+                    ->andWhere('a.issueId = :issue')
+                    ->setParameter('section', $section)
+                    ->setParameter('issue', $issue);
             }
 
-            $constraints[] = new \ComparisonOperation('Articles.NrSection', $operator, $section);
-            $qb
-                ->andWhere('a.sectionId = :section')
-                ->setParameter('section', $section);
-        }
+            if ($searchTerm) {
+                $constraints[] = new \ComparisonOperation('Articles.IdPublication', $operator, $publication);
+                $countTotal = 20;
+                $articleNumbers = \Article::SearchByKeyword($searchTerm, true, $constraints, array(), 0, 0, $countTotal, false);
 
-        if ($searchTerm) {
-            $constraints[] = new \ComparisonOperation('Articles.IdPublication', $operator, $publication);
-            $countTotal = 20;
-            $articleNumbers = \Article::SearchByKeyword($searchTerm, true, $constraints, array(), 0, 0, $countTotal, false);
-
-            foreach ($articleNumbers as $key => $value) {
-                $qb->andWhere($qb->expr()->orX($qb->expr()->eq('a.number', $value['number'])));
+                foreach ($articleNumbers as $key => $value) {
+                    $qb->andWhere($qb->expr()->orX($qb->expr()->eq('a.number', $value['number'])));
+                }
             }
+
+            $qb->setParameter('publication', $publication);
         }
 
-        $articles = $qb->setParameter('publication', $publication)
+        $articles = $qb
             ->setMaxResults(20)
             ->orderBy('a.name', 'asc')
             ->getQuery()
@@ -591,17 +602,15 @@ class AdminController extends Controller
             ->getQuery()
             ->getSingleScalarResult();
 
-        $filteredCommentsCount = $allComments;
-
         $searchPhrase = $request->get('sSearch');
         if (isset($searchPhrase) && strlen($searchPhrase) > 0) {
             $return = $this->searchComment($em, $searchPhrase, $return, $limit, $start);
 
             return new Response(json_encode(array(
                 'iTotalRecords' => $allComments,
-                'iTotalDisplayRecords' => count($return),
+                'iTotalDisplayRecords' => $return['count'],
                 'sEcho' => (int) $request->get('sEcho'),
-                'aaData' => $return,
+                'aaData' => $return['result'],
             )));
         }
 
@@ -651,13 +660,18 @@ class AdminController extends Controller
             }
 
             try {
-                $comment = $em->getRepository('Newscoop\CommentListsBundle\Entity\Comment')
-                    ->findOneBy(array('commentId' => $values['commentId']));
-
-               // $comment->setComment();
-                $comment = $em->getRepository('Newscoop\Entity\Comment')->find($values['commentId']);
-                $em->getRepository('Newscoop\Entity\Comment')->update($comment, $values);
-                $em->flush();
+                $queryBuilder = $em->createQueryBuilder();
+                $query = $queryBuilder->update('Newscoop\CommentListsBundle\Entity\Comment', 'c')
+                    ->set('c.editedSubject', ':subject')
+                    ->set('c.editedMessage', ':message')
+                    ->where('c.commentId = :commentId')
+                    ->setParameters(array(
+                        'commentId' => $values['commentId'],
+                        'subject' => $values['subject'],
+                        'message' => $values['message']
+                    ))
+                    ->getQuery();
+                $query->execute();
             } catch (\Exception $e) {
                 return new JsonResponse(array('status' => $e->getMessage()));
             }
@@ -787,22 +801,30 @@ class AdminController extends Controller
         $qb = $em->getRepository('Newscoop\Entity\Comment')
             ->createQueryBuilder('c');
 
-        $search = $qb->select('c', 'l.id as language', 'cc.name')
+        $qb
             ->leftJoin('c.commenter', 'cc')
             ->leftJoin('c.language', 'l')
             ->where($qb->expr()->like('c.message', ':phrase'))
             ->orWhere($qb->expr()->like('c.subject', ':phrase'))
-            ->setParameter('phrase', '%'.$searchPhrase.'%')
+            ->setParameter('phrase', '%'.$searchPhrase.'%');
+
+        $countBuilder = clone $qb;
+        $count = (int) $countBuilder->select('COUNT(c)')->getQuery()->getSingleScalarResult();
+
+        $search = $qb->select('c', 'l.id as language', 'cc.name')
             ->setMaxResults($limit)
             ->setFirstResult($start)
             ->getQuery()
             ->getArrayResult();
 
-            foreach ($search as $comment) {
-                $return[] = $this->processItem($comment);
-            }
+        foreach ($search as $comment) {
+            $return[] = $this->processItem($comment);
+        }
 
-        return $return;
+        return array(
+            'count' => $count,
+            'result' => $return
+        );
     }
 
     /**

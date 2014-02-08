@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    $('#issue_filter').hide();
+    $('#section_filter').hide();
     $("#playlists").select2({
         placeholder: translations['plugin.lists.label.selectlist'],
 
@@ -19,7 +21,7 @@ $(document).ready(function() {
         $('.save-button-bar').show(); 
         $('#list_name').show();
         $('#playlist-name-label').show();
-        $('#playlist-id').show();
+        //$('#playlist-id').show();
         $('#remove-ctrl').hide();
         $('#delete-all-btn').show();
         if ($('#playlist-name').val() != '') {
@@ -95,10 +97,12 @@ $(document).ready(function() {
         refreshFilterIssues();
         refreshFilterSections();
         refreshFilterArticles();
+        $("#article_filter").select2("enable", true);
     })
 
     $('#issue_filter').change(function()
     {
+        $("#article_filter").select2("enable", true);
         var smartlist = $(this).closest('.smartlist');
         var smartlistId = smartlist.attr('id').split('-')[1];
         filters[smartlistId]['section'] = 0;
@@ -109,6 +113,7 @@ $(document).ready(function() {
 
     $('#section_filter').change(function()
     {
+        $("#article_filter").select2("enable", true);
         var smartlist = $(this).closest('.smartlist');
         var smartlistId = smartlist.attr('id').split('-')[1];
         filters[smartlistId]['article'] = 0;
@@ -178,6 +183,8 @@ $(document).ready(function() {
                             $(this).parent('dl').hide();
                             option = $('option[value="' + label + '"]', select);
                             option.show();
+                            $("select[name='author']").select2("val", "");
+                            $('input, select', $(this).parent()).val('').change();
                         });
                         $("select[name='author']").removeClass('form-control input-sm');
                         $("select[name='author']").select2({
@@ -225,6 +232,7 @@ $('fieldset.toggle.filters dl:first').each(function()
                 resetFilterArticles();
                 resetFilterSections();
                 resetFilterIssues();
+                $("#article_filter").select2("enable", false);
                 $('#publication_filter').val('0');
                 // reset main filters
                 $('> select', fieldset).val('0');
@@ -273,11 +281,6 @@ function handleArgs()
     return args;
 }
 
-function triggerSelectClick()
-{
-    $('#playlists').change();
-}
-
 function toggleDragZonePlaceHolder()
 {
     if($('#context_list').find('.context-item').html() != null) {
@@ -293,7 +296,23 @@ function fnLoadContextList(data)
         $("#context_list").html('');
         for(i = 0; i < items.length; i++) {
             var item = items[i];
-            appendItemToContextList(item.comment.id, item.comment.subject, item.comment.source, item.comment.time_created.date, item.comment.message, item.comment.commenter.name);
+            var subject = item.comment.subject;
+            var message = item.comment.message;
+            var edited = false;
+            if (item.editedSubject) {
+                subject = item.editedSubject;
+                edited = true;
+            }
+
+            if (item.editedMessage) {
+                message = item.editedMessage;
+                edited = true;
+            }
+
+            appendItemToContextList(
+                edited, item.comment.id, item.comment.subject, subject,
+                item.comment.source, item.comment.time_created.date, item.comment.message, message, item.comment.commenter.name
+            );
         }
     } else {
         deleteContextList();
@@ -306,25 +325,28 @@ function loadContextList()
     var relatedComments = $('#context_list').sortable( "serialize");
     callController(Routing.generate('newscoop_commentlists_admin_loadlist'), {playlistId: $('#playlist-id').val()}, fnLoadContextList);
 }
-function appendItemToContextList(comment_id, comment_subject, comment_source, comment_date, comment_message, comment_commenter)
+function appendItemToContextList(edited, comment_id, comment_edited_subject, comment_subject, comment_source, comment_date, comment_edited_msg, comment_message, comment_commenter)
 {
 
 $("#context_list").append
 (
     '<li class="item" id="'+comment_id+'">'+
-    '<input type="hidden" name="article-id[]" value="'+comment_id+'" />'+
+    '<input type="hidden" name="comment-id[]" value="'+comment_id+'" />'+
     '<div class="context-item">'+
     '<div class="context-drag-topics"><a href="#" title="drag to sort"></a></div>'+
     '<div class="context-item-header">'+
     '<div class="context-item-date" style="float: none;">'+ comment_date+' ('+comment_commenter+') '+
-    (comment_source ? '<span class=\"label label-info\">'+comment_source+'</span>' : '')+
+    (comment_source ? '<span class=\"label label-info\">'+comment_source+'</span> ' : '')+
+    (edited ? '<span class=\"label label-warning\">Edited</span>' : '')+
     '</div></div>'+
     '<a href="#" class="corner-button" style="display: block;" '+
     'onClick="$(this).parent(\'div\').parent(\'li.item\').remove();toggleDragZonePlaceHolder();"><span class="ui-icon ui-icon-closethick" style="margin-left: -5px;"></span></a>'+
     '<div class="context-item-subject">'+comment_subject+'</div>'+
     '<div class="context-item-summary"></div>'+
+    '<input type="hidden" class="originalMessage" value="'+comment_edited_msg+'"/>'+
+    '<input type="hidden" class="originalSubject" value="'+comment_edited_subject+'"/>'+
     '<div class="commentBtns" id="comment_'+comment_id+'" style="visibility: visible; display: none; float: right;">'+
-    '<ul><li><button type="button" class="btn btn-default btn-xs action-edit"><span class="glyphicon glyphicon-edit"></span> Quick edit</button>'+
+    '<ul><li><button type="button" class="btn btn-default btn-xs action-edit"><span class="glyphicon glyphicon-edit"></span> '+translations['plugin.lists.btn.edit']+'</button>'+
     '</li></ul></div>'+
     '</div>'+
     '</li>'
@@ -343,7 +365,7 @@ function popup_save()
 {
     var comments = [];
     var cancelSave = false;
-    $('#context-list-form').find('input[type=hidden]').each(function()
+    $('#context-list-form').find('input[name="comment-id[]"]').each(function()
     {
         var commentId = $(this).val();
         if( $.inArray(commentId, comments) != -1 ) {
@@ -371,17 +393,10 @@ function fnSaveCallback(data)
         var flash = flashMessage(translations['plugin.lists.label.couldnotsave'], 'error', false);
         return false;
     }
-    var pl = $(parent.document.body).find('#playlists option[value='+data.listId+']');
-    if (pl.length == 0) {
-        var opt = $('<option />').val(data.listId).text(data.listName);
-        var sel = $(parent.document.body).find('#playlists');
-        sel.append( opt );
-        sel.val(data.listId)
-        triggerSelectClick();
-    }
-    else {
-        pl.val(data.listId).text(data.listName).trigger('click');
-    }
+
+    var listName = $("#playlist-name").val();
+    var listId = $("#playlist-id").val();
+    $("#playlists").select2('data', {id: data.listId, text: listName });
     var flash = flashMessage('List saved', null, false);
 }
 
@@ -429,6 +444,7 @@ function refreshFilterIssues()
     if($('#publication_filter').val() <= 0) {
         resetFilterIssues();
     } else {
+        $('#issue_filter').show();
         var args = handleArgs();
         callController(Routing.generate('newscoop_commentlists_admin_getfilterissues'), args, handleFilterIssues);
     }
@@ -439,6 +455,7 @@ function refreshFilterSections()
     if($('#publication_filter').val() <= 0) {
         resetFilterSections();
     } else {
+        $('#section_filter').show();
         var args = handleArgs();
         callController(Routing.generate('newscoop_commentlists_admin_getfiltersections'), args, handleFilterSections);
     }

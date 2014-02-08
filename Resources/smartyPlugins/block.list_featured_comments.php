@@ -34,13 +34,13 @@ function smarty_block_list_featured_comments($params, $content, &$smarty, &$repe
             return null;
         }
 
-        $context->setCurrentList($list, array('comment'));
-        $context->comment = $context->current_comments_list->current;
+        $context->setCurrentList($list, array('featured_comment'));
+        $context->featured_comment = $context->current_comments_list->current;
         $repeat = true;
     } else { // next
         $context->current_comments_list->defaultIterator()->next();
         if (!is_null($context->current_comments_list->current)) {
-            $context->comment = $context->current_comments_list->current;
+            $context->featured_comment = $context->current_comments_list->current;
             $repeat = true;
         } else {
             $context->resetCurrentList();

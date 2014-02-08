@@ -190,7 +190,7 @@ $(document).ready(function()
         {% if order %}
         'fnRowCallback': function(nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
             var id = $(aData[0]).attr('name').split('_')[0];
-            $(nRow).attr('id', 'article_' + id);
+            $(nRow).attr('id', 'comment_' + id);
             return nRow;
         },
         {% endif %}

@@ -55,6 +55,18 @@ class Comment
     private $order;
 
     /**
+     * @ORM\Column(type="text", name="edited_message", nullable=true)
+     * @var text
+     */
+    private $editedMessage;
+
+    /**
+     * @ORM\Column(type="string", length=140, name="edited_subject", nullable=true)
+     * @var string
+     */
+    private $editedSubject;
+
+    /**
      * @ORM\Column(type="datetime", name="created_at")
      * @var datetime
      */
@@ -118,12 +130,61 @@ class Comment
     /**
      * Set comment
      *
-     * @param  int $comment
+     * @param int $comment
+     *
      * @return int
      */
     public function setComment($comment)
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Get edited comment message
+     *
+     * @return text
+     */
+    public function getEditedMessage()
+    {
+        return $this->editedMessage;
+    }
+
+    /**
+     * Set edited comment message
+     *
+     * @param text $editedMessage
+     *
+     * @return text
+     */
+    public function setEditedMessage($editedMessage)
+    {
+        $this->editedMessage = $editedMessage;
+
+        return $this;
+    }
+
+    /**
+     * Get edited comment subject
+     *
+     * @return string
+     */
+    public function getEditedSubject()
+    {
+        return $this->editedSubject;
+    }
+
+    /**
+     * Set edited comment subject
+     *
+     * @param string $editedSubject
+     *
+     * @return string
+     */
+    public function setEditedSubject($editedSubject)
+    {
+        $this->editedSubject = $editedSubject;
 
         return $this;
     }

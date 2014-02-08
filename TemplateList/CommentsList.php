@@ -10,6 +10,8 @@ namespace Newscoop\CommentListsBundle\TemplateList;
 
 use Newscoop\ListResult;
 use Newscoop\TemplateList\BaseList;
+use Newscoop\CommentListsBundle\Meta\MetaComment;
+
 /**
  * Comments List
  */
@@ -22,7 +24,7 @@ class CommentsList extends BaseList
         $lists = $service->findByCriteria($criteria);
         foreach ($lists as $key => $commentList) {
             foreach ($service->findCommentsByOrder($commentList->getId()) as $key => $comment) {
-                $lists->items[$key] = new \MetaComment($comment['id']);
+                $lists->items[$key] = new MetaComment($comment['id']);
             }
         }
 

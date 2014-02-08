@@ -33,6 +33,7 @@ var translations = {'plugin.lists.label.reset': '{{ 'plugin.lists.label.reset'|t
     'plugin.lists.table.menu': '{{ 'plugin.lists.table.menu'|trans }}',
     'plugin.lists.label.search': '{{ 'plugin.lists.label.search'|trans }}',
     'plugin.lists.label.selectarticle': '{{ 'plugin.lists.label.allart'|trans }}',
+    'plugin.lists.btn.edit': '{{ 'plugin.lists.btn.edit'|trans }}'
 };
 contextListFilters = {};
 filters = [];
@@ -153,10 +154,6 @@ $(document).ready(function() {
                                         </dl>
                                     </fieldset>
                                 </dd>
-                                <dd>
-                                    <input type="checkbox" name="show_filtered" id="show_filtered">
-                                    <label for="show_filtered">{{ 'plugin.lists.label.showfiltered'|trans }}</label>
-                                </dd>
                             </dl>
                         </div>
                     </div>
@@ -199,7 +196,10 @@ $(document).ready(function() {
                 <label>{{ 'plugin.lists.label.externalsubject'|trans }}</label>
                 <input name="subject" type="text" class="form-control input-sm"><br>
                 <label>{{ 'plugin.lists.label.externalmessage'|trans }}</label>
-                <textarea style="min-height:200px;" name="message" class="form-control input-sm"></textarea>
+                <textarea style="min-height:200px;" name="message" class="form-control input-sm"></textarea><br>
+                <h4>{{ 'plugin.lists.label.originalcomment'|trans }}</h4>
+                <input name="originalSubject" type="text" disabled class="form-control input-sm"><br>
+                <textarea style="min-height:150px;" disabled name="originalMessage" class="form-control input-sm"></textarea>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">{{ 'plugin.lists.btn.cancel'|trans }}</button>
@@ -244,33 +244,25 @@ $(document).ready(function() {
     <script type="text/javascript">
     $('#externalCommentForm_date_date').addClass('form-control input-sm');
     $('#externalCommentForm_date_time').addClass('form-control input-sm');
-    function commentFormat(comment) {
-        return comment.title;
-    }
     $("#externalCommentForm_articles").select2({
         minimumInputLength: 3,
-        id: function(comment) { return comment.number; },
+        id: function(article) { return article.val; },
         ajax: {
-            url: "/api/articles.json",
+            url: Routing.generate('newscoop_commentlists_admin_getfilterarticles'),
             dataType: 'json',
-            quietMillis: 100,
             data: function (term, page) { // page is the one-based page number tracked by Select2
-                return {
-                    items_per_page: 10, // page size
-                    page: page, // page number
-                };
+                var args = handleArgs();
+                    args['term'] = term;
+                    args['page'] = page;
+
+                return args;
             },
             results: function (data, page) {
-                var more = (page * 10) < data.pagination.itemsCount; // whether or not there are more results available
-
-                return {results: data.items, more: more};
+                return { results: data.items };
             }
         },
-        formatResult: commentFormat,
-        formatSelection: commentFormat,
-        formatSearching:function() { return '{{ 'plugin.lists.label.searching'|trans }}'},
-        formatNoMatches:function() { return '{{ 'plugin.lists.label.nomatches'|trans }}'},
-        formatInputTooShort: function (input, min) { return "{{ 'plugin.lists.label.please'|trans }} " + (min - input.length) + " {{ 'plugin.lists.label.more'|trans }}"; }
+        formatResult: function(article) { return article.name; },
+        formatSelection: function(article) { return article.name; },
     });
 
     $('span.select2-chosen').empty();
@@ -279,10 +271,12 @@ $(document).ready(function() {
         mouseenter: function(){
             var id = $(this).attr('id');
             $(this).find('.commentBtns#comment_'+id).show();
+            $(this).find('.commentBtns#'+id).show();
         },
         mouseleave: function(){
             var id = $(this).attr('id');
             $(this).find('.commentBtns#comment_'+id).hide();
+            $(this).find('.commentBtns#'+id).hide();
         }
     });
 
@@ -290,10 +284,14 @@ $(document).ready(function() {
         $('#modalEdit').modal();
         var subject = $(this).parents('li').find('.context-item-subject');
         var message = $(this).parents('li').find('.context-item-summary');
+        var originalSubject = $(this).parents('li').find('input.originalSubject');
+        var originalMessage = $(this).parents('li').find('input.originalMessage');
         var id = $(this).parents('li.item').attr('id');
         $('#modalEdit').find('input[name=commentId]').val(id);
         $('#modalEdit').find('input[name=subject]').val(subject.text());
         $('#modalEdit').find('textarea[name=message]').val(message.text());
+        $('#modalEdit').find('textarea[name=originalMessage]').val(originalMessage.val());
+        $('#modalEdit').find('input[name=originalSubject]').val(originalSubject.val());
     });
 
     $('form#editForm').live('submit', function () {
@@ -365,15 +363,15 @@ $(document).ready(function() {
            receive: function(event, ui)
            {
                $(ui.item).find(".corner-button").css("display","none");
-               $(ui.item).find(".view-article").css("display","block");
 
-               var articleId = $(ui.item).attr('id');
+               var commentId = $(ui.item).attr('id');
                var newItem = $('<tr />');
-               newItem.attr('id', articleId);
+               newItem.attr('id', commentId);
                newItem.append($('<td />').addClass('name'));
                $(ui.item).find('input[type=hidden]').remove();
                newItem.find('td').append($(ui.item).find('div:eq(0)'));
                $(ui.item).replaceWith(newItem);
+               $('#table-{{id}} tbody').find('.commentBtns').remove();
 
                toggleDragZonePlaceHolder();
            },
@@ -386,16 +384,25 @@ $(document).ready(function() {
            receive: function(event, ui)
            {
             $(ui.item).find(".corner-button").css("display","block");
-            var articleId = $(ui.item).attr('id').replace('article_', '');
-            var newItem = $('<li />').addClass('item').attr('id', articleId);
+            var commentId = $(ui.item).attr('id').replace('comment_', '');
+            var newItem = $('<li />').addClass('item').attr('id', commentId);
             newItem.append( $('<input />')
                 .attr('type', 'hidden')
-                .attr('name', 'article-id[]')
-                .val(articleId) );
+                .attr('name', 'comment-id[]')
+                .val(commentId) );
             newItem.append($(ui.item).find('td > *'));
             $(ui.item).replaceWith(newItem);
 
+            var commentId = ui.item.attr('id');
+            var duplicate = $('#context_list').find('li.#'+commentId.replace('comment_', '')).children().find('.commentBtns');
+            if (duplicate.length == 0) {
+            $('#context_list').find('li.#'+commentId.replace('comment_', '')).children().append('<div class="commentBtns" id="'+commentId+'" style="visibility: visible; block: block; float: right;">'+
+            '<ul><li><button type="button" class="btn btn-default btn-xs action-edit"><span class="glyphicon glyphicon-edit"></span> '+translations['plugin.lists.btn.edit']+'</button>'+
+            '</li></ul></div>');
+            }
+
             toggleDragZonePlaceHolder();
+            popup_save();
         },
         items : '> li'
     })

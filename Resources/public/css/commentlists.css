@@ -51,6 +51,7 @@
     float: left;
     line-height: 35px;
     display: none;
+    padding: 0 10px;
 }
 
 .plugin-context-block {

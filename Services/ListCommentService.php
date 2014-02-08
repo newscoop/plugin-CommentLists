@@ -30,7 +30,8 @@ class ListCommentService
     /**
      * Find by criteria
      *
-     * @param  Newscoop\CommentListsBundle\TemplateList\CommentCriteria $criteria
+     * @param Newscoop\CommentListsBundle\TemplateList\CommentCriteria $criteria
+     *
      * @return Newscoop\ListResult;
      */
     public function findByCriteria(ListCriteria $criteria)
@@ -42,6 +43,7 @@ class ListCommentService
      * Count by given criteria
      *
      * @param array $criteria
+     *
      * @return int
      */
     public function countBy(array $criteria = array())
@@ -53,11 +55,24 @@ class ListCommentService
      * Find comments by given list id
      *
      * @param int $listId
+     *
      * @return Newscoop\CommentListsBundle\Entity\Comment
      */
     public function findCommentsByOrder($listId)
     {
         return $this->getRepository()->findByListId($listId);
+    }
+
+    /**
+     * Find comment by given id
+     *
+     * @param int $commentId
+     *
+     * @return Newscoop\CommentListsBundle\Entity\Comment
+     */
+    public function findOneComment($commentId)
+    {
+        return $this->getCommentRepository()->findOneBy(array('commentId' => $commentId));
     }
 
     /**
@@ -68,5 +83,15 @@ class ListCommentService
     protected function getRepository()
     {
         return $this->em->getRepository('Newscoop\CommentListsBundle\Entity\CommentList');
+    }
+
+    /**
+     * Get comment repository
+     *
+     * @return Newscoop\CommentListsBundle\Entity\Comment
+     */
+    protected function getCommentRepository()
+    {
+        return $this->em->getRepository('Newscoop\CommentListsBundle\Entity\Comment');
     }
 }

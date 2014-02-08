@@ -13,12 +13,14 @@ plugin:
       save: "Save"
       addexternal: "Add external comment"
       submit: "Submit"
+      edit: "Quick edit"
     table:
       info: "Showing _START_ to _END_ of _TOTAL_ entries"
       noentries: "No entries to show"
       filtering: " - filtering from _MAX_ records"
       menu: "Display _MENU_ records"
     label:
+      originalcomment: "Original comment"
       please: "Please enter "
       more: " more characters."
       listid: "List ID"
