@@ -96,7 +96,7 @@ class MetaComment
     public $source;
 
     /**
-     * @var Newscoop\NewsletterBundle\Services\NewsletterService
+     * @var Newscoop\CommentListsBundle\Services\ListCommentService
      */
     private $service;
 
