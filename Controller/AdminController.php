@@ -92,7 +92,7 @@ class AdminController extends Controller
                 $language = $em->getRepository('Newscoop\Entity\Article')
                     ->findOneBy(array('number' => $articleInfo[4]))
                     ->getLanguage()
-                    ->getId();
+                    ->getCode();
 
                 $values = array(
                     'name' => $data['commenterName'],
@@ -102,7 +102,7 @@ class AdminController extends Controller
                     'url' => $data['commenterUrl'],
                     'source' => $data['source'],
                     'ip' => '',
-                    'time_created' => $data['date'],
+                    'time_updated' => $data['date'],
                     'subject' => $data['subject'],
                     'message' => $data['message'],
                     'status' => 'approved',
