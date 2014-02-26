@@ -18,7 +18,7 @@ use Newscoop\CommentListsBundle\Meta\MetaComment;
 class CommentsList extends BaseList
 {
 
-    protected function prepareList($criteria)
+    protected function prepareList($criteria, $params)
     {
         $service = \Zend_Registry::get('container')->get('commentlists.list');
         $lists = $service->findByCriteria($criteria);
