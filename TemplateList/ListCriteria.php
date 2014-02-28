@@ -28,5 +28,5 @@ class ListCriteria extends Criteria
     /**
      * @var array
      */
-    public $orderBy = array('created_at' => 'asc');
+    public $created_at = array('created_at' => 'asc');
 }
