@@ -96,7 +96,7 @@ class CommentListRepository extends EntityRepository
      * @param  int $listId
      * @return Newscoop\CommentListsBundle\Entity\Comment
      */
-    public function findByListId($listId)
+    public function findByListId($listId, $limit)
     {
         $comments = $this->getEntityManager()->createQueryBuilder()
             ->select('c')
@@ -106,7 +106,7 @@ class CommentListRepository extends EntityRepository
             ->from('Newscoop\CommentListsBundle\Entity\Comment', 'c');
 
         $commentsIds = array();
-        foreach ($comments->getQuery()->getArrayResult() as  $value) {
+        foreach ($comments->getQuery()->setMaxResults($limit)->getArrayResult() as  $value) {
             $commentsIds[] = array('id' => $value['commentId']);
         }
 
