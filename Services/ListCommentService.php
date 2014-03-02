@@ -58,9 +58,9 @@ class ListCommentService
      *
      * @return Newscoop\CommentListsBundle\Entity\Comment
      */
-    public function findCommentsByOrder($listId)
+    public function findCommentsByOrder($listId, $maxResults)
     {
-        return $this->getRepository()->findByListId($listId);
+        return $this->getRepository()->findByListId($listId, $maxResults);
     }
 
     /**
