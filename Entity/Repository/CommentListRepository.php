@@ -106,17 +106,10 @@ class CommentListRepository extends EntityRepository
             ->from('Newscoop\CommentListsBundle\Entity\Comment', 'c');
 
         $commentsIds = array();
-        foreach ($comments->getQuery()->getArrayResult() as $value) {
-            $commentsIds[] = $value['commentId'];
+        foreach ($comments->getQuery()->getArrayResult() as  $value) {
+            $commentsIds[] = array('id' => $value['commentId']);
         }
 
-        $qb = $this->getEntityManager()->createQueryBuilder();
-
-        $comments = $qb->select('c.id')
-            ->where($qb->expr()->in('c.id', $commentsIds))
-            ->from('Newscoop\Entity\Comment', 'c')
-            ->orderBy('c.time_created', 'desc');
-
-        return $comments->getQuery()->getArrayResult();
+        return $commentsIds;
     }
 }
