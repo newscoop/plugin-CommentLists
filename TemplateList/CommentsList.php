@@ -18,12 +18,12 @@ use Newscoop\CommentListsBundle\Meta\MetaComment;
 class CommentsList extends BaseList
 {
 
-    protected function prepareList($criteria, $params)
+    protected function prepareList($criteria, $parameters)
     {
         $service = \Zend_Registry::get('container')->get('commentlists.list');
         $lists = $service->findByCriteria($criteria);
         foreach ($lists as $key => $commentList) {
-            foreach ($service->findCommentsByOrder($commentList->getId()) as $key => $comment) {
+            foreach ($service->findCommentsByOrder($commentList->getId(), $criteria->maxResults) as $key => $comment) {
                 $lists->items[$key] = new MetaComment($comment['id']);
             }
         }
