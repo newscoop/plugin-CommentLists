@@ -105,3 +105,9 @@ ul#context_list {
     overflow-x:hidden;
     padding: 36px 0px 0px 0px;
 }
+
+.fade-featured {
+    opacity: 0;
+    -webkit-transition: opacity .2s linear;
+    transition: opacity .2s linear;
+}

@@ -13,6 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManager;
+use Newscoop\Entity\Comment;
 
 class ExternalCommentType extends AbstractType
 {
@@ -29,6 +30,18 @@ class ExternalCommentType extends AbstractType
         $articlesArray = array();
         foreach ($articles as $key => $article) {
             $articlesArray[$article['number']] = $article['name'];
+        }
+
+        $statusMap = array(
+            'approved' => 'plugin.lists.status.approved',
+            'hidden' => 'plugin.lists.status.hidden',
+            'pending' => 'plugin.lists.status.pending',
+        );
+        $statuses = array();
+        foreach (Comment::$status_enum as $status) {
+            if ($status != 'deleted') {
+                $statuses[$status] = $statusMap[$status];
+            }
         }
 
         $builder->add('commenterName', null, array(
@@ -58,11 +71,20 @@ class ExternalCommentType extends AbstractType
         ))
         ->add('subject', null, array(
             'label' => 'plugin.lists.label.externalsubject',
-            'required' => false,
+            'required' => true,
         ))
         ->add('message', 'textarea', array(
             'label' => 'plugin.lists.label.externalmessage',
             'required' => true,
+        ))
+        ->add('status', 'choice', array(
+            'label' => 'plugin.lists.label.status',
+            'choices' => $statuses,
+            'required' => true,
+        ))
+        ->add('recommended', 'checkbox', array(
+            'label' => 'plugin.lists.label.recommended',
+            'required' => false,
         ))
         ->add('filterButton', 'submit', array(
             'label' => 'plugin.lists.btn.submit'

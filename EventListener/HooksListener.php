@@ -60,6 +60,7 @@ class HooksListener
             'NewscoopCommentListsBundle:Hooks:listsButton.html.twig',
             array(
                 'form' => $form->createView(),
+                'lists' => $lists,
                 'commentId' => $commentId
             )
         );

@@ -1,59 +1,241 @@
 <style type="text/css" media="screen">
 .commentBtns ul {
-    margin-left: -225px;
+    margin-left: -260px;
+}
+li.select2-search-choice div {
+    margin-top: -2px;
+}
+.modal-body label, h4 {
+    color: #000;
 }
 </style>
 <form id="hook-form">
-<li style="margin-top: -3px; float: right;margin-right: 30px;" id="{{ commentId }}">{{ 'plugin.lists.label.addto'|trans }}: {{ form_widget(form.lists, {'attr' : {'style' : 'width: 350px', 'select-id': commentId }}) }} </li>
-{{ form_rest(form) }}
+    <li style="margin-top: -3px; float: right;margin-right: 5px;" id="{{ commentId }}">{{ 'plugin.lists.label.addto'|trans }}: {{ form_widget(form.lists, {'attr' : {'style' : 'width: 350px', 'select-id': commentId }}) }} </li>
+    {{ form_rest(form) }}
 </form>
 
+<div class="modal fade-featured" id="modalEdit-select-{{ commentId }}" tabindex="-1" role="dialog" aria-labelledby="modalEdit-select-Label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" id="featured-modal-close-{{ commentId }}" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title-select" id="modalEdit-select-Label">You are about to edit and add featured comment to list: <b><span></span></b></h4>
+        <span class="label label-info">Tip:</span> If you do not want to edit comment, the original version of it will be added to selected featured list.
+    </div>
+    <form id="featured-editForm-select-{{ commentId }}" action="{{ path('newscoop_commentlists_admin_update') }}">
+        <div class="modal-body">
+            <input type="hidden" name="commentId" value="{{ commentId }}">
+            <input type="hidden" id="featured-list-id-{{ commentId }}" name="list">
+            <label>{{ 'plugin.lists.label.externalsubject'|trans }}</label>
+            <input name="subject" type="text" class="form-control input-sm"><br>
+            <label>{{ 'plugin.lists.label.externalmessage'|trans }}</label>
+            <textarea style="min-height:200px;" name="message" class="form-control input-sm"></textarea><br>
+            <h4>{{ 'plugin.lists.label.originalcomment'|trans }}</h4>
+            <input name="originalSubject" type="text" readonly="readonly" class="form-control input-sm"><br>
+            <textarea style="min-height:150px;" readonly="readonly" name="originalMessage" class="form-control input-sm"></textarea>
+        </div>
+        <div class="modal-footer">
+            <button type="button" id="featured-modal-close-{{ commentId }}" class="btn btn-default btn-sm" data-dismiss="modal">{{ 'plugin.lists.btn.cancel'|trans }}</button>
+            <input type="submit" name="submit-featured-{{ commentId }}" value="{{ 'plugin.lists.btn.submit'|trans }}" class="btn btn-success btn-sm">
+        </div>
+    </form>
+</div>
+</div>
+</div>
+
+<div id="dialog-confirm" style="display:none;" title="{{ 'plugin.lists.label.removefeatured'|trans }}">
+    <p>{{ 'plugin.lists.label.deletefeatured'|trans }}</p>
+</div>
+
 <script type="text/javascript">
-$('select#commentButtonForm_lists[select-id="{{ commentId }}"]').select2({
+function format(list) {
+    if (!list.id) return list.text;
+    return "<span class='glyphicon glyphicon-edit'></span> " + list.text;
+}
+var select2Holder = $('select#commentButtonForm_lists[select-id="{{ commentId }}"]');
+
+select2Holder.select2({
     maximumSelectionSize: 3,
     allowClear: true,
+    formatSelection: format,
+    escapeMarkup: function(m) { return m; }
 });
 
-$('select#commentButtonForm_lists[select-id="{{ commentId }}"]').on("select2-removed", function(e) {
+$('input[name="submit-featured-{{ commentId }}"]').live('click', function() {
     callServer('ping', [], function(json) {
-       $.ajax({
-            type: "POST",
-            url: "{{ path('newscoop_commentlists_admin_removecommentfromlist') }}",
-            data: {
-                "comment": {{ commentId }},
-                "list": e.val
-            },
-            dataType: "json",
-            success: function(msg){
-                flashMessage('{{ 'plugin.lists.label.successremoved'|trans }}');
-            }
-        });
-    });
-});
-
-$('select#commentButtonForm_lists[select-id="{{ commentId }}"]').on("select2-selecting", function(e) {
-    callServer('ping', [], function(json) {
-       $.ajax({
+           $.ajax({
             type: "POST",
             url: "{{ path('newscoop_commentlists_admin_addcommenttolist') }}",
-            data: {
-                "comment": {{ commentId }},
-                "list": e.val
-            },
+            data: $('form#featured-editForm-select-{{ commentId }}').serialize(),
             dataType: "json",
             success: function(msg){
+                $('#modalEdit-select-{{ commentId }}').modal('toggle');
                 flashMessage('{{ 'plugin.lists.label.successadded'|trans }}');
             }
         });
+       });
+
+    return false;
+});
+
+$('button#featured-modal-close-{{ commentId }}').live('click', function () {
+    var listId = $('#featured-list-id-{{ commentId }}').val();
+    var select = $('select#commentButtonForm_lists[select-id="{{ commentId }}"]');
+    var selectedItems = select.select2("val");
+    //if () dodac support zeby nie wywalalo option z zlectboxa jak kliknie sie na option a pozniej modal close
+    selectedItems.splice($.inArray(listId, selectedItems), 1);
+    select.select2("val", selectedItems);
+});
+
+select2Holder.on('choice-selected', function(e, choice) {
+    var data = $(choice).data('select2-data');
+    $('#modalEdit-select-{{ commentId }}').modal();
+        $('#modalEdit-select-Label span').html('');
+        $('#modalEdit-select-Label span').append(data.text);
+        $('#featured-list-id-{{ commentId }}').val(data.id);
+        var form = $('#featured-editForm-select-{{ commentId }}');
+        var subject = $('#comment-section_{{ commentId }}').find('.commentSubject');
+        var message = $('#comment-section_{{ commentId }}').find('.commentBody');
+        form.find('input[name=listId]').val(data.id);
+        form.find('textarea[name=originalMessage]').val($.trim(message.text()));
+        form.find('input[name=originalSubject]').val($.trim(subject.text()));
+        callServer('ping', [], function(json) {
+            $.ajax({
+                type: "POST",
+                url: "{{ path('newscoop_commentlists_admin_geteditedcomment') }}",
+                data: {
+                    "comment": {{ commentId }},
+                    "list": data.id
+                },
+                dataType: "json",
+                success: function(msg){
+                    if (msg.editedSubject != null) {
+                        form.find('input[name=subject]').val(msg.editedSubject);
+                    } else {
+                        form.find('input[name=subject]').val($.trim(subject.text()));
+                    }
+
+                    if (msg.editedMessage != null) {
+                        form.find('textarea[name=message]').val(msg.editedMessage);
+                    } else {
+                        form.find('textarea[name=message]').val($.trim(message.text()));
+                    }
+                }
+            });
+        });
+});
+
+select2Holder.on("change", function(e) {
+    var that = $(this);
+    if (e.added !== undefined) {
+        $('#modalEdit-select-{{ commentId }}').modal();
+        $('#modalEdit-select-Label span').html('');
+        $('#modalEdit-select-Label span').append(e.added.text);
+        $('#featured-list-id-{{ commentId }}').val(e.added.id);
+        var form = $('#featured-editForm-select-{{ commentId }}');
+        var subject = $('#comment-section_{{ commentId }}').find('.commentSubject');
+        var message = $('#comment-section_{{ commentId }}').find('.commentBody');
+        form.find('input[name=listId]').val(e.added.id);
+        form.find('textarea[name=originalMessage]').val($.trim(message.text()));
+        form.find('input[name=originalSubject]').val($.trim(subject.text()));
+        callServer('ping', [], function(json) {
+            $.ajax({
+                type: "POST",
+                url: "{{ path('newscoop_commentlists_admin_geteditedcomment') }}",
+                data: {
+                    "comment": {{ commentId }},
+                    "list": e.added.id
+                },
+                dataType: "json",
+                success: function(msg){
+                    if (msg.editedSubject != null) {
+                        form.find('input[name=subject]').val(msg.editedSubject);
+                    } else {
+                        form.find('input[name=subject]').val($.trim(subject.text()));
+                    }
+
+                    if (msg.editedMessage != null) {
+                        form.find('textarea[name=message]').val(msg.editedMessage);
+                    } else {
+                        form.find('textarea[name=message]').val($.trim(message.text()));
+                    }
+                }
+            });
+        });
+    }
+
+    if (e.removed !== undefined) {
+        var items = that.select2("val");
+        $("#dialog-confirm").dialog
+        ({
+            resizable: false,
+            height: 140,
+            modal: true,
+            open: function(event, ui) { $(".ui-dialog-titlebar-close", $(this).parent()).hide(); },
+            buttons:
+            [
+                {
+                    text: '{{ 'plugin.lists.btn.delete'|trans }}',
+                    click: function() {
+                        callServer('ping', [], function(json) {
+                           $.ajax({
+                            type: "POST",
+                            url: "{{ path('newscoop_commentlists_admin_removecommentfromlist') }}",
+                            data: {
+                                "comment": {{ commentId }},
+                                "list": e.removed.id
+                            },
+                            dataType: "json",
+                            success: function(msg){
+                                if (that.select2('data').length === 0) {
+                                    $('#featured-edit-'+{{ commentId }}).hide();
+                                }
+
+                                $('#featured-lists').find('option[value="'+e.removed.id+'"]').remove();
+                                if ($('#featured-lists').find('option:selected').length == 0) {
+                                    $('#featured-lists').find('option').attr('selected', 'selected');
+                                }
+                                flashMessage('{{ 'plugin.lists.label.successremoved'|trans }}');
+                            }
+                        });
+                       });
+                        $(this).dialog( "close" );
+                    }
+                },
+                {
+                    text: '{{ 'plugin.lists.btn.cancel'|trans }}',
+                    click: function() {
+                        items.push(e.removed.id);
+                        that.select2("val", items);
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+        });
+    }
+});
+
+select2Holder.on("select2-highlight", function(e) {
+    $(this).parents('.commentBtns#{{ commentId }}').show();
+});
+
+select2Holder.on("select2-blur", function(e) {
+    $(this).parents('.commentBtns#{{ commentId }}').show();
+});
+
+$(".commentBtns ul li#featured-edit-{{ commentId }} button").live('click', function() {
+        $('#modalEdit-{{ commentId }}').modal();
+        var form = $('#featured-editForm-{{ commentId }}');
+        var subject = $('#comment-section_{{ commentId }}').find('.commentSubject');
+        var message = $('#comment-section_{{ commentId }}').find('.commentBody');
+        /*var editDiv = $('.content-edit_{{ commentId }}');
+        editDiv.find("input[name=subject]").val($.trim(subject.text()));
+        editDiv.find("textarea[name=message]").val($.trim(message.text()));
+        var id = $(this).parents('li.item').attr('id');*/
+        form.find('input[name=commentId]').val('{{ commentId }}');
+        form.find('input[name=subject]').val($.trim(subject.text()));
+        form.find('textarea[name=message]').val($.trim(message.text()));
+        form.find('textarea[name=originalMessage]').val($.trim(message.text()));
+        form.find('input[name=originalSubject]').val($.trim(subject.text()));
     });
-});
-
-$('select#commentButtonForm_lists[select-id="{{ commentId }}"]').on("select2-highlight", function(e) {
-    $(this).parents('.commentBtns#{{ commentId }}').show();
-});
-
-$('select#commentButtonForm_lists[select-id="{{ commentId }}"]').on("select2-blur", function(e) {
-    $(this).parents('.commentBtns#{{ commentId }}').show();
-});
-
 </script>

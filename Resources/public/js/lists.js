@@ -3,39 +3,51 @@ $(document).ready(function() {
     $('#section_filter').hide();
     $("#playlists").select2({
         placeholder: translations['plugin.lists.label.selectlist'],
+        id: function(list) { return list.id; },
+        ajax: {
+            url: Routing.generate('newscoop_commentlists_admin_getlists'),
+            dataType: 'json',
+            data: function (term, page) {
+                return {}
+            },
+            results: function (data, page) {
+                return { results: data };
+            }
+        },
+        formatResult: function(list) { return list.name; },
+        formatSelection: function(list) { return list.name; },
 
     }).on("change", function (e) {
-        $('#playlist-name').attr('value', $("#playlists").select2('data').text);
+        $('#playlist-name').attr('value', $("#playlists").select2('data').name);
         $('#playlist-id').attr('value', $("#playlists").select2('data').id);
-        $('.save-button-bar').show(); 
+        $('.save-button-bar').show();
         $('#list_name').show();
         $('#playlist-id').show();
         $('#playlist-name-label').show();
         $('#playlist-id-label').show();
         $('#remove-ctrl').show();
-        $('#delete-all-btn').show();
-        loadContextList();   
+        loadContextList();
     });
 
     $('.add').live('click', function() {
-        $('.save-button-bar').show(); 
+        $('.save-button-bar').show();
         $('#list_name').show();
         $('#playlist-name-label').show();
-        //$('#playlist-id').show();
         $('#remove-ctrl').hide();
-        $('#delete-all-btn').show();
-        if ($('#playlist-name').val() != '') {
-           deleteContextList()
-           $('#playlist-name').val('');
-           $("#playlists").select2('val', '');
-        }
+        $('#playlist-id').hide();
+        $('#playlist-id').val('');
+        $('#playlist-id-label').hide();
+        $('#delete-all-btn').hide();
+        deleteContextList()
+        $('#playlist-name').val('');
+        $("#playlists").select2('val', '');
     });
 
     $(".toggle.filters legend").toggle(function() {
         var filter = $(".toggle.filters");
         filter.removeClass("closed");
         filter.find('dl:first').show();
-        
+
     }, function() {
         var filter = $(".toggle.filters");
         filter.addClass('closed');
@@ -44,7 +56,7 @@ $(document).ready(function() {
 
     $(function()
     {
-        $(".dataTables_filter input").attr("placeholder", translations['plugin.lists.label.search']).addClass("context-search search form-control").attr('style', 'width:388px');
+        $(".dataTables_filter input").attr("placeholder", translations['plugin.lists.label.search']).addClass("context-search search form-control").attr('style', 'width:410px');
         $(".fg-toolbar .ui-toolbar .ui-widget-header .ui-corner-tl .ui-corner-tr .ui-helper-clearfix").css("border","none");
         $(".fg-toolbar .ui-toolbar .ui-widget-header .ui-corner-bl .ui-corner-br .ui-helper-clearfix").css("background-color","#CCCCCC");
         $(".datatable").css("position","static");
@@ -90,6 +102,37 @@ $(document).ready(function() {
             ]
         });
         $('#remove-ctrl').click(function(){ $( "#dialog-confirm" ).dialog('open') });
+    });
+
+    $(function()
+    {
+        $( "#dialog-confirm-delete-all" ).dialog
+        ({
+            resizable: false,
+            height:180,
+            modal: true,
+            autoOpen : false,
+            position : 'center',
+            buttons:
+            [
+                {
+                    text: translations['plugin.lists.btn.deleteall'],
+                    click: function() {
+                        deleteContextList();
+                        popup_save();
+                        $(this).dialog( "close" );
+                        flashMessage(translations['plugin.lists.label.allcommentsremoved'], null, false);
+                    }
+                },
+                {
+                    text: translations['plugin.lists.btn.cancel'],
+                    click: function() {
+                        $(this).dialog( "close" );
+                    }
+                }
+            ]
+        });
+        $('#delete-all-btn').click(function(){ $( "#dialog-confirm-delete-all" ).dialog('open') });
     });
 
     $('#publication_filter').change(function()
@@ -293,6 +336,7 @@ function fnLoadContextList(data)
 {
     if(data.status == true) {
         var items = data.items;
+        $('#delete-all-btn').show();
         $("#context_list").html('');
         for(i = 0; i < items.length; i++) {
             var item = items[i];
@@ -378,10 +422,17 @@ function popup_save()
 
     if( cancelSave ) return false;
 
+    if (comments.length === 0) {
+        $('#delete-all-btn').hide();
+    } else {
+        $('#delete-all-btn').show();
+    }
+
     var aoData =
     {
         'comments': comments,
-        'name': $('#playlist-name').val()
+        'name': $('#playlist-name').val(),
+        'id': $('#playlist-id').val()
     };
     callController(Routing.generate('newscoop_commentlists_admin_savelist'), aoData, fnSaveCallback);
 }
@@ -394,9 +445,13 @@ function fnSaveCallback(data)
         return false;
     }
 
-    var listName = $("#playlist-name").val();
-    var listId = $("#playlist-id").val();
-    $("#playlists").select2('data', {id: data.listId, text: listName });
+    var listId = $("#playlist-id");
+    listId.val(data.listId);
+    $('#playlist-id').show();
+    $('#playlist-name').val(data.listName);
+    $('#playlist-id-label').show();
+    $('#remove-ctrl').show();
+    $("#playlists").select2('data', {id: data.listId, name: data.listName });
     var flash = flashMessage('List saved', null, false);
 }
 

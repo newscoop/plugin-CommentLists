@@ -33,7 +33,8 @@ var translations = {'plugin.lists.label.reset': '{{ 'plugin.lists.label.reset'|t
     'plugin.lists.table.menu': '{{ 'plugin.lists.table.menu'|trans }}',
     'plugin.lists.label.search': '{{ 'plugin.lists.label.search'|trans }}',
     'plugin.lists.label.selectarticle': '{{ 'plugin.lists.label.allart'|trans }}',
-    'plugin.lists.btn.edit': '{{ 'plugin.lists.btn.edit'|trans }}'
+    'plugin.lists.btn.edit': '{{ 'plugin.lists.btn.edit'|trans }}',
+    'plugin.lists.btn.deleteall': '{{ 'plugin.lists.btn.deleteall'|trans }}'
 };
 contextListFilters = {};
 filters = [];
@@ -52,12 +53,7 @@ $(document).ready(function() {
     <ul class="navigation" style="height: 50px; float: left">
         <li><a class="add" href="#">{{ 'plugin.lists.btn.add'|trans }}</a></li>
     </ul>
-    <select id="playlists" style="width:300px">
-        <option></option>
-        {% for list in lists %}
-        <option value="{{ list.id }}">{{ list.name }}</option>
-        {% endfor %}
-    </select>
+    <input type="hidden" id="playlists" style="width:300px">
 </div>
 <div class="content">
     <div id="context-box" class="block-shadow">
@@ -164,7 +160,7 @@ $(document).ready(function() {
                     <h3>{{ 'plugin.lists.label.featured'|trans }}</h3>
                     <div class="context-list-results">
                         <div class="save-button-bar" style="display: block;">
-                            <button type="button" class="btn btn-danger" id="delete-all-btn" onclick="deleteContextList()" name="delete-all">{{ 'plugin.lists.btn.deleteall'|trans }}</button>
+                            <button type="button" class="btn btn-danger" id="delete-all-btn" name="delete-all">{{ 'plugin.lists.btn.deleteall'|trans }}</button>
                         </div>
                         <div style="display: block; float: left">
                             <form id="context-list-form">
@@ -183,6 +179,9 @@ $(document).ready(function() {
     <div id="dialog-confirm" style="display:none;" title="{{ 'plugin.lists.label.remove'|trans }}">
         <p>{{ 'plugin.lists.label.delete'|trans }}</p>
     </div>
+    <div id="dialog-confirm-delete-all" style="display:none;" title="{{ 'plugin.lists.label.removeallcomments'|trans }}">
+        <p>{{ 'plugin.lists.label.deleteallcomments'|trans }}</p>
+    </div>
     <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -193,6 +192,7 @@ $(document).ready(function() {
           <form id="editForm" action="{{ path('newscoop_commentlists_admin_update') }}">
           <div class="modal-body">
                 <input type="hidden" name="commentId"/>
+                <input type="hidden" name="listId"/>
                 <label>{{ 'plugin.lists.label.externalsubject'|trans }}</label>
                 <input name="subject" type="text" class="form-control input-sm"><br>
                 <label>{{ 'plugin.lists.label.externalmessage'|trans }}</label>
@@ -226,6 +226,10 @@ $(document).ready(function() {
                 {{ form_widget(externalForm.date) }}<br>
                 {{ form_label(externalForm.source) }}
                 {{ form_widget(externalForm.source, {'attr' : {'class' : 'form-control input-sm', 'placeholder': 'Facebook, Twitter...' }}) }}<br><br>
+                {{ form_label(externalForm.status) }}
+                {{ form_widget(externalForm.status, {'attr' : {'class' : 'form-control input-sm' }}) }}<br><br>
+                {{ form_label(externalForm.recommended) }}<br>
+                {{ form_widget(externalForm.recommended) }}<br><br>
                 {{ form_label(externalForm.articles) }}
                 {{ form_widget(externalForm.articles, {'attr' : {'style' : 'width: 100%;'}}) }}<br><br>
                 {{ form_label(externalForm.subject) }}
@@ -287,7 +291,9 @@ $(document).ready(function() {
         var originalSubject = $(this).parents('li').find('input.originalSubject');
         var originalMessage = $(this).parents('li').find('input.originalMessage');
         var id = $(this).parents('li.item').attr('id');
+        var listId = $('input#playlist-id').val();
         $('#modalEdit').find('input[name=commentId]').val(id);
+        $('#modalEdit').find('input[name=listId]').val(listId);
         $('#modalEdit').find('input[name=subject]').val(subject.text());
         $('#modalEdit').find('textarea[name=message]').val(message.text());
         $('#modalEdit').find('textarea[name=originalMessage]').val(originalMessage.val());
