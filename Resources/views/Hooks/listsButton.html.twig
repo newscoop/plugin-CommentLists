@@ -1,6 +1,6 @@
 <style type="text/css" media="screen">
 .commentBtns ul {
-    margin-left: -260px;
+    margin-left: -240px;
 }
 li.select2-search-choice div {
     margin-top: -2px;
@@ -19,8 +19,8 @@ li.select2-search-choice div {
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" id="featured-modal-close-{{ commentId }}" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title-select" id="modalEdit-select-Label">You are about to edit and add featured comment to list: <b><span></span></b></h4>
-        <span class="label label-info">Tip:</span> If you do not want to edit comment, the original version of it will be added to selected featured list.
+        <h4 class="modal-title-select" id="modalEdit-select-Label">{{ 'plugin.lists.label.youareabout'|trans }}: <br>- <b><span></span></b></h4>
+        <span class="label label-info">{{ 'plugin.lists.label.tip'|trans }}:</span> {{ 'plugin.lists.label.info'|trans }}
     </div>
     <form id="featured-editForm-select-{{ commentId }}" action="{{ path('newscoop_commentlists_admin_update') }}">
         <div class="modal-body">
@@ -79,21 +79,24 @@ $('input[name="submit-featured-{{ commentId }}"]').live('click', function() {
 });
 
 $('button#featured-modal-close-{{ commentId }}').live('click', function () {
+    var mode = $(this).attr('mode');
     var listId = $('#featured-list-id-{{ commentId }}').val();
     var select = $('select#commentButtonForm_lists[select-id="{{ commentId }}"]');
     var selectedItems = select.select2("val");
-    //if () dodac support zeby nie wywalalo option z zlectboxa jak kliknie sie na option a pozniej modal close
-    selectedItems.splice($.inArray(listId, selectedItems), 1);
-    select.select2("val", selectedItems);
+    if (mode != 'edit') {
+        selectedItems.splice($.inArray(listId, selectedItems), 1);
+        select.select2("val", selectedItems);
+    }
 });
 
 select2Holder.on('choice-selected', function(e, choice) {
     var data = $(choice).data('select2-data');
-    $('#modalEdit-select-{{ commentId }}').modal();
+        $('#modalEdit-select-{{ commentId }}').modal();
         $('#modalEdit-select-Label span').html('');
         $('#modalEdit-select-Label span').append(data.text);
         $('#featured-list-id-{{ commentId }}').val(data.id);
         var form = $('#featured-editForm-select-{{ commentId }}');
+        $('button#featured-modal-close-{{ commentId }}').attr('mode', 'edit');
         var subject = $('#comment-section_{{ commentId }}').find('.commentSubject');
         var message = $('#comment-section_{{ commentId }}').find('.commentBody');
         form.find('input[name=listId]').val(data.id);
@@ -132,6 +135,7 @@ select2Holder.on("change", function(e) {
         $('#modalEdit-select-Label span').html('');
         $('#modalEdit-select-Label span').append(e.added.text);
         $('#featured-list-id-{{ commentId }}').val(e.added.id);
+        $('button#featured-modal-close-{{ commentId }}').attr('mode', '');
         var form = $('#featured-editForm-select-{{ commentId }}');
         var subject = $('#comment-section_{{ commentId }}').find('.commentSubject');
         var message = $('#comment-section_{{ commentId }}').find('.commentBody');
@@ -228,10 +232,6 @@ $(".commentBtns ul li#featured-edit-{{ commentId }} button").live('click', funct
         var form = $('#featured-editForm-{{ commentId }}');
         var subject = $('#comment-section_{{ commentId }}').find('.commentSubject');
         var message = $('#comment-section_{{ commentId }}').find('.commentBody');
-        /*var editDiv = $('.content-edit_{{ commentId }}');
-        editDiv.find("input[name=subject]").val($.trim(subject.text()));
-        editDiv.find("textarea[name=message]").val($.trim(message.text()));
-        var id = $(this).parents('li.item').attr('id');*/
         form.find('input[name=commentId]').val('{{ commentId }}');
         form.find('input[name=subject]').val($.trim(subject.text()));
         form.find('textarea[name=message]').val($.trim(message.text()));

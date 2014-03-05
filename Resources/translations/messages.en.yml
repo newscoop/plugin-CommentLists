@@ -24,6 +24,9 @@ plugin:
       pending: "New"
       hidden: "Hidden"
     label:
+      tip: "Tip"
+      info: "If you do not want to edit comment, the original version of it will be added to selected featured list."
+      youareabout: "You are about to edit and add featured comment to list"
       allcommentsremoved: "All comments removed successfully."
       deleteallcomments: "You are about to remove all comments from selected list. Are you sure?"
       removeallcomments: "Remove all comments?"
