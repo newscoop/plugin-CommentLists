@@ -1,0 +1,72 @@
+Plugins: Plugins
+plugin:
+  lists:
+    btn:
+      add: Liste hinzufügen
+      addexternal: Externen Kommentar hinzufügen
+      cancel: Abbrechen
+      delete: Löschen
+      deleteall: Alle löschen
+      remove: Entfernen
+      save: Speichern
+      submit: Einpflegen
+    error:
+      reach: Dieser Kommentar kann nicht bearbeitet werden.
+      update: Felder können nicht leer sein!
+    header: Ausgewählte Kommentare verwalten
+    label:
+      add: Hinzufügen
+      addexternal: Externen Kommentar hinzufügen
+      addto: Hinzufügen zu
+      all: Alle
+      allart: Alle Artikel
+      allpub: Alle Publikationen
+      article: Artikel
+      available: Vorhandene Kommentare
+      commenter: Kommentator
+      commentername: Name des Kommentators
+      commenterurl: 'Link zum Profil des Kommentators:'
+      couldnotsave: Liste konnte nicht gespeichert werden.
+      date: Erstelltes Datum
+      delete: Wollen Sie diese Liste wirklich löschen?
+      drag: "Hierher ziehen, um der Liste hinzuzufügen"
+      duplicate: Kopie des Kommentareintrags gefunden.
+      externaldate: Kommentar erstellt am
+      externalmessage: Kommentar
+      externalsource: Quelle
+      externalsubject: Betreff
+      featured: Ausgewählte Kommentare
+      filter: Filter
+      filterby: Filtern nach...
+      first: Erste(r)
+      interrupted: Verbindung unterbrochen!
+      language: Sprache
+      last: Letzte(r)
+      listdeleted: Liste gelöscht.
+      listid: Listen ID
+      menu: Ausgewählte Kommentare
+      more: mehr Buchstaben.
+      name: Name der Liste
+      next: Nächste(r)
+      nomatches: Keine passenden Einträge gefunden.
+      norecords: Keine Datensätze gefunden.
+      please: Bitte eingeben
+      previous: Vorherige(r)
+      processing: In Bearbeitung...
+      quickedit: Kommentar bearbeiten
+      remove: Liste entfernen.
+      reset: Alle Filter zurückstellen
+      search: Suche
+      searching: Suchen ...
+      selectarticle: Artikel auswählen...
+      selectlist: Liste auswählen...
+      showfiltered: Kommentare aus Gefilterte Typen anzeigen
+      successadded: Kommentar erfolgreich zu Liste hinzugefügt.
+      successremoved: Kommentar erfolgreich aus Liste entfernt.
+      update: Kommentar erfolgreich bearbeitet.
+    table:
+      filtering: '- filtert aus _MAX_ Datensätzen'
+      info: 'Zeigt _START_ bis _END_ von _TOTAL_ Eingaben '
+      menu: Zeigt _MENU_ Datensätze
+      noentries: Es liegen keine Eingaben vor
+    title: 'Newscoop Plugin für Kommentarlisten '

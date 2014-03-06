@@ -52,13 +52,8 @@ class ExternalCommentType extends AbstractType
             'label' => 'plugin.lists.label.commenterurl',
             'required' => false,
         ))
-        ->add('date', 'datetime', array(
+        ->add('date','dateTimePicker',array(
             'label' => 'plugin.lists.label.externaldate',
-            'with_seconds' => false,
-            'date_widget' => 'single_text',
-            'time_widget' => 'single_text',
-            'date_format' => 'yyyy-MM-dd',
-            'required' => true,
         ))
         ->add('articles', 'hidden', array(
             'label' => 'plugin.lists.label.article',

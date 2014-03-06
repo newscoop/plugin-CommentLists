@@ -38,13 +38,17 @@ var translations = {'plugin.lists.label.reset': '{{ 'plugin.lists.label.reset'|t
 };
 contextListFilters = {};
 filters = [];
+global = {locale   : '{{ app.request.locale }}'};
 $(document).ready(function() {
     filters['{{ id }}'] = contextListFilters;
     $('#delete-all-btn').hide();
+    serviceDatepicker.initLocale();
+    serviceDatepicker.initDatePicker();
 });
 </script>
 <script src="{{ asset('public/bundles/newscoopcommentlists/js/ajax.js') }}"></script>
 <script src="{{ asset('public/bundles/newscoopcommentlists/js/lists.js') }}"></script>
+<script src="{{ asset('public/bundles/newscoopcommentlists/js/serviceDatepicker.js') }}"></script>
 <script src="{{ asset('/js/select2/select2.js') }}"></script>
 {% endblock %}
 
@@ -216,13 +220,14 @@ $(document).ready(function() {
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="externalModalLabel">{{ 'plugin.lists.label.addexternal'|trans }}</h4>
           </div>
+          {% form_theme externalForm 'NewscoopCommentListsBundle:Form:form_comments_type.html.twig' %}
           <form id="externalForm" action="{{ path('newscoop_commentlists_admin_saveexternal') }}" class="form-inline">
           <div class="modal-body">
                 {{ form_label(externalForm.commenterName) }}
                 {{ form_widget(externalForm.commenterName, {'attr' : {'class' : 'form-control input-sm', 'placeholder': 'Jhon Doe' }}) }}<br><br>
                 {{ form_label(externalForm.commenterUrl) }}
                 {{ form_widget(externalForm.commenterUrl, {'attr' : {'class' : 'form-control input-sm', 'placeholder': 'https://www.facebook.com/zuck' }}) }}<br><br>
-                {{ form_label(externalForm.date) }}
+                {{ form_label(externalForm.date) }}<br>
                 {{ form_widget(externalForm.date) }}<br>
                 {{ form_label(externalForm.source) }}
                 {{ form_widget(externalForm.source, {'attr' : {'class' : 'form-control input-sm', 'placeholder': 'Facebook, Twitter...' }}) }}<br><br>

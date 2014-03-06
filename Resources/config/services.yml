@@ -36,3 +36,13 @@ services:
         class: Newscoop\CommentListsBundle\EventListener\ListObjectsListener
         tags:
           - { name: kernel.event_listener, event: newscoop.listobjects.register, method: registerObjects }
+
+    form.type.datePicker:
+        class: Newscoop\CommentListsBundle\Form\Type\DatePickerType
+        tags:
+          - { name: form.type, alias: datePicker }
+
+    form.type.dateTimePicker:
+      class: Newscoop\CommentListsBundle\Form\Type\DateTimePickerType
+      tags:
+        - { name: form.type, alias: dateTimePicker }
