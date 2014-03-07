@@ -298,15 +298,19 @@ class ListCommentService
     }
 
     /**
-     * Find comment by given id
+     * Find comment by given id and list id
      *
      * @param int $commentId
+     * @param int $listId
      *
      * @return Newscoop\CommentListsBundle\Entity\Comment
      */
-    public function findOneComment($commentId)
+    public function findOneComment($commentId, $listId)
     {
-        return $this->getCommentRepository()->findOneBy(array('commentId' => $commentId));
+        return $this->getCommentRepository()->findOneBy(array(
+            'commentId' => $commentId,
+            'listId' => $listId,
+        ));
     }
 
     /**

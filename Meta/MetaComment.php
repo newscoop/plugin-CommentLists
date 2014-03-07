@@ -102,15 +102,16 @@ class MetaComment
 
     /**
      * @param int $commentId
+     * @param int $listId
      */
-    public function __construct($commentId = null)
+    public function __construct($commentId = null, $listId = null)
     {
         if (!$commentId) {
             return;
         }
 
         $this->service = \Zend_Registry::get('container')->getService('commentlists.list');
-        $this->featuredComment = $this->getComment($commentId);
+        $this->featuredComment = $this->getComment($commentId, $listId);
         $this->originalComment = $this->featuredComment->getComment();
         $this->editedMessage = $this->featuredComment->getEditedMessage();
         $this->editedSubject = $this->featuredComment->getEditedSubject();
@@ -132,13 +133,14 @@ class MetaComment
     /**
      * Get comment
      *
-     * @param Newscoop\CommentListsBundle\Entity\Comment $commentId
+     * @param int $commentId
+     * @param int $listId
      *
      * @return Newscoop\CommentListsBundle\Entity\Comment
      */
-    protected function getComment($commentId)
+    protected function getComment($commentId, $listId)
     {
-        return $this->service->findOneComment($commentId);
+        return $this->service->findOneComment($commentId, $listId);
     }
 
     /**

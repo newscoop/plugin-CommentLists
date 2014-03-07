@@ -49,6 +49,12 @@ class Comment
     private $list;
 
     /**
+     * @ORM\Column(type="integer", name="list_id")
+     * @var int
+     */
+    private $listId;
+
+    /**
      * @ORM\Column(type="integer", name="comment_order")
      * @var int
      */
@@ -107,12 +113,37 @@ class Comment
     /**
      * Set comment
      *
-     * @param  int $comment
+     * @param int $commentId
+     *
      * @return int
      */
     public function setCommentId($commentId)
     {
         $this->commentId = $commentId;
+
+        return $this;
+    }
+
+    /**
+     * Get list Id
+     *
+     * @return int
+     */
+    public function getListId()
+    {
+        return $this->commentId;
+    }
+
+    /**
+     * Set list Id
+     *
+     * @param int $listId
+     *
+     * @return int
+     */
+    public function setListId($listId)
+    {
+        $this->listId = $listId;
 
         return $this;
     }

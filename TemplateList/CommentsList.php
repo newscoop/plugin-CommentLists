@@ -24,7 +24,7 @@ class CommentsList extends BaseList
         $lists = $service->findByCriteria($criteria);
         foreach ($lists as $key => $commentList) {
             foreach ($service->findCommentsByOrder($commentList->getId(), $criteria->maxResults) as $key => $comment) {
-                $lists->items[$key] = new MetaComment($comment['id']);
+                $lists->items[$key] = new MetaComment($comment['id'], $commentList->getId());
             }
         }
 
