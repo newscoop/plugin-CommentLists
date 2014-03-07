@@ -3,7 +3,7 @@
 }
 
 #playlist-name {
-    width: 250px;
+    width: 325px;
 }
 
 #playlist-id {
@@ -49,9 +49,9 @@
 
 #playlist-name-label, #playlist-id-label {
     float: left;
-    line-height: 35px;
     display: none;
     padding: 0 10px;
+    line-height: 25px;
 }
 
 .plugin-context-block {
@@ -84,10 +84,6 @@
 }
 #externalCommentForm_date_date {
     width: 380px;
-}
-#add-external-btn {
-    float: left;
-    margin-left: -345px;
 }
 .menu-options {
     float: right;

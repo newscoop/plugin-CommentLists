@@ -22,7 +22,7 @@ class DateTimePickerType extends AbstractType
         $dateOptions = $builder->get('date')->getOptions();
 
         $builder->remove('date')
-                ->add('date', 'datePicker', $dateOptions);
+            ->add('date', 'datePicker', $dateOptions);
     }
 
     /**

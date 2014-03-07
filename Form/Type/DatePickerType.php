@@ -20,6 +20,7 @@ class DatePickerType extends AbstractType
             'format' => 'yyyy-MM-dd',
         ));
     }
+
     public function getParent()
     {
         return 'date';
