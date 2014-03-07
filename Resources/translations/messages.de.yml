@@ -69,4 +69,4 @@ plugin:
       info: 'Zeigt _START_ bis _END_ von _TOTAL_ Eingaben '
       menu: Zeigt _MENU_ Datensätze
       noentries: Es liegen keine Eingaben vor
-    title: 'Newscoop Plugin für Kommentarlisten '
+    title: 'Ausgewählte Kommentare '

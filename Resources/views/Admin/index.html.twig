@@ -1,6 +1,6 @@
 {% extends 'NewscoopNewscoopBundle::admin_layout.html.twig' %}
 
-{% block admin_title %}{{ 'plugin.lists.title'|trans }}{% endblock %}
+{% block admin_title %}{{ parent() }} - {{ 'plugin.lists.title'|trans }}{% endblock %}
 {% block admin_page_title_content %}{{ 'plugin.lists.header'|trans }}{% endblock %}
 
 {% block admin_stylesheets %}
