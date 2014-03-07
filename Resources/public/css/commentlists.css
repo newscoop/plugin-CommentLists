@@ -60,7 +60,7 @@
 }
 #context-box {
     padding: 10px;
-    height: 680px;
+    height: 735px;
     width: 1100px;
     background: #FFF;
     margin: 0 auto;
@@ -114,4 +114,9 @@ ul#context_list {
 
 #externalCommentForm_date_time {
     width: 66px;
+}
+
+.second-menu {
+    margin-left: 23%;
+    height: 40px;
 }
