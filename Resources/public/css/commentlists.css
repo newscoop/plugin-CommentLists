@@ -60,7 +60,7 @@
 }
 #context-box {
     padding: 10px;
-    height: 735px;
+    height: 680px;
     width: 1100px;
     background: #FFF;
     margin: 0 auto;
@@ -117,6 +117,17 @@ ul#context_list {
 }
 
 .second-menu {
-    margin-left: 23%;
     height: 40px;
+    float: right;
+    margin-right: 20px;
+}
+
+.first-menu {
+    margin: 0 auto;
+    width: 1100px;
+    padding-left: 30px;
+}
+
+.context-content {
+    float: left;
 }
