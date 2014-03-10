@@ -7,12 +7,13 @@ plugin:
       cancel: Abbrechen
       delete: Löschen
       deleteall: Alle löschen
+      edit: Schnelle Bearbeitung
       remove: Entfernen
       save: Speichern
       submit: Einpflegen
     error:
       reach: Dieser Kommentar kann nicht bearbeitet werden.
-      update: Felder können nicht leer sein!
+      update: Felder dürfen nicht leer sein!
     header: Ausgewählte Kommentare verwalten
     label:
       add: Hinzufügen
@@ -20,17 +21,22 @@ plugin:
       addto: Hinzufügen zu
       all: Alle
       allart: Alle Artikel
+      allcommentsremoved: Alle Kommentare erfolgreich entfernt.
+      allissues: Alle Ausgaben
       allpub: Alle Publikationen
+      allsections: Alle Rubriken
       article: Artikel
       available: Vorhandene Kommentare
       commenter: Kommentator
       commentername: Name des Kommentators
-      commenterurl: 'Link zum Profil des Kommentators:'
+      commenterurl: Link zum Profil des Kommentators
       couldnotsave: Liste konnte nicht gespeichert werden.
-      date: Erstelltes Datum
+      date: Datum der Erstellung
       delete: Wollen Sie diese Liste wirklich löschen?
+      deleteallcomments: "Sie sind dabei, alle Kommentare von den ausgewählten Listen zu entfernen. Sind Sie sicher?"
+      deletefeatured: 'Wenn Ihr Kommentar bearbeitet wurde, werden Sie ihn verlieren. Trotzdem fortfahren? '
       drag: "Hierher ziehen, um der Liste hinzuzufügen"
-      duplicate: Kopie des Kommentareintrags gefunden.
+      duplicate: Dublette des Kommentareintrags gefunden.
       externaldate: Kommentar erstellt am
       externalmessage: Kommentar
       externalsource: Quelle
@@ -39,34 +45,47 @@ plugin:
       filter: Filter
       filterby: Filtern nach...
       first: Erste(r)
+      info: 'Wenn Sie den Kommentar nicht editieren wollen, wird die Originalversion zur ausgewählten Liste hinzugefügt. '
       interrupted: Verbindung unterbrochen!
       language: Sprache
       last: Letzte(r)
       listdeleted: Liste gelöscht.
       listid: Listen ID
       menu: Ausgewählte Kommentare
-      more: mehr Buchstaben.
+      more: mehr Zeichen.
       name: Name der Liste
       next: Nächste(r)
       nomatches: Keine passenden Einträge gefunden.
       norecords: Keine Datensätze gefunden.
+      originalcomment: Originalkommentar
       please: Bitte eingeben
       previous: Vorherige(r)
       processing: In Bearbeitung...
       quickedit: Kommentar bearbeiten
+      recommended: Empfohlen?
       remove: Liste entfernen.
+      removeallcomments: Alle Kommentare entfernen?
+      removefeatured: Empfohlenen Kommentar von Liste entfernen
       reset: Alle Filter zurückstellen
-      search: Suche
+      search: "Suche nach Thema, Nachricht oder Name des Kommentators ..."
       searching: Suchen ...
-      selectarticle: Artikel auswählen...
+      selectarticle: 'Artikel auswählen... (suche nach: Webcode, Titel, Autor)'
+      selectfeaturedlist: 'Liste/n auswählen, für die Sie Kommentare bearbeiten möchten:'
       selectlist: Liste auswählen...
-      showfiltered: Kommentare aus Gefilterte Typen anzeigen
+      showfiltered: Zeige Kommentare der gefilterten Typen an
+      status: Status
       successadded: Kommentar erfolgreich zu Liste hinzugefügt.
       successremoved: Kommentar erfolgreich aus Liste entfernt.
+      tip: Tipp
       update: Kommentar erfolgreich bearbeitet.
+      youareabout: 'Sie sind dabei, einen empfohlenen Kommentar zu editieren und zur Liste hinzuzufügen '
+    status:
+      approved: Genehmigt
+      hidden: Versteckt
+      pending: Neu
     table:
       filtering: '- filtert aus _MAX_ Datensätzen'
       info: 'Zeigt _START_ bis _END_ von _TOTAL_ Eingaben '
       menu: Zeigt _MENU_ Datensätze
-      noentries: Es liegen keine Eingaben vor
+      noentries: Es liegen keine Einträge vor
     title: 'Ausgewählte Kommentare '
