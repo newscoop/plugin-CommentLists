@@ -307,10 +307,17 @@ class ListCommentService
      */
     public function findOneComment($commentId, $listId)
     {
-        return $this->getCommentRepository()->findOneBy(array(
-            'commentId' => $commentId,
-            'listId' => $listId,
-        ));
+        $comment = $this->em->createQueryBuilder()
+            ->select('c')
+            ->where('c.list = ?1')
+            ->andWhere('c.commentId = ?2')
+            ->setParameter(1, $listId)
+            ->setParameter(2, $commentId)
+            ->orderBy('c.order', 'asc')
+            ->from('Newscoop\CommentListsBundle\Entity\Comment', 'c')
+            ->getQuery()->getOneOrNullResult();
+
+        return $comment;
     }
 
     /**
