@@ -1,0 +1,91 @@
+Plugins: null
+plugin:
+    lists:
+        error:
+            update: null
+            reach: null
+        btn:
+            add: null
+            delete: null
+            cancel: null
+            deleteall: null
+            remove: null
+            save: null
+            addexternal: null
+            submit: null
+            edit: null
+        table:
+            info: null
+            noentries: null
+            filtering: null
+            menu: null
+        status:
+            approved: null
+            pending: null
+            hidden: null
+        label:
+            tip: null
+            info: null
+            youareabout: null
+            allcommentsremoved: null
+            deleteallcomments: null
+            removeallcomments: null
+            deletefeatured: null
+            removefeatured: null
+            status: null
+            recommended: null
+            originalcomment: null
+            please: null
+            more: null
+            listid: null
+            searching: null
+            nomatches: null
+            quickedit: null
+            article: null
+            selectarticle: null
+            update: null
+            menu: null
+            name: null
+            search: null
+            available: null
+            filter: null
+            allpub: null
+            allart: null
+            allsections: null
+            allissues: null
+            date: null
+            commenter: null
+            all: null
+            language: null
+            showfiltered: null
+            featured: null
+            drag: null
+            delete: null
+            reset: null
+            processing: null
+            interrupted: null
+            selectlist: null
+            selectfeaturedlist: null
+            filterby: null
+            duplicate: null
+            couldnotsave: null
+            last: null
+            next: null
+            first: null
+            previous: null
+            norecords: null
+            listdeleted: null
+            remove: null
+            commentername: null
+            commenterurl: null
+            externaldate: null
+            externalmessage: null
+            externalsubject: null
+            externalsource: null
+            addexternal: null
+            add: null
+            addto: null
+            successremoved: null
+            successadded: null
+        title: null
+        header: null

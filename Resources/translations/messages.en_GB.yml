@@ -1,0 +1,91 @@
+Plugins: Plugins
+plugin:
+    lists:
+        error:
+            update: 'Fields can not be empty!'
+            reach: 'Could not edit this comment.'
+        btn:
+            add: 'Add list'
+            delete: Delete
+            cancel: Cancel
+            deleteall: 'Delete all'
+            remove: Remove
+            save: Save
+            addexternal: 'Add external comment'
+            submit: Submit
+            edit: 'Quick edit'
+        table:
+            info: 'Showing _START_ to _END_ of _TOTAL_ entries'
+            noentries: 'No entries to show'
+            filtering: '- filtering from _MAX_ records'
+            menu: 'Display _MENU_ records'
+        status:
+            approved: Approved
+            pending: New
+            hidden: Hidden
+        label:
+            tip: Tip
+            info: 'If you do not want to edit the comment, the original version of it will be added to the selected featured list.'
+            youareabout: 'You are about to edit and add the featured comment to the list'
+            allcommentsremoved: 'All comments removed successfully.'
+            deleteallcomments: 'You are about to remove all comments from the selected list. Are you sure?'
+            removeallcomments: 'Remove all comments?'
+            deletefeatured: 'If your comment was edited, you will lose it. Are you sure?'
+            removefeatured: 'Remove featured comment from list'
+            status: Status
+            recommended: 'Recommended?'
+            originalcomment: 'Original comment'
+            please: 'Please enter '
+            more: ' more characters.'
+            listid: 'List ID'
+            searching: Searching...
+            nomatches: 'No matches found.'
+            quickedit: 'Quick comment edit'
+            article: Article
+            selectarticle: 'Select article... (search by: webcode, title, author)'
+            update: 'Comment successfully edited.'
+            menu: 'Featured Comments'
+            name: 'List Name'
+            search: 'Search by subject, message or commenter name...'
+            available: 'Available Comments'
+            filter: Filter
+            allpub: 'All Publications'
+            allart: 'All articles'
+            allsections: 'All sections'
+            allissues: 'All issues'
+            date: 'Date created'
+            commenter: Commenter
+            all: All
+            language: Language
+            showfiltered: 'Display Comments of Filtered Types'
+            featured: 'Featured Comments'
+            drag: 'Drag here to add to list'
+            delete: 'Are you sure you want to delete this list?'
+            reset: 'Reset all filters'
+            processing: Processing...
+            interrupted: 'Connection interrupted!'
+            selectlist: 'Select list...'
+            selectfeaturedlist: 'Select lists for which you want to edit a comment:'
+            filterby: 'Filter by...'
+            duplicate: 'Duplicate comment entry found.'
+            couldnotsave: 'Could not save the list.'
+            last: Last
+            next: Next
+            first: First
+            previous: Previous
+            norecords: 'No records found.'
+            listdeleted: 'List deleted.'
+            remove: 'Remove List'
+            commentername: 'Commenter name'
+            commenterurl: 'Commenter profile link'
+            externaldate: 'Comment creation date'
+            externalmessage: Comment
+            externalsubject: Subject
+            externalsource: Source
+            addexternal: 'Add external comment'
+            add: Add
+            addto: 'Add to'
+            successremoved: 'Comment successfully removed from list.'
+            successadded: 'Comment successfully added to list.'
+        title: 'Featured Comments'
+        header: 'Manage Featured Comments'

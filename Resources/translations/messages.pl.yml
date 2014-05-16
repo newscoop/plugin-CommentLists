@@ -1,0 +1,91 @@
+Plugins: Wtyczki
+plugin:
+    lists:
+        error:
+            update: null
+            reach: null
+        btn:
+            add: 'Dodaj listę'
+            delete: Usuń
+            cancel: Anuluj
+            deleteall: null
+            remove: Usuń
+            save: Zapisz
+            addexternal: null
+            submit: Wyślij
+            edit: 'Szybka edycja'
+        table:
+            info: 'Widoczne _START_ do _END_ z _TOTAL_ rekordów'
+            noentries: 'Nie ma żadnych rekordów'
+            filtering: ' - filtrowanie z _MAX_ rekordów'
+            menu: 'Pokazuje _MENU_ rekordów'
+        status:
+            approved: Zaakceptowane
+            pending: Nowy
+            hidden: Ukryte
+        label:
+            tip: null
+            info: null
+            youareabout: null
+            allcommentsremoved: null
+            deleteallcomments: null
+            removeallcomments: null
+            deletefeatured: null
+            removefeatured: null
+            status: Status
+            recommended: null
+            originalcomment: null
+            please: null
+            more: null
+            listid: 'Numer listy'
+            searching: null
+            nomatches: null
+            quickedit: null
+            article: Artykuł
+            selectarticle: null
+            update: null
+            menu: null
+            name: 'Nazwa listy'
+            search: null
+            available: null
+            filter: Filtrowanie
+            allpub: 'Wszystkie publikacje'
+            allart: null
+            allsections: null
+            allissues: null
+            date: null
+            commenter: Komentator
+            all: Wszystko
+            language: Język
+            showfiltered: null
+            featured: null
+            drag: 'Przeciągnij tutaj aby dodać do listy'
+            delete: 'Jesteś pewien że chcesz usunąć tą listę?'
+            reset: 'Resetuj wszystkie filtry'
+            processing: Przetważanie...
+            interrupted: null
+            selectlist: null
+            selectfeaturedlist: null
+            filterby: null
+            duplicate: null
+            couldnotsave: null
+            last: Ostatni
+            next: Następny
+            first: Pierwszy
+            previous: Poprzedni
+            norecords: 'Nie znaleziono żadnych rekordów.'
+            listdeleted: null
+            remove: null
+            commentername: null
+            commenterurl: null
+            externaldate: null
+            externalmessage: Komentarz
+            externalsubject: Temat
+            externalsource: Źródło
+            addexternal: null
+            add: Dodaj
+            addto: null
+            successremoved: null
+            successadded: null
+        title: null
+        header: null
