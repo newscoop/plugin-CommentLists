@@ -2,18 +2,18 @@ Plugins: Plug-iny
 plugin:
     lists:
         error:
-            update: null
-            reach: null
+            update: 'Pole nemůžou zůstat prázdná!'
+            reach: 'Komentář nelze editovat'
         btn:
-            add: null
-            delete: null
-            cancel: null
-            deleteall: null
-            remove: null
-            save: null
-            addexternal: null
-            submit: null
-            edit: null
+            add: 'Přidat seznam'
+            delete: Smazat
+            cancel: Zrušit
+            deleteall: 'Smazat vše'
+            remove: Odstranit
+            save: Uložit
+            addexternal: 'Vložit externí komentář'
+            submit: Podat
+            edit: 'Rychlá editace '
         table:
             info: null
             noentries: null
