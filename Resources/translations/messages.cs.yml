@@ -75,16 +75,16 @@ plugin:
             previous: Předchozí
             norecords: 'Nebyly nalezeny žádné záznamy.'
             listdeleted: 'Seznam smazán.'
-            remove: null
-            commentername: null
-            commenterurl: null
-            externaldate: null
-            externalmessage: null
-            externalsubject: null
-            externalsource: null
-            addexternal: null
-            add: null
-            addto: null
+            remove: 'Odstranit seznam'
+            commentername: 'Jméno komentátora'
+            commenterurl: 'Odkaz na komentátorův profil'
+            externaldate: 'Datum vytvoření komentáře'
+            externalmessage: Komentář
+            externalsubject: Předmět
+            externalsource: Zdroj
+            addexternal: 'Vložit externí komentář'
+            add: Přidat
+            addto: 'Vložit do'
             successremoved: null
             successadded: null
         title: null
