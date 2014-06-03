@@ -44,7 +44,7 @@ plugin:
             article: Článek
             selectarticle: 'Vyberte článek... (hledejte pomocí: webcode, titul, autor)'
             update: 'Komentář byl úspěšně editován.'
-            menu: null
+            menu: 'Publikované Komentáře'
             name: 'Název Seznamu'
             search: 'Hledej pomocí předmětu, zprávy nebo jména komentátora...'
             available: 'Dostupné komentáře'
@@ -85,7 +85,7 @@ plugin:
             addexternal: 'Vložit externí komentář'
             add: Přidat
             addto: 'Vložit do'
-            successremoved: null
-            successadded: null
-        title: null
-        header: null
+            successremoved: 'Komentář byl úspěšně odstraněn ze seznamu.'
+            successadded: 'Komentář byl úspěšně vložen do seznamu. '
+        title: 'Publikované Komentáře'
+        header: 'Upravit Publikované Komentáře'
