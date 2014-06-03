@@ -16,65 +16,65 @@ plugin:
             edit: 'Rychlá editace '
         table:
             info: 'Ukázat _START_ až do _END_ z _TOTAL_ záznamů'
-            noentries: null
-            filtering: null
-            menu: null
+            noentries: 'Nejsou zde žádné příspěvky k zobrazení'
+            filtering: '- filtrováno z _MAX_ záznamů'
+            menu: 'Zobrazit _MENU_ záznamy'
         status:
-            approved: null
-            pending: null
-            hidden: null
+            approved: Schváleno
+            pending: Nový
+            hidden: Skrytý
         label:
-            tip: null
-            info: null
-            youareabout: null
-            allcommentsremoved: null
-            deleteallcomments: null
-            removeallcomments: null
-            deletefeatured: null
-            removefeatured: null
-            status: null
-            recommended: null
-            originalcomment: null
-            please: null
-            more: null
-            listid: null
-            searching: null
-            nomatches: null
-            quickedit: null
-            article: null
-            selectarticle: null
-            update: null
+            tip: Rada
+            info: 'Pokud nechcete editovat komentář, bude do označeného seznamu vložena původní verze komentáře. '
+            youareabout: 'Právě se chystáte editovat a přidat komentář do seznamu'
+            allcommentsremoved: 'Všechny komentáře byly úspěšně odstraněny.'
+            deleteallcomments: 'Opravdu chcete odstranit všechny komentáře z označeného seznamu?'
+            removeallcomments: 'Odstranit všechny komentáře?'
+            deletefeatured: 'Pokud byl váš komentáře editován, ztratíte ho. Jste si jisti?'
+            removefeatured: 'Odstranit komentář ze seznamu'
+            status: Status
+            recommended: 'Doporučeno?'
+            originalcomment: 'Původní komentář'
+            please: 'Prosím vstupte'
+            more: 'více znaků.'
+            listid: 'ID seznamu'
+            searching: Hledání...
+            nomatches: Nenalezeno.
+            quickedit: 'Rychlá úprava komentáře'
+            article: Článek
+            selectarticle: 'Vyberte článek... (hledejte pomocí: webcode, titul, autor)'
+            update: 'Komentář byl úspěšně editován.'
             menu: null
-            name: null
-            search: null
-            available: null
-            filter: null
-            allpub: null
-            allart: null
-            allsections: null
-            allissues: null
-            date: null
-            commenter: null
-            all: null
-            language: null
-            showfiltered: null
-            featured: null
-            drag: null
-            delete: null
-            reset: null
-            processing: null
-            interrupted: null
-            selectlist: null
-            selectfeaturedlist: null
-            filterby: null
-            duplicate: null
-            couldnotsave: null
-            last: null
-            next: null
-            first: null
-            previous: null
-            norecords: null
-            listdeleted: null
+            name: 'Název Seznamu'
+            search: 'Hledej pomocí předmětu, zprávy nebo jména komentátora...'
+            available: 'Dostupné komentáře'
+            filter: Filtrovat
+            allpub: 'Všechny Publikace'
+            allart: 'Všechny články'
+            allsections: 'Všechny výběry'
+            allissues: 'Všechny témata'
+            date: 'Datum vytvořen'
+            commenter: Komentátor
+            all: Vše
+            language: Jazyk
+            showfiltered: 'Zobrazit komentáře filtrovaných typů'
+            featured: 'Publikované Komentáře'
+            drag: 'Chytněte zde a přetáhněte do seznamu'
+            delete: 'Určitě chcete vymazat tento seznam?'
+            reset: 'Resetovat všechny filtry'
+            processing: Zpracovávám...
+            interrupted: 'Spojení přerušeno!'
+            selectlist: 'Vyberte seznam...'
+            selectfeaturedlist: 'Vyberte seznam/y u kterých chcete editovat komentář:'
+            filterby: Filtruj...
+            duplicate: 'Nalezen duplicitní komentář'
+            couldnotsave: 'Seznam nelze uložit. '
+            last: Poslední
+            next: Další
+            first: První
+            previous: Předchozí
+            norecords: 'Nebyly nalezeny žádné záznamy.'
+            listdeleted: 'Seznam smazán.'
             remove: null
             commentername: null
             commenterurl: null
