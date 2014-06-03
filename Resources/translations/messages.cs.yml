@@ -15,7 +15,7 @@ plugin:
             submit: Podat
             edit: 'Rychlá editace '
         table:
-            info: null
+            info: 'Ukázat _START_ až do _END_ z _TOTAL_ záznamů'
             noentries: null
             filtering: null
             menu: null
