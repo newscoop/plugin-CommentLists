@@ -1,91 +1,91 @@
-Plugins: null
+Plugins: Plugins
 plugin:
     lists:
         error:
-            update: null
-            reach: null
+            update: 'Felterne må ikke være tomme!'
+            reach: 'Kommentaren kunne ikke redigeres.'
         btn:
-            add: null
-            delete: null
-            cancel: null
-            deleteall: null
-            remove: null
-            save: null
-            addexternal: null
-            submit: null
-            edit: null
+            add: 'Tilføj liste'
+            delete: Slet
+            cancel: Annullér
+            deleteall: 'Slet alle'
+            remove: Fjern
+            save: Gem
+            addexternal: 'Tilføj ekstern kommentar'
+            submit: Send
+            edit: 'Hurtig redigering'
         table:
-            info: null
-            noentries: null
-            filtering: null
-            menu: null
+            info: 'Viser _START_ til _END_ af _TOTAL_'
+            noentries: 'Intet at vise'
+            filtering: '- filtreret fra _MAX_ opslag'
+            menu: 'Vis _MENU_ opslag'
         status:
-            approved: null
-            pending: null
-            hidden: null
+            approved: Godkendt
+            pending: Ny
+            hidden: Skjult
         label:
-            tip: null
-            info: null
-            youareabout: null
-            allcommentsremoved: null
-            deleteallcomments: null
-            removeallcomments: null
-            deletefeatured: null
-            removefeatured: null
-            status: null
-            recommended: null
-            originalcomment: null
-            please: null
-            more: null
-            listid: null
-            searching: null
-            nomatches: null
-            quickedit: null
-            article: null
-            selectarticle: null
-            update: null
-            menu: null
-            name: null
-            search: null
-            available: null
-            filter: null
-            allpub: null
-            allart: null
-            allsections: null
-            allissues: null
-            date: null
-            commenter: null
-            all: null
-            language: null
-            showfiltered: null
-            featured: null
-            drag: null
-            delete: null
-            reset: null
-            processing: null
-            interrupted: null
-            selectlist: null
-            selectfeaturedlist: null
-            filterby: null
-            duplicate: null
-            couldnotsave: null
-            last: null
-            next: null
-            first: null
-            previous: null
-            norecords: null
-            listdeleted: null
-            remove: null
-            commentername: null
-            commenterurl: null
-            externaldate: null
-            externalmessage: null
-            externalsubject: null
-            externalsource: null
-            addexternal: null
-            add: null
-            addto: null
-            successremoved: null
-            successadded: null
-        title: null
-        header: null
+            tip: Tip
+            info: 'Hvis du ikke redigerer kommentaren bliver den originale version føjet til den valgte liste med fremhævede kommentarer.'
+            youareabout: 'Du er ved at redigere en fremhævet kommentar og tilføje den til en liste'
+            allcommentsremoved: 'Alle kommentarer blev fjernet.'
+            deleteallcomments: 'Du er ved at fjerne alle kommenatrer fra den valgte liste. Er du sikker?'
+            removeallcomments: 'Fjern alle kommentarer?'
+            deletefeatured: 'Hvis du har redigeret din kommentar vil ændringerne gå tabt. Er du sikker?'
+            removefeatured: 'Fremhævet kommentar blev fjernet fra listen'
+            status: Status
+            recommended: 'Anbefalet?'
+            originalcomment: 'Original kommentar'
+            please: Indtast
+            more: 'flere tegn.'
+            listid: 'Liste ID'
+            searching: Søger...
+            nomatches: 'Ingen resultater.'
+            quickedit: 'Hurtig kommentar redigering'
+            article: Artikel
+            selectarticle: 'Vælg artikel... (søg efter: webkode, titel, forfatter)'
+            update: 'Kommentar redigeret.'
+            menu: 'Fremhævede kommentarer'
+            name: 'Liste navn'
+            search: 'Søg på emne, indhold eller debattør navn...'
+            available: 'Tilgængelige kommentarer'
+            filter: Filtrér
+            allpub: 'Alle publikationer'
+            allart: 'Alle artikler'
+            allsections: 'Alle sektioner'
+            allissues: 'Alle udgaver'
+            date: Oprettelsesdato
+            commenter: Debattør
+            all: Alle
+            language: Sprog
+            showfiltered: 'Vis kommentarer af valgte typer'
+            featured: 'Fremhævede kommentarer'
+            drag: 'Træk hertil for at tilføje til listen'
+            delete: 'Er du sikker på du vil slette listen?'
+            reset: 'Nulstil alle filtre'
+            processing: Arbejder...
+            interrupted: 'Forbindelsen blev afbrudt!'
+            selectlist: 'Vælg liste...'
+            selectfeaturedlist: 'Vælg liste(r) du vil redigere kommentar for:'
+            filterby: 'Filtrer efter...'
+            duplicate: 'Kommentaren findes allerede.'
+            couldnotsave: 'Listen kunne ikke gemmes.'
+            last: Sidste
+            next: Næste
+            first: Første
+            previous: Forrige
+            norecords: 'Ingen opslag.'
+            listdeleted: 'Liste slettet.'
+            remove: 'Fjern liste'
+            commentername: 'Debattør navn'
+            commenterurl: 'Debattør profil'
+            externaldate: 'Kommentarens oprettelsesdato'
+            externalmessage: Kommentér
+            externalsubject: Emne
+            externalsource: Kilde
+            addexternal: 'Tilføj ekstern kommentar'
+            add: Tilføj
+            addto: 'Tilføj til'
+            successremoved: 'Kommentaren blev fjernet fra listen.'
+            successadded: 'Kommentaren blev føjet til listen.'
+        title: 'Fremhævede kommentarer'
+        header: 'Administrer fremhævede kommentarer'
