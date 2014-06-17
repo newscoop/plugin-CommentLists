@@ -2,13 +2,13 @@ Plugins: Wtyczki
 plugin:
     lists:
         error:
-            update: null
-            reach: null
+            update: 'Pola nie mogą być puste!'
+            reach: 'Nie można edytować tego komentarza.'
         btn:
             add: 'Dodaj listę'
             delete: Usuń
             cancel: Anuluj
-            deleteall: null
+            deleteall: 'Usuń wszystkie'
             remove: Usuń
             save: Zapisz
             addexternal: null
