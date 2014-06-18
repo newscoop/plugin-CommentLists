@@ -1,91 +1,91 @@
-Plugins: null
+Plugins: 'وحدات قابسة'
 plugin:
     lists:
         error:
-            update: null
-            reach: null
+            update: 'لا يمكن أن تكون الخانات فارغة!'
+            reach: 'لا يمكن تحرير هذا التعليق.'
         btn:
-            add: null
-            delete: null
-            cancel: null
-            deleteall: null
-            remove: null
-            save: null
-            addexternal: null
-            submit: null
-            edit: null
+            add: 'إضافة قائمة'
+            delete: حذف
+            cancel: إلغاء
+            deleteall: 'حذف الجميع'
+            remove: حذف.
+            save: حفظ
+            addexternal: 'إضافة تعليق خارجي.'
+            submit: 'تسليم .'
+            edit: 'تعديل سريع'
         table:
-            info: null
-            noentries: null
-            filtering: null
-            menu: null
+            info: 'عرض _START_ ل_END_ من _TOTAL_ إدخالات'
+            noentries: 'لا يوجد إدخالات للعرض.'
+            filtering: '- تصفية من السجلات _MAX_'
+            menu: 'عرض سجلات من _MENU_'
         status:
-            approved: null
-            pending: null
-            hidden: null
+            approved: 'موافق عليه'
+            pending: جديد
+            hidden: 'مخفي '
         label:
-            tip: null
-            info: null
-            youareabout: null
-            allcommentsremoved: null
-            deleteallcomments: null
-            removeallcomments: null
-            deletefeatured: null
-            removefeatured: null
-            status: null
-            recommended: null
-            originalcomment: null
-            please: null
-            more: null
-            listid: null
-            searching: null
-            nomatches: null
-            quickedit: null
-            article: null
-            selectarticle: null
-            update: null
-            menu: null
-            name: null
-            search: null
-            available: null
-            filter: null
-            allpub: null
-            allart: null
-            allsections: null
-            allissues: null
-            date: null
-            commenter: null
-            all: null
-            language: null
-            showfiltered: null
-            featured: null
-            drag: null
-            delete: null
-            reset: null
-            processing: null
-            interrupted: null
-            selectlist: null
-            selectfeaturedlist: null
-            filterby: null
-            duplicate: null
-            couldnotsave: null
-            last: null
-            next: null
-            first: null
-            previous: null
-            norecords: null
-            listdeleted: null
-            remove: null
-            commentername: null
-            commenterurl: null
-            externaldate: null
-            externalmessage: null
-            externalsubject: null
-            externalsource: null
-            addexternal: null
-            add: null
-            addto: null
-            successremoved: null
-            successadded: null
-        title: null
-        header: null
+            tip: نصيحة
+            info: 'إذا لم ترد أن تحرر التعليق، فسيضاف الإصدار الأصلي الى قائمة متميزة مختارة.'
+            youareabout: 'توشك أن تحرر وتضيف تعليق متميز إلى القائمة.'
+            allcommentsremoved: 'تم حذف كل التعليقات بنجاح.'
+            deleteallcomments: 'توشك أن تزيل جميع التعليقات من القائمة المختارة. هل أنت متأكد؟'
+            removeallcomments: 'حذف جميع التعليقات؟'
+            deletefeatured: 'إذا تم تحرير تعليقك، فستفقده. هل أنت متأكد؟'
+            removefeatured: 'إحذف التعليق المتميز من القائمة'
+            status: الحالة
+            recommended: 'موصى به؟'
+            originalcomment: 'التعليق الأصلي'
+            please: 'إدخل من فضلك'
+            more: 'حروف كثيرة.'
+            listid: 'هوية القائمة'
+            searching: 'بحث ...'
+            nomatches: 'لم يتم العثور على متطابقات.'
+            quickedit: 'تحرير تعليق سريع'
+            article: مقالة
+            selectarticle: 'البحث في المقال... (البحث بـ: كود ويب، عنوان، كاتب)'
+            update: 'تم تحرير التعليق بنجاح'
+            menu: 'تعليقات متميزة'
+            name: 'اسم القائمة'
+            search: 'إبحث من خلال الموضوع، الرسالة، أو اسم المعلق...'
+            available: 'تعليقات متوفرة'
+            filter: التصفية
+            allpub: 'جميع المنشورات'
+            allart: 'جميع المقالات'
+            allsections: 'جميع الأقسام'
+            allissues: 'جميع القضايا'
+            date: 'تاريخ الإنشاء'
+            commenter: المعلق
+            all: الجميع
+            language: اللغة
+            showfiltered: 'عرض تعليقات من أنواع تم تصفيتها.'
+            featured: 'تعليقات متميزة'
+            drag: 'اسحب هنا من أجل الإضافة إلى القائمة'
+            delete: 'هل تريد التأكيد على حذف هذه القائمة؟'
+            reset: 'إعادة تعيين كل عوامل التصفية'
+            processing: 'في عملية المعالجة...'
+            interrupted: 'تم قطع الإتصال!'
+            selectlist: 'تحديد قائمة'
+            selectfeaturedlist: 'تحديد القائمة/القوائم تريد أن تحرر التعليق له/لها:'
+            filterby: 'التصفية من خلال ...'
+            duplicate: 'تم العثور على إدخال تعليق مكرر.'
+            couldnotsave: 'لم يتم حفظ القائمة.'
+            last: الأخير
+            next: التالي
+            first: الأول
+            previous: السابق
+            norecords: 'لم يتم العثور على سجلات.'
+            listdeleted: 'تم حذف القائمة.'
+            remove: 'حذف القائمة'
+            commentername: 'اسم المعلق'
+            commenterurl: 'رابط الملف الشخصي للمعلق'
+            externaldate: 'تاريخ إنشاء التعليق'
+            externalmessage: التعليق
+            externalsubject: الموضوع
+            externalsource: مصدر
+            addexternal: 'إضافة تعليق خارجي'
+            add: إضافه
+            addto: 'إضافه إلى'
+            successremoved: 'تم إزالة التعليق من القائمة بنجاح.'
+            successadded: 'تم إضافة التعليق إلى القائمة بنجاح.'
+        title: 'تعليقات متميزة'
+        header: 'إدارة التعليقات المتميزة'
