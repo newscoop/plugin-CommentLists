@@ -91,7 +91,10 @@ $('button#featured-modal-close-{{ commentId }}').live('click', function () {
 
 select2Holder.on('choice-selected', function(e, choice) {
     var data = $(choice).data('select2-data');
-        $('#modalEdit-select-{{ commentId }}').modal();
+        $('#modalEdit-select-{{ commentId }}').modal({
+            keyboard: false,
+            backdrop: 'static'
+        });
         $('#modalEdit-select-Label span').html('');
         $('#modalEdit-select-Label span').append(data.text);
         $('#featured-list-id-{{ commentId }}').val(data.id);
@@ -131,7 +134,10 @@ select2Holder.on('choice-selected', function(e, choice) {
 select2Holder.on("change", function(e) {
     var that = $(this);
     if (e.added !== undefined) {
-        $('#modalEdit-select-{{ commentId }}').modal();
+        $('#modalEdit-select-{{ commentId }}').modal({
+            keyboard: false,
+            backdrop: 'static'
+        });
         $('#modalEdit-select-Label span').html('');
         $('#modalEdit-select-Label span').append(e.added.text);
         $('#featured-list-id-{{ commentId }}').val(e.added.id);
@@ -217,6 +223,10 @@ select2Holder.on("change", function(e) {
             ]
         });
     }
+});
+
+$('#modalEdit-select-{{ commentId }}').mouseleave(function() {
+    return false;
 });
 
 select2Holder.on("select2-highlight", function(e) {
