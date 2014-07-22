@@ -1,28 +1,28 @@
-Plugins: null
+Plugins: Plaqinlər
 plugin:
     lists:
         error:
             update: null
             reach: null
         btn:
-            add: null
+            add: 'Siyahı əlavə et'
             delete: null
             cancel: null
             deleteall: null
-            remove: null
-            save: null
+            remove: 'Xaric Et'
+            save: Saxla
             addexternal: null
-            submit: null
-            edit: null
+            submit: Göndər
+            edit: 'Tez dəyiş'
         table:
-            info: null
-            noentries: null
-            filtering: null
-            menu: null
+            info: BÜTÜN_girişlərin_BAŞDAN_SONA_kimi_nümayişi
+            noentries: 'Nümayiş üçün firiş yoxdur'
+            filtering: '- _MAX_ yazılarından filterləmə'
+            menu: '_MENYU_ yazılarını göstər'
         status:
-            approved: null
+            approved: Təsdiqlənib
             pending: null
-            hidden: null
+            hidden: Gizli
         label:
             tip: null
             info: null
@@ -32,12 +32,12 @@ plugin:
             removeallcomments: null
             deletefeatured: null
             removefeatured: null
-            status: null
+            status: Status
             recommended: null
             originalcomment: null
             please: null
             more: null
-            listid: null
+            listid: 'Siyahı ID-si'
             searching: null
             nomatches: null
             quickedit: null
@@ -45,7 +45,7 @@ plugin:
             selectarticle: null
             update: null
             menu: null
-            name: null
+            name: 'Siyahı Adı'
             search: null
             available: null
             filter: null
@@ -54,36 +54,36 @@ plugin:
             allsections: null
             allissues: null
             date: null
-            commenter: null
-            all: null
-            language: null
+            commenter: 'Şərh sahibi'
+            all: Hamısı
+            language: Dil
             showfiltered: null
             featured: null
-            drag: null
-            delete: null
+            drag: 'Siyahıya əlavə etmək üçün bura sürüşdür'
+            delete: 'Bu siyahını silmək istədiyinə əminsən?'
             reset: null
-            processing: null
+            processing: İcradadır...
             interrupted: null
             selectlist: null
             selectfeaturedlist: null
             filterby: null
             duplicate: null
             couldnotsave: null
-            last: null
+            last: Son
             next: null
-            first: null
+            first: İlk
             previous: null
-            norecords: null
+            norecords: 'Yazı tapılmadı.'
             listdeleted: null
             remove: null
             commentername: null
             commenterurl: null
             externaldate: null
-            externalmessage: null
-            externalsubject: null
-            externalsource: null
+            externalmessage: Şərh
+            externalsubject: Başlıq
+            externalsource: Mənbə
             addexternal: null
-            add: null
+            add: 'Əlavə et'
             addto: null
             successremoved: null
             successadded: null
