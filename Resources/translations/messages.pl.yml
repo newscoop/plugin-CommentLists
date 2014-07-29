@@ -25,9 +25,9 @@ plugin:
             hidden: Ukryte
         label:
             tip: Wskazówka
-            info: null
-            youareabout: null
-            allcommentsremoved: null
+            info: 'Jeśli nie chcesz edytować tego komentarza, to jego oryginalna wersja zostanie dodana do wybranej listy. '
+            youareabout: 'Zamierzasz zmienić a następnie dodać ten komentarz do listy'
+            allcommentsremoved: 'Wszystkie komentarze zostały usunięte poprawnie.'
             deleteallcomments: 'Masz zamiar usunąć wszystkie komentarze z wybranej listy. Czy na pewno chcesz kontynuować?'
             removeallcomments: 'Usunąć wszystkie komentarze?'
             deletefeatured: 'Jeśli Twój komentarz był już edytowany, stracisz go. Kontynuować?'
@@ -39,12 +39,12 @@ plugin:
             more: 'więcej znaków.'
             listid: 'Numer listy'
             searching: 'Wyszukiwanie ...'
-            nomatches: null
-            quickedit: null
+            nomatches: 'Nie znaleziono wyników.'
+            quickedit: 'Szybka edycja'
             article: Artykuł
             selectarticle: 'Wybierz artykuł... (szukaj po: webcode, tytule, autorze)'
-            update: null
-            menu: null
+            update: 'Komentarz został zedytowany pomyślnie.'
+            menu: 'Ciekawe Komentarze'
             name: 'Nazwa listy'
             search: 'Szukaj po temacie, treści lub po nazwie komentatora...'
             available: 'Dostępne Komentarze'
@@ -58,14 +58,14 @@ plugin:
             all: Wszystko
             language: Język
             showfiltered: 'Wyświetl komentarze według wybranych kryteriów'
-            featured: null
+            featured: 'Ciekawe Komentarze'
             drag: 'Przeciągnij tutaj aby dodać do listy'
             delete: 'Jesteś pewien że chcesz usunąć tą listę?'
             reset: 'Resetuj wszystkie filtry'
             processing: Przetważanie...
             interrupted: 'Połączenie zostało zerwane!'
-            selectlist: null
-            selectfeaturedlist: null
+            selectlist: 'Wybierz listę...'
+            selectfeaturedlist: 'Wybierz listę/listy w których chcesz edytować komentarz:'
             filterby: 'Filtruj po ...'
             duplicate: 'Znaleziono już taki sam komentarz na licie.'
             couldnotsave: 'Nie można zapisać listy.'
@@ -76,13 +76,13 @@ plugin:
             norecords: 'Nie znaleziono żadnych rekordów.'
             listdeleted: 'Lista została usunięta.'
             remove: 'Usuń listę'
-            commentername: null
-            commenterurl: null
+            commentername: 'Nazwa komentatora'
+            commenterurl: 'Link do profilu komentatora'
             externaldate: 'Data utworzenia komentarza'
             externalmessage: Komentarz
             externalsubject: Temat
             externalsource: Źródło
-            addexternal: null
+            addexternal: 'Dodaj komentarz z zewnętrznego źródła'
             add: Dodaj
             addto: 'Dodaj do'
             successremoved: 'Komentarz został pomyślnie usunięty z listy.'
