@@ -11,7 +11,7 @@ plugin:
             deleteall: 'Usuń wszystkie'
             remove: Usuń
             save: Zapisz
-            addexternal: null
+            addexternal: 'Dodaj komentarz z zewnętrznego źródła'
             submit: Wyślij
             edit: 'Szybka edycja'
         table:
@@ -24,68 +24,68 @@ plugin:
             pending: Nowy
             hidden: Ukryte
         label:
-            tip: null
+            tip: Wskazówka
             info: null
             youareabout: null
             allcommentsremoved: null
-            deleteallcomments: null
-            removeallcomments: null
-            deletefeatured: null
-            removefeatured: null
+            deleteallcomments: 'Masz zamiar usunąć wszystkie komentarze z wybranej listy. Czy na pewno chcesz kontynuować?'
+            removeallcomments: 'Usunąć wszystkie komentarze?'
+            deletefeatured: 'Jeśli Twój komentarz był już edytowany, stracisz go. Kontynuować?'
+            removefeatured: 'Usuń komentarz z listy'
             status: Status
-            recommended: null
-            originalcomment: null
-            please: null
-            more: null
+            recommended: 'Rekomendowany?'
+            originalcomment: 'Oryginalny komentarz'
+            please: 'Proszę wprowadzić'
+            more: 'więcej znaków.'
             listid: 'Numer listy'
-            searching: null
+            searching: 'Wyszukiwanie ...'
             nomatches: null
             quickedit: null
             article: Artykuł
-            selectarticle: null
+            selectarticle: 'Wybierz artykuł... (szukaj po: webcode, tytule, autorze)'
             update: null
             menu: null
             name: 'Nazwa listy'
-            search: null
-            available: null
+            search: 'Szukaj po temacie, treści lub po nazwie komentatora...'
+            available: 'Dostępne Komentarze'
             filter: Filtrowanie
             allpub: 'Wszystkie publikacje'
-            allart: null
-            allsections: null
-            allissues: null
-            date: null
+            allart: 'Wszystkie artykuły'
+            allsections: 'Wszystkie sekcje'
+            allissues: 'Wszystkie wydania'
+            date: 'Data utworzenia'
             commenter: Komentator
             all: Wszystko
             language: Język
-            showfiltered: null
+            showfiltered: 'Wyświetl komentarze według wybranych kryteriów'
             featured: null
             drag: 'Przeciągnij tutaj aby dodać do listy'
             delete: 'Jesteś pewien że chcesz usunąć tą listę?'
             reset: 'Resetuj wszystkie filtry'
             processing: Przetważanie...
-            interrupted: null
+            interrupted: 'Połączenie zostało zerwane!'
             selectlist: null
             selectfeaturedlist: null
-            filterby: null
-            duplicate: null
-            couldnotsave: null
+            filterby: 'Filtruj po ...'
+            duplicate: 'Znaleziono już taki sam komentarz na licie.'
+            couldnotsave: 'Nie można zapisać listy.'
             last: Ostatni
             next: Następny
             first: Pierwszy
             previous: Poprzedni
             norecords: 'Nie znaleziono żadnych rekordów.'
-            listdeleted: null
-            remove: null
+            listdeleted: 'Lista została usunięta.'
+            remove: 'Usuń listę'
             commentername: null
             commenterurl: null
-            externaldate: null
+            externaldate: 'Data utworzenia komentarza'
             externalmessage: Komentarz
             externalsubject: Temat
             externalsource: Źródło
             addexternal: null
             add: Dodaj
-            addto: null
-            successremoved: null
-            successadded: null
-        title: null
-        header: null
+            addto: 'Dodaj do'
+            successremoved: 'Komentarz został pomyślnie usunięty z listy.'
+            successadded: 'Komentarz został pomyślnie dodany do listy.'
+        title: 'Ciekawe Komentarze'
+        header: 'Zarządzaj Ciekawymi Komentarzami'
