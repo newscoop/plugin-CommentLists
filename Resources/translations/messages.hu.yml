@@ -6,7 +6,7 @@ plugin:
             reach: null
         btn:
             add: null
-            delete: null
+            delete: Törlés
             cancel: null
             deleteall: null
             remove: null
