@@ -2,16 +2,16 @@ Plugins: Plaqinlər
 plugin:
     lists:
         error:
-            update: null
-            reach: null
+            update: 'Bölmələr boş olmamalıdır!'
+            reach: 'Bu şərh redaktə olunmadı.'
         btn:
             add: 'Siyahı əlavə et'
-            delete: null
-            cancel: null
-            deleteall: null
+            delete: Sil
+            cancel: 'Ləğv et'
+            deleteall: 'Hamısını sil'
             remove: 'Xaric Et'
             save: Saxla
-            addexternal: null
+            addexternal: 'Kənar şərhi əlavə et'
             submit: Göndər
             edit: 'Tez dəyiş'
         table:
@@ -21,58 +21,58 @@ plugin:
             menu: '_MENYU_ yazılarını göstər'
         status:
             approved: Təsdiqlənib
-            pending: null
+            pending: Yeni
             hidden: Gizli
         label:
-            tip: null
+            tip: Numunə
             info: null
             youareabout: null
             allcommentsremoved: null
             deleteallcomments: null
-            removeallcomments: null
+            removeallcomments: 'Btün şərhləri pozum?'
             deletefeatured: null
-            removefeatured: null
+            removefeatured: 'Göstərilən şərhləri siyahıdan sil'
             status: Status
-            recommended: null
-            originalcomment: null
-            please: null
-            more: null
+            recommended: 'Məsləhətlidir?'
+            originalcomment: 'İlkin şərh'
+            please: 'Lütfən əlavə edin'
+            more: 'daha çox işarə.'
             listid: 'Siyahı ID-si'
-            searching: null
-            nomatches: null
-            quickedit: null
-            article: null
-            selectarticle: null
-            update: null
-            menu: null
+            searching: 'Axtarılır ...'
+            nomatches: 'Heç nə tapılmadı.'
+            quickedit: 'Tez şərhin dəyişilməsi'
+            article: Məqalə
+            selectarticle: 'Yazı seç (axtarış istiqaməti: vebkod, başlıq, müəllif)'
+            update: 'Şərh uğurla redaktə olundu.'
+            menu: 'Göstərilən Şərhlər'
             name: 'Siyahı Adı'
-            search: null
-            available: null
-            filter: null
-            allpub: null
-            allart: null
-            allsections: null
-            allissues: null
-            date: null
+            search: 'Mövzu, ismarış və ya şərhminin adı ilə axtar...'
+            available: 'Hazırkı Şərhlər'
+            filter: Filtr
+            allpub: 'Bütün Nümayişlər'
+            allart: 'Bütün yazılar'
+            allsections: 'Bütün bölmələr'
+            allissues: 'Bütün saylar'
+            date: 'Yaradılma tarixi'
             commenter: 'Şərh sahibi'
             all: Hamısı
             language: Dil
-            showfiltered: null
-            featured: null
+            showfiltered: 'Filtrdən keçirilən şərhləri göstər'
+            featured: 'Göstərilən Şərhlər'
             drag: 'Siyahıya əlavə etmək üçün bura sürüşdür'
             delete: 'Bu siyahını silmək istədiyinə əminsən?'
-            reset: null
+            reset: 'Bütün filtrləri sıfırla'
             processing: İcradadır...
-            interrupted: null
-            selectlist: null
+            interrupted: 'Qoşulma alınmadı!'
+            selectlist: 'Siyahını seç...'
             selectfeaturedlist: null
-            filterby: null
-            duplicate: null
-            couldnotsave: null
+            filterby: 'Seçim nişanəsi...'
+            duplicate: 'Tapılan şərhin daha bir nüsxəsini çıxarın.'
+            couldnotsave: 'Siyahı yadda qalmadı.'
             last: Son
-            next: null
+            next: Növbəti
             first: İlk
-            previous: null
+            previous: Əvvəlki
             norecords: 'Yazı tapılmadı.'
             listdeleted: null
             remove: null
