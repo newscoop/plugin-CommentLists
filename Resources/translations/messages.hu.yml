@@ -13,7 +13,7 @@ plugin:
             save: Mentés
             addexternal: 'Külső hozzászólás hozzáadása'
             submit: Küldés
-            edit: 'Gyors szerkesztés'
+            edit: Gyorsszerkesztés
         table:
             info: '_START_ - _END_. bejegyzés / _TOTAL_ megjelenítése'
             noentries: 'Nincs megjelenítendő bejegyzés'
