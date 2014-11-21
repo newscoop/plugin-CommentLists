@@ -29,7 +29,7 @@ plugin:
             youareabout: 'Kiemelt hozzászólás szerkesztésére és listához adására készülsz'
             allcommentsremoved: 'Az összes hozzászólás eltávolítása sikerült.'
             deleteallcomments: 'Az összes hozzászólás kiválasztott listáról való eltávolítására készülsz. Biztos?'
-            removeallcomments: 'Az összes hozzászólást eltávolítod?'
+            removeallcomments: 'Eltávolítod az összes hozzászólást?'
             deletefeatured: 'Ha szerkesztetted a hozzászólásodat, akkor el fogod azt veszíteni. Biztos?'
             removefeatured: 'A kiemelt hozzászólás eltávolítása a listáról'
             status: Állapot
