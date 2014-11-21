@@ -15,7 +15,7 @@ plugin:
             submit: Küldés
             edit: 'Gyors szerkesztés'
         table:
-            info: '_START_ a _VÉGE_ a _TELJES_ bejegyzések megjelenítése'
+            info: '_START_ - _END_. bejegyzés / _TOTAL_ megjelenítése'
             noentries: 'Nincs megjelenítendő bejegyzés'
             filtering: '- szűrés a _MAX_ rekordokból'
             menu: '_MENU_ rekordok kijelzése'
