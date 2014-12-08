@@ -60,7 +60,7 @@ plugin:
             showfiltered: 'Vis kommentarer af valgte typer'
             featured: 'Fremhævede kommentarer'
             drag: 'Træk hertil for at tilføje til listen'
-            delete: 'Er du sikker på du vil slette listen?'
+            delete: 'Vil du slette listen?'
             reset: 'Nulstil alle filtre'
             processing: Arbejder...
             interrupted: 'Forbindelsen blev afbrudt!'

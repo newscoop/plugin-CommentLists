@@ -1,89 +1,89 @@
-Plugins: null
+Plugins: Plaqinlər
 plugin:
     lists:
         error:
-            update: null
-            reach: null
+            update: 'Bölmələr boş olmamalıdır!'
+            reach: 'Bu şərh redaktə olunmadı.'
         btn:
-            add: null
-            delete: null
-            cancel: null
-            deleteall: null
-            remove: null
-            save: null
-            addexternal: null
-            submit: null
-            edit: null
+            add: 'Siyahı əlavə et'
+            delete: Sil
+            cancel: 'Ləğv et'
+            deleteall: 'Hamısını sil'
+            remove: 'Xaric Et'
+            save: Saxla
+            addexternal: 'Kənar şərhi əlavə et'
+            submit: Göndər
+            edit: 'Tez dəyiş'
         table:
-            info: null
-            noentries: null
-            filtering: null
-            menu: null
+            info: BÜTÜN_girişlərin_BAŞDAN_SONA_kimi_nümayişi
+            noentries: 'Nümayiş üçün firiş yoxdur'
+            filtering: '- _MAX_ yazılarından filterləmə'
+            menu: '_MENYU_ yazılarını göstər'
         status:
-            approved: null
-            pending: null
-            hidden: null
+            approved: Təsdiqlənib
+            pending: Yeni
+            hidden: Gizli
         label:
-            tip: null
+            tip: Numunə
             info: null
             youareabout: null
             allcommentsremoved: null
             deleteallcomments: null
-            removeallcomments: null
+            removeallcomments: 'Btün şərhləri pozum?'
             deletefeatured: null
-            removefeatured: null
-            status: null
-            recommended: null
-            originalcomment: null
-            please: null
-            more: null
-            listid: null
-            searching: null
-            nomatches: null
-            quickedit: null
-            article: null
-            selectarticle: null
-            update: null
-            menu: null
-            name: null
-            search: null
-            available: null
-            filter: null
-            allpub: null
-            allart: null
-            allsections: null
-            allissues: null
-            date: null
-            commenter: null
-            all: null
-            language: null
-            showfiltered: null
-            featured: null
-            drag: null
-            delete: null
-            reset: null
-            processing: null
-            interrupted: null
-            selectlist: null
+            removefeatured: 'Göstərilən şərhləri siyahıdan sil'
+            status: Status
+            recommended: 'Məsləhətlidir?'
+            originalcomment: 'İlkin şərh'
+            please: 'Lütfən əlavə edin'
+            more: 'daha çox işarə.'
+            listid: 'Siyahı ID-si'
+            searching: 'Axtarılır ...'
+            nomatches: 'Heç nə tapılmadı.'
+            quickedit: 'Tez şərhin dəyişilməsi'
+            article: Məqalə
+            selectarticle: 'Yazı seç (axtarış istiqaməti: vebkod, başlıq, müəllif)'
+            update: 'Şərh uğurla redaktə olundu.'
+            menu: 'Göstərilən Şərhlər'
+            name: 'Siyahı Adı'
+            search: 'Mövzu, ismarış və ya şərhminin adı ilə axtar...'
+            available: 'Hazırkı Şərhlər'
+            filter: Filtr
+            allpub: 'Bütün Nümayişlər'
+            allart: 'Bütün yazılar'
+            allsections: 'Bütün bölmələr'
+            allissues: 'Bütün saylar'
+            date: 'Yaradılma tarixi'
+            commenter: 'Şərh sahibi'
+            all: Hamısı
+            language: Dil
+            showfiltered: 'Filtrdən keçirilən şərhləri göstər'
+            featured: 'Göstərilən Şərhlər'
+            drag: 'Siyahıya əlavə etmək üçün bura sürüşdür'
+            delete: 'Bu siyahını silmək istədiyinə əminsən?'
+            reset: 'Bütün filtrləri sıfırla'
+            processing: İcradadır...
+            interrupted: 'Qoşulma alınmadı!'
+            selectlist: 'Siyahını seç...'
             selectfeaturedlist: null
-            filterby: null
-            duplicate: null
-            couldnotsave: null
-            last: null
-            next: null
-            first: null
-            previous: null
-            norecords: null
+            filterby: 'Seçim nişanəsi...'
+            duplicate: 'Tapılan şərhin daha bir nüsxəsini çıxarın.'
+            couldnotsave: 'Siyahı yadda qalmadı.'
+            last: Son
+            next: Növbəti
+            first: İlk
+            previous: Əvvəlki
+            norecords: 'Yazı tapılmadı.'
             listdeleted: null
             remove: null
             commentername: null
             commenterurl: null
             externaldate: null
-            externalmessage: null
-            externalsubject: null
-            externalsource: null
+            externalmessage: Şərh
+            externalsubject: Başlıq
+            externalsource: Mənbə
             addexternal: null
-            add: null
+            add: 'Əlavə et'
             addto: null
             successremoved: null
             successadded: null

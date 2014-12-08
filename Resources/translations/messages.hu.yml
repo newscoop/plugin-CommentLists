@@ -1,91 +1,91 @@
-Plugins: null
+Plugins: Bővítmények
 plugin:
     lists:
         error:
-            update: null
-            reach: null
+            update: 'A mezők nem lehetnek üresek!'
+            reach: 'Ezt a hozzászólást nem lehet szerkeszteni.'
         btn:
-            add: null
-            delete: null
-            cancel: null
-            deleteall: null
-            remove: null
-            save: null
-            addexternal: null
-            submit: null
-            edit: null
+            add: 'Lista hozzáadása'
+            delete: Törlés
+            cancel: Mégse
+            deleteall: 'Az összes törlése'
+            remove: Eltávolítás
+            save: Mentés
+            addexternal: 'Külső hozzászólás hozzáadása'
+            submit: Küldés
+            edit: Gyorsszerkesztés
         table:
-            info: null
-            noentries: null
-            filtering: null
-            menu: null
+            info: '_START_ - _END_. bejegyzés / _TOTAL_ megjelenítése'
+            noentries: 'Nincs megjelenítendő bejegyzés'
+            filtering: '- szűrés a _MAX_ rekordokból'
+            menu: '_MENU_ rekordok kijelzése'
         status:
-            approved: null
-            pending: null
-            hidden: null
+            approved: Jóváhagyva
+            pending: Új
+            hidden: Rejtett
         label:
-            tip: null
-            info: null
-            youareabout: null
-            allcommentsremoved: null
-            deleteallcomments: null
-            removeallcomments: null
-            deletefeatured: null
-            removefeatured: null
-            status: null
-            recommended: null
-            originalcomment: null
-            please: null
-            more: null
-            listid: null
-            searching: null
-            nomatches: null
-            quickedit: null
-            article: null
-            selectarticle: null
-            update: null
-            menu: null
-            name: null
-            search: null
-            available: null
-            filter: null
-            allpub: null
-            allart: null
-            allsections: null
-            allissues: null
-            date: null
-            commenter: null
-            all: null
-            language: null
-            showfiltered: null
-            featured: null
-            drag: null
-            delete: null
-            reset: null
-            processing: null
-            interrupted: null
-            selectlist: null
-            selectfeaturedlist: null
-            filterby: null
-            duplicate: null
-            couldnotsave: null
-            last: null
-            next: null
-            first: null
-            previous: null
-            norecords: null
-            listdeleted: null
-            remove: null
-            commentername: null
-            commenterurl: null
-            externaldate: null
-            externalmessage: null
-            externalsubject: null
-            externalsource: null
-            addexternal: null
-            add: null
-            addto: null
-            successremoved: null
-            successadded: null
-        title: null
-        header: null
+            tip: Tipp
+            info: 'Ha nem akarod szerkeszteni ezt a hozzászólást, akkor az eredeti verzióját hozzáadhatod a kiválasztott kiemelt listához.'
+            youareabout: 'Kiemelt hozzászólás szerkesztésére és listához adására készülsz'
+            allcommentsremoved: 'Az összes hozzászólás eltávolítása sikerült.'
+            deleteallcomments: 'Az összes hozzászólás kiválasztott listáról való eltávolítására készülsz. Biztos?'
+            removeallcomments: 'Eltávolítod az összes hozzászólást?'
+            deletefeatured: 'Ha szerkesztetted a hozzászólásodat, akkor el fogod azt veszíteni. Biztos?'
+            removefeatured: 'A kiemelt hozzászólás eltávolítása a listáról'
+            status: Állapot
+            recommended: 'Ajánlott?'
+            originalcomment: 'Eredeti hozzászólás'
+            please: 'Írj be'
+            more: 'több karaktert.'
+            listid: Listaazonosító
+            searching: Keresés....
+            nomatches: 'Nincs találat.'
+            quickedit: 'Hozzászólás gyors szerkesztése'
+            article: Cikk
+            selectarticle: 'Cikk kiválasztása... (keresés: webkód, cím, szerző alapján)'
+            update: 'A hozzászólás szerkesztése sikerült.'
+            menu: 'Kiemelt hozzászólások'
+            name: 'Lista neve'
+            search: 'Keresés tárgy, üzenet vagy hozzászóló neve alapján...'
+            available: 'Elérhető hozzászólások'
+            filter: Szűrő
+            allpub: 'Minden kiadvány'
+            allart: 'Minden cikk'
+            allsections: 'Minden rovat'
+            allissues: 'Minden szám'
+            date: 'Létrehozás dátuma'
+            commenter: Hozzászóló
+            all: Mind
+            language: Nyelv
+            showfiltered: 'A szűrt típusú hozzászólások kijelzése'
+            featured: 'Kiemelt hozzászólások'
+            drag: 'Húzd ide a lista bővítéséhez'
+            delete: 'Biztosan törölni akarod ezt a listát?'
+            reset: 'Minden szűrő alaphelyzetbe állítása'
+            processing: Feldolgozás...
+            interrupted: 'Megszakadt a kapcsolat!'
+            selectlist: 'Válassz listát...'
+            selectfeaturedlist: 'Válaszd ki azokat a listákat, melyekhez hozzászólást akarsz szerkeszteni:'
+            filterby: 'Szűrés ...'
+            duplicate: 'Két egyforma hozzászólás található.'
+            couldnotsave: 'Nem lehet menteni a listát.'
+            last: Utolsó
+            next: Következő
+            first: Első
+            previous: Előző
+            norecords: 'Nem találhatók rekordok.'
+            listdeleted: 'A lista törlése megtörtént.'
+            remove: 'Lista eltávolítása'
+            commentername: 'Hozzászóló neve'
+            commenterurl: 'Hozzászóló profilhivatkozása'
+            externaldate: 'Hozzászólás létrehozásának dátuma'
+            externalmessage: Hozzászólás
+            externalsubject: Tárgy
+            externalsource: Forrás
+            addexternal: 'Külső hozzászólás hozzáadása'
+            add: Hozzáadás
+            addto: 'Hozzáadás a következőhöz:'
+            successremoved: 'A hozzászólás eltávolítása a listáról sikeült.'
+            successadded: 'A hozzászólás hozzáadása a listához sikerült.'
+        title: 'Kiemelt hozzászólások'
+        header: 'Kiemelt hozzászólások kezelése'
