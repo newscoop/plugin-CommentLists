@@ -30,7 +30,7 @@ plugin:
             allcommentsremoved: 'تم حذف كل التعليقات بنجاح.'
             deleteallcomments: 'توشك أن تزيل جميع التعليقات من القائمة المختارة. هل أنت متأكد؟'
             removeallcomments: 'حذف جميع التعليقات؟'
-            deletefeatured: 'إذا تم تحرير تعليقك، فستفقده. هل أنت متأكد؟'
+            deletefeatured: null
             removefeatured: 'إحذف التعليق المتميز من القائمة'
             status: الحالة
             recommended: 'موصى به؟'

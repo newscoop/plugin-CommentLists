@@ -30,7 +30,7 @@ plugin:
             allcommentsremoved: 'Všechny komentáře byly úspěšně odstraněny.'
             deleteallcomments: 'Opravdu chcete odstranit všechny komentáře z označeného seznamu?'
             removeallcomments: 'Odstranit všechny komentáře?'
-            deletefeatured: 'Pokud byl váš komentáře editován, ztratíte ho. Jste si jisti?'
+            deletefeatured: null
             removefeatured: 'Odstranit komentář ze seznamu'
             status: Status
             recommended: 'Doporučeno?'

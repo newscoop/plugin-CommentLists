@@ -30,7 +30,7 @@ plugin:
             allcommentsremoved: 'Alle kommentarer blev fjernet.'
             deleteallcomments: 'Du er ved at fjerne alle kommenatrer fra den valgte liste. Er du sikker?'
             removeallcomments: 'Fjern alle kommentarer?'
-            deletefeatured: 'Hvis du har redigeret din kommentar vil ændringerne gå tabt. Er du sikker?'
+            deletefeatured: null
             removefeatured: 'Fremhævet kommentar blev fjernet fra listen'
             status: Status
             recommended: 'Anbefalet?'
