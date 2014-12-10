@@ -30,7 +30,7 @@ plugin:
             allcommentsremoved: 'Az összes hozzászólás eltávolítása sikerült.'
             deleteallcomments: 'Az összes hozzászólás kiválasztott listáról való eltávolítására készülsz. Biztos?'
             removeallcomments: 'Eltávolítod az összes hozzászólást?'
-            deletefeatured: null
+            deletefeatured: 'Ha szerkesztetted a hozzászólást, akkor el fogod veszíteni. Biztos vagy benne?'
             removefeatured: 'A kiemelt hozzászólás eltávolítása a listáról'
             status: Állapot
             recommended: 'Ajánlott?'
