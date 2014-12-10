@@ -30,7 +30,7 @@ plugin:
             allcommentsremoved: 'All comments removed successfully.'
             deleteallcomments: 'You are about to remove all comments from the selected list. Are you sure?'
             removeallcomments: 'Remove all comments?'
-            deletefeatured: null
+            deletefeatured: 'If your comment was edited, you will lose it. Are you sure?'
             removefeatured: 'Remove featured comment from list'
             status: Status
             recommended: 'Recommended?'
