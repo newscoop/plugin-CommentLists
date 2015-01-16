@@ -1,4 +1,4 @@
-Plugins: null
+Plugins: Pluginovi
 plugin:
     lists:
         error:
@@ -6,23 +6,23 @@ plugin:
             reach: null
         btn:
             add: null
-            delete: null
-            cancel: null
+            delete: Obriši
+            cancel: Poništi
             deleteall: null
-            remove: null
-            save: null
+            remove: Ukloni
+            save: Snimi
             addexternal: null
-            submit: null
-            edit: null
+            submit: Predaj
+            edit: 'Brzo uređivanje'
         table:
-            info: null
-            noentries: null
-            filtering: null
-            menu: null
+            info: 'Prikazano _START_ do _END_ od _TOTAL_ unosa'
+            noentries: 'Nema unosa za prikaz'
+            filtering: '- filtriranje među _MAX_ zapisa'
+            menu: 'Prikaži _MENU_ zapise'
         status:
-            approved: null
-            pending: null
-            hidden: null
+            approved: Odobren
+            pending: Novi
+            hidden: Sakriven
         label:
             tip: null
             info: null
@@ -32,58 +32,58 @@ plugin:
             removeallcomments: null
             deletefeatured: null
             removefeatured: null
-            status: null
+            status: Status
             recommended: null
             originalcomment: null
             please: null
             more: null
-            listid: null
+            listid: 'ID liste'
             searching: null
             nomatches: null
             quickedit: null
-            article: null
+            article: Tekst
             selectarticle: null
             update: null
             menu: null
-            name: null
+            name: 'Naziv liste.'
             search: null
             available: null
-            filter: null
-            allpub: null
+            filter: Filter
+            allpub: 'API publikacije'
             allart: null
             allsections: null
             allissues: null
             date: null
-            commenter: null
-            all: null
-            language: null
+            commenter: Komentator
+            all: Sve
+            language: Jezik
             showfiltered: null
             featured: null
             drag: null
             delete: null
-            reset: null
-            processing: null
+            reset: 'Poništi sve filtere'
+            processing: Obrađujem...
             interrupted: null
             selectlist: null
             selectfeaturedlist: null
             filterby: null
             duplicate: null
             couldnotsave: null
-            last: null
-            next: null
-            first: null
-            previous: null
-            norecords: null
+            last: Poslednji
+            next: Sledeći
+            first: Prvi
+            previous: Prethodni
+            norecords: 'Nema zapisa'
             listdeleted: null
             remove: null
             commentername: null
             commenterurl: null
             externaldate: null
-            externalmessage: null
-            externalsubject: null
-            externalsource: null
+            externalmessage: Komentar
+            externalsubject: Naslov
+            externalsource: Izvor
             addexternal: null
-            add: null
+            add: Dodaj
             addto: null
             successremoved: null
             successadded: null
