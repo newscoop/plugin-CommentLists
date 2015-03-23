@@ -30,7 +30,7 @@ plugin:
             allcommentsremoved: 'Wszystkie komentarze zostały usunięte poprawnie.'
             deleteallcomments: 'Masz zamiar usunąć wszystkie komentarze z wybranej listy. Czy na pewno chcesz kontynuować?'
             removeallcomments: 'Usunąć wszystkie komentarze?'
-            deletefeatured: null
+            deletefeatured: 'Jeśli Twój komentarz był już edytowany, stracisz go. Kontynuować?'
             removefeatured: 'Usuń komentarz z listy'
             status: Status
             recommended: 'Rekomendowany?'
