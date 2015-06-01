@@ -222,7 +222,7 @@ class MetaComment
      */
     protected function getArticle()
     {
-        return new \MetaArticle($this->originalComment->getLanguage()->getId(), $this->originalComment->getArticleNumber());
+        return new \MetaArticle($this->originalComment->getLanguage()->getId(), $this->originalComment->getThread());
     }
 
     /**
