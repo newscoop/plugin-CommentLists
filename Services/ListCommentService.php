@@ -10,6 +10,7 @@ namespace Newscoop\CommentListsBundle\Services;
 
 use Doctrine\ORM\EntityManager;
 use Newscoop\CommentListsBundle\TemplateList\ListCriteria;
+use Doctrine\ORM\Query\Expr;
 
 /**
  * List Comment service
@@ -65,10 +66,10 @@ class ListCommentService
         $qb = $this->em->getRepository('Newscoop\Entity\Comment')
                 ->createQueryBuilder('c');
         $qb
-            ->select('c', 'l.id as language', 'cc.name')
+            ->select('c', 'l.id as language', 'cc.name', 't.issueId', 't.sectionId')
             ->leftJoin('c.commenter', 'cc')
             ->leftJoin('c.language', 'l')
-            ->leftJoin('c.thread', 't')
+            ->leftJoin('Newscoop\Entity\Article', 't', Expr\Join::WITH, 'c.thread = t.number AND c.language = t.language')
             ->where($qb->expr()->isNotNull('c.forum'));
 
         if ($params['publication'] != null && $params['publication'] != '0') {
