@@ -2,7 +2,7 @@
     "name": "newscoop/comment-lists-plugin",
     "description": "Comment lists plugin.",
     "keywords": ["newscoop", "comment", "list", "cms", "widget"],
-    "version": "0.2",
+    "version": "0.3",
     "type": "newscoop-plugin",
     "license": "GPL-3.0",
     "authors": [
