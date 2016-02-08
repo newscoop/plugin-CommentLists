@@ -1,28 +1,28 @@
-Plugins: null
+Plugins: Плагины
 plugin:
     lists:
         error:
             update: null
             reach: null
         btn:
-            add: null
-            delete: null
-            cancel: null
+            add: 'Добавить список'
+            delete: Удалить
+            cancel: Отменить
             deleteall: null
-            remove: null
-            save: null
+            remove: Удалить
+            save: Сохранить
             addexternal: null
-            submit: null
-            edit: null
+            submit: Отправить
+            edit: 'Быстрое редактирование'
         table:
-            info: null
-            noentries: null
-            filtering: null
-            menu: null
+            info: 'Показано _START_ до _END_ / _TOTAL_ записей'
+            noentries: 'Нет записей для просмотра'
+            filtering: 'фильтрация от _MAX_ записей'
+            menu: 'Отобразить _MENU_ записи'
         status:
-            approved: null
-            pending: null
-            hidden: null
+            approved: Утвержденный
+            pending: Новая
+            hidden: Скрытый
         label:
             tip: null
             info: null
@@ -32,58 +32,58 @@ plugin:
             removeallcomments: null
             deletefeatured: null
             removefeatured: null
-            status: null
+            status: Состояние
             recommended: null
             originalcomment: null
             please: null
             more: null
-            listid: null
+            listid: 'ID списка'
             searching: null
             nomatches: null
-            quickedit: null
-            article: null
+            quickedit: 'Быстрое редактирование комментария'
+            article: Статья
             selectarticle: null
             update: null
             menu: null
-            name: null
+            name: 'Название списка'
             search: null
             available: null
-            filter: null
-            allpub: null
+            filter: Фильтр
+            allpub: 'Все издания'
             allart: null
             allsections: null
             allissues: null
             date: null
-            commenter: null
-            all: null
-            language: null
+            commenter: Комментатор
+            all: Все
+            language: Язык
             showfiltered: null
             featured: null
-            drag: null
-            delete: null
-            reset: null
-            processing: null
+            drag: 'Перетянуть в список'
+            delete: 'Вы уверены, что хотите удалить этот список?'
+            reset: 'Переустановить все фильтры'
+            processing: Обработка...
             interrupted: null
             selectlist: null
             selectfeaturedlist: null
             filterby: null
             duplicate: null
             couldnotsave: null
-            last: null
-            next: null
-            first: null
-            previous: null
-            norecords: null
+            last: Последний
+            next: Следующ.
+            first: Первый
+            previous: Предыдущ.
+            norecords: 'Не выбрана ни одна из записей'
             listdeleted: null
             remove: null
             commentername: null
             commenterurl: null
             externaldate: null
-            externalmessage: null
-            externalsubject: null
-            externalsource: null
+            externalmessage: Комментарий
+            externalsubject: Тема
+            externalsource: Источник
             addexternal: null
-            add: null
+            add: Добавить
             addto: null
             successremoved: null
             successadded: null
