@@ -3,23 +3,51 @@ Comment Lists plugin
 
 Group your favourite comments into lists and render them in any place of your website.
 
-Exampe usage:
+Installation
+-------------
+Installation is a quick process:
 
-```smarty
-{{ list_featured_comments length="7" name="example list" }}
-{{ if $gimme->current_list->at_beginning }}
-<div class="slideshow">
-    <div class="slides">
-{{ /if }}
-        <div class="slide-item">
-            {{ set_article number=$gimme->featured_comment->article->number }}
-            <blockquote>{{ if $gimme->featured_comment->isEdited }}{{ $gimme->featured_comment->editedMessage|strip_tags:false }}{{ else }}{{ $gimme->featured_comment->message|strip_tags:false }}{{ /if }}</blockquote>
 
-            <small>{{ $user=$gimme->featured_comment->user }}{{ if $gimme->featured_comment->source }}<a href="{{ $gimme->featured_comment->commenterUrl }}">{{ $gimme->featured_comment->nickname }}</a>{{ else }}<a>{{ $gimme->featured_comment->nickname }}</a>{{ /if }} zu <a href="{{ url options="article" }}">{{ $gimme->featured_comment->article->name }}</a></small>
-        </div>
-{{ if $gimme->current_list->at_end }}
-    </div>
-</div>
-{{ /if }}
-{{ /list_featured_comments }}
+1. How to install this plugin?
+2. That's all!
+
+### Step 1: How to install this plugin?
+Run the command:
+``` bash
+$ php application/console plugins:install "newscoop/comment-lists-plugin"
+$ php application/console assets:install public/
 ```
+Plugin will be installed to your project's `newscoop/plugins/Newscoop` directory.
+
+### Step 2: That's all!
+Go to Newscoop Admin panel and then open `Plugins` tab. The Plugin will show up there. You can now use the plugin.
+
+
+**Note:**
+
+To update this plugin run the command:
+``` bash
+$ php application/console plugins:update "newscoop/comment-lists-plugin"
+$ php application/console assets:install public/
+```
+
+To remove this plugin run the command:
+``` bash
+$ php application/console plugins:remove "newscoop/comment-lists-plugin"
+```
+
+Documentation:
+-------------
+
+Documentation can be found [here](https://wiki.sourcefabric.org/pages/viewpage.action?pageId=18251862).
+
+License
+-------
+
+This bundle is under the GNU General Public License v3. See the complete license in the bundle:
+
+    LICENSE
+
+About
+-------
+This Plugin Bundle is a [Sourcefabric z.ú.](https://github.com/sourcefabric) initiative.
