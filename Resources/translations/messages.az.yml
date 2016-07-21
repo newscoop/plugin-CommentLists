@@ -56,7 +56,7 @@ plugin:
             date: 'Yaradılma tarixi'
             commenter: 'Şərh sahibi'
             all: Hamısı
-            language: Dil
+            language: null
             showfiltered: 'Filtrdən keçirilən şərhləri göstər'
             featured: 'Göstərilən Şərhlər'
             drag: 'Siyahıya əlavə etmək üçün bura sürüşdür'
